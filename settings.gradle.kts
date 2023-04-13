@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "SportsLife"
-include ':app'
+include (":app")
