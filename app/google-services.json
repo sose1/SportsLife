@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "887042597793",
+    "project_id": "sportslife-92ca4",
+    "storage_bucket": "sportslife-92ca4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887042597793:android:68d91dfd9a861ed1ae61e0",
+        "android_client_info": {
+          "package_name": "com.kwasowski.sportslife"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887042597793-797frl4tmrosd3lrg2frm1c5iettk7jv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxOuv9vIkVE-lh8bPG_aHuLqIqQ9-wMjY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887042597793-797frl4tmrosd3lrg2frm1c5iettk7jv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
