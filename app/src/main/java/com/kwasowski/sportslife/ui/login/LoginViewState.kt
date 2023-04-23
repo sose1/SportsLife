@@ -7,4 +7,5 @@ sealed class LoginViewState {
     object OnSignInFailure : LoginViewState()
     object OnSignInConnectionError : LoginViewState()
     object OnSignInEmptyGoogleAccountsListError : LoginViewState()
+    object OnPrivacyPolicyClick : LoginViewState()
 }

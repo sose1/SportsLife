@@ -70,4 +70,12 @@ class LoginViewModel : ViewModel() {
                 mutableState.value = LoginViewState.OnSignInEmptyGoogleAccountsListError
         }
     }
+
+    fun onPrivacyPolicyClick() {
+        mutableState.value = LoginViewState.OnPrivacyPolicyClick
+    }
+
+    fun onPrivacyPolicyClosed() {
+        mutableState.value = LoginViewState.Default
+    }
 }

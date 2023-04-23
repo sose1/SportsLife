@@ -75,7 +75,8 @@
             android:text="@string/by_logging_in_you_accept_the_application_s_privacy_policy"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:onClick="@{() -> viewModel.onPrivacyPolicyClick()}"/>
     </RelativeLayout>
 </layout>
 

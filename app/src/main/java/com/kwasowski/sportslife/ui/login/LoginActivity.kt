@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityLoginBinding
@@ -83,6 +84,12 @@ class LoginActivity : AppCompatActivity() {
 
                     is LoginViewState.OnSignInEmptyGoogleAccountsListError ->
                         showSnackBarInfo(R.string.not_found_google_accounts_on_device)
+
+                    is LoginViewState.OnPrivacyPolicyClick -> showAlertDialog(
+                        R.string.privacy_policy_title,
+                        R.string.privacy_policy_description,
+                        viewModel.onPrivacyPolicyClosed()
+                    )
                 }
             }
         }
@@ -125,5 +132,15 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showSnackBarInfo(stringId: Int) {
         Snackbar.make(binding.root, stringId, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showAlertDialog(titleId: Int, messageID: Int, positiveButtonAction: Unit) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(titleId)
+            .setMessage(messageID)
+            .setPositiveButton(R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+                positiveButtonAction
+            }.show()
     }
 }
