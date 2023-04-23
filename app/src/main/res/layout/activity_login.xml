@@ -14,16 +14,20 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/background_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@mipmap/login_background" />
+            android:src="@mipmap/login_background"
+            android:contentDescription="@string/background_image"/>
 
         <ImageView
+            android:id="@+id/background_gradient"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/gradient_login_activity" />
+            android:src="@drawable/gradient_login_activity"
+            android:contentDescription="@string/background_gradient" />
 
         <ImageView
             android:id="@+id/app_logo"
@@ -31,7 +35,8 @@
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="100dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            android:contentDescription="@string/app_logo"/>
 
         <TextView
             android:id="@+id/motivation_text"
@@ -59,6 +64,7 @@
             app:buttonSize="wide" />
 
         <TextView
+            android:id="@+id/privacy_policy_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/sign_in_button"

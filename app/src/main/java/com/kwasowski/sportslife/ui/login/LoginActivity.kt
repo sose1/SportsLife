@@ -54,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        window.statusBarColor = getColor(R.color.black)
 
         onViewStateChanged()
 
