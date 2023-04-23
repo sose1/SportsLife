@@ -6,4 +6,7 @@
     <string name="sign_in_method_problem_please_try_again_later">Sign in method problem, please try again later.</string>
     <string name="network_connection_error_please_try_again_later">Network connection error, please try again later.</string>
     <string name="not_found_google_accounts_on_device">Not found Google accounts on device.</string>
+    <string name="background_image">background_image</string>
+    <string name="background_gradient">background_gradient</string>
+    <string name="app_logo">app_logo</string>
 </resources>
