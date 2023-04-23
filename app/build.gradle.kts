@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
     id("de.mannodermaus.android-junit5") version "1.8.2.1"
     id("kotlin-android")
     kotlin("kapt")
@@ -66,8 +68,10 @@ dependencies {
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
-    implementation("com.google.firebase:firebase-analytics-ktx:21.2.2")
-    implementation("com.google.firebase:firebase-auth-ktx:21.3.0")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-perf-ktx")
 
     implementation("com.google.android.gms:play-services-auth:20.5.0")
 
