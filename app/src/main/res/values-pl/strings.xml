@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SportsLife</string>
+    <string name="plan_and_track_your_training">Zaplanuj i śledź swój trening!</string>
+    <string name="by_logging_in_you_accept_the_application_s_privacy_policy">Logując się, akceptujesz <u>politykę prywatności</u> aplikacji.</string>
+    <string name="sign_in_method_problem_please_try_again_later">Problem z metodą logowania, spróbuj ponownie później.</string>
+    <string name="network_connection_error_please_try_again_later">Błąd połączenia sieciowego, spróbuj ponownie później.</string>
+    <string name="not_found_google_accounts_on_device">Nie znaleziono kont Google na urządzeniu.</string>
+</resources>

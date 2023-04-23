@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
                     is LoginViewState.Default -> Unit
                     is LoginViewState.OnSignInButtonClick -> openGoogleSignInActivity()
                     is LoginViewState.OnSignInSuccess ->
-                        showSnackBarInfo(R.string.title_activity_login)
+                        showSnackBarInfo(R.string.app_name)
 
                     is LoginViewState.OnSignInFailure ->
                         showSnackBarInfo(R.string.sign_in_method_problem_please_try_again_later)
