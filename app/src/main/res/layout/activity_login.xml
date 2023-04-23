@@ -1,16 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.kwasowski.sportslife.ui.login.LoginViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/login_background" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/gradient_login_activity" />
+
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/motivation_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/app_logo"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="84dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/plan_and_track_your_training"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="54sp" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/motivation_text"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="148dp"
+            android:layout_marginEnd="40dp"
+            android:onClick="@{() -> viewModel.onSignInClick()}"
+            app:buttonSize="wide" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sign_in_button"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/by_logging_in_you_accept_the_application_s_privacy_policy"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </RelativeLayout>
 </layout>
 

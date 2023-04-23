@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
     id("de.mannodermaus.android-junit5") version "1.8.2.1"
+    id("kotlin-android")
+    kotlin("kapt")
 }
 
 android {
@@ -31,12 +33,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_18
+        targetCompatibility = JavaVersion.VERSION_18
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "18"
     }
 
     buildFeatures {
@@ -62,13 +64,14 @@ dependencies {
     //logger
     implementation("com.jakewharton.timber:timber:5.0.1")
 
-
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:31.3.0"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx:21.2.2")
+    implementation("com.google.firebase:firebase-auth-ktx:21.3.0")
 
+    implementation("com.google.android.gms:play-services-auth:20.5.0")
 
     //tests
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }

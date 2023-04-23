@@ -1,12 +1,9 @@
 <resources>
     <string name="app_name">SportsLife</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="plan_and_track_your_training">Plan and track your training!</string>
+    <string name="by_logging_in_you_accept_the_application_s_privacy_policy">By logging in, you accept the application\'s <u>privacy policy</u>.</string>
+    <string name="sign_in_method_problem_please_try_again_later">Sign in method problem, please try again later.</string>
+    <string name="network_connection_error_please_try_again_later">Network connection error, please try again later.</string>
+    <string name="not_found_google_accounts_on_device">Not found Google accounts on device.</string>
 </resources>

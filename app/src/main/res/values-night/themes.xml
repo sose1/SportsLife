@@ -27,5 +27,6 @@
         <item name="colorSurfaceInverse">@color/dark_inverseSurface</item>
         <item name="colorOnSurfaceInverse">@color/dark_inverseOnSurface</item>
         <item name="colorPrimaryInverse">@color/dark_inversePrimary</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 </resources>
