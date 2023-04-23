@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.login
 
+import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -16,6 +17,7 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.material.snackbar.Snackbar
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityLoginBinding
+import com.kwasowski.sportslife.ui.main.MainActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -57,7 +59,6 @@ class LoginActivity : AppCompatActivity() {
         window.statusBarColor = getColor(R.color.black)
 
         onViewStateChanged()
-
         initSignInClient()
     }
 
@@ -73,9 +74,7 @@ class LoginActivity : AppCompatActivity() {
                 when (it) {
                     is LoginViewState.Default -> Unit
                     is LoginViewState.OnSignInButtonClick -> openGoogleSignInActivity()
-                    is LoginViewState.OnSignInSuccess ->
-                        showSnackBarInfo(R.string.app_name)
-
+                    is LoginViewState.OnSignInSuccess -> openMainActivity()
                     is LoginViewState.OnSignInFailure ->
                         showSnackBarInfo(R.string.sign_in_method_problem_please_try_again_later)
 
@@ -117,6 +116,11 @@ class LoginActivity : AppCompatActivity() {
             .addOnFailureListener {
                 viewModel.onSignInFailure(it)
             }
+    }
+
+    private fun openMainActivity() {
+        Timber.d("openMainActivity()")
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
     private fun showSnackBarInfo(stringId: Int) {

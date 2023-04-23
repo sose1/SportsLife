@@ -24,11 +24,10 @@ class LoginViewModel : ViewModel() {
 
     fun onActivityStart() {
         Timber.d("onActivityStart()")
-        //jesli zalogowany to przypsiz i włacz main activity jesli nie to wlacz ekran logowania
         auth.currentUser?.let {
             user = it
-            Timber.d("USER: ${user.displayName}")
-        } ?: Timber.d("USER NULL")
+            mutableState.value = LoginViewState.OnSignInSuccess
+        } ?: Timber.d("USER NOT LOGGED IN")
     }
 
     fun onSignInClick() {
@@ -39,29 +38,15 @@ class LoginViewModel : ViewModel() {
         Timber.d("onSuccessSignInRequest()")
         try {
             val idToken = credential.googleIdToken
-            val email = credential.id
-            val name = credential.displayName
-
-            Timber.d("USER DATA: ")
-            Timber.d("idToken: $idToken")
-            Timber.d("email: $email")
-            Timber.d("name: $name")
-
             val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-            //DO innej funkcji żeby uporządkować kod
             auth.signInWithCredential(firebaseCredential)
                 .addOnSuccessListener {
-                    // Sign in success, update UI with the signed-in user's information
                     Timber.d("signInWithCredential:success")
-                    val user = auth.currentUser
-                    Timber.d("USER $user")
+                    mutableState.value = LoginViewState.OnSignInSuccess
                 }
                 .addOnFailureListener {
                     onSignInFailure(it)
                 }
-
-            //onSucces
-            mutableState.value = LoginViewState.Default
         } catch (e: ApiException) {
             onSignInFailure(e)
         }
