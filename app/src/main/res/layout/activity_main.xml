@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.kwasowski.sportslife.ui.main.MainViewModel" />
@@ -26,8 +27,18 @@
                 app:menu="@menu/top_app_bar"
                 app:navigationIcon="@drawable/baseline_menu_24"
                 app:title="@string/app_name"
-                app:titleCentered="true"
-                app:titleTextColor="@color/white" />
+                app:titleCentered="true" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/days_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/light_primary"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="7"
+                tools:listitem="@layout/item_day_active" />
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
