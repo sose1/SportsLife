@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         binding.topAppBar.setOnMenuItemClickListener { onMenuItemClickListener(it) }
 
         binding.daysList.setHasFixedSize(true)
-
         binding.daysList.adapter = daysAdapter
     }
 
@@ -45,20 +44,26 @@ class MainActivity : AppCompatActivity() {
             viewModel.uiState.collect {
                 when (it) {
                     MainViewState.Default -> Unit
-                    is MainViewState.OnInitDays -> onInitDays(it.days)
-                    is MainViewState.OnDayItemClick -> onDayItemClick(it.days)
+                    is MainViewState.OnInitDays -> onInitDays(it.days, it.todayIndex - 1)
+                    is MainViewState.OnDaysListUpdate -> onDaysListUpdate(it.days)
+                    is MainViewState.OnDayItemClick -> onDayItemClick(it.day)
                 }
             }
         }
     }
 
-    private fun onDayItemClick(days: List<Day>) {
+    private fun onInitDays(days: List<Day>, todayIndex: Int) {
+        daysAdapter.updateList(days)
+        binding.daysList.scrollToPosition(todayIndex)
+        onDayItemClick(days[todayIndex])
+    }
+
+    private fun onDaysListUpdate(days: List<Day>) {
         daysAdapter.updateList(days)
     }
 
-    private fun onInitDays(days: List<Day>) {
-        daysAdapter.updateList(days)
-        binding.daysList.scrollToPosition(daysAdapter.itemCount / 2)
+    private fun onDayItemClick(day: Day) {
+        binding.text.text = "$day"
     }
 
     private fun onMenuItemClickListener(menuItem: MenuItem): Boolean {

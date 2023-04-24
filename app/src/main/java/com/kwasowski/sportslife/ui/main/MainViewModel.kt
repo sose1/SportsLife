@@ -22,6 +22,7 @@ class MainViewModel : ViewModel() {
     fun initializeDays() {
         val currentDate = Date()
         val calendar = Calendar.getInstance()
+        var todayIndex: Int = 0
 
         for (i in -numberOfDays..numberOfDays) {
             val day = currentDate.addDays(i)
@@ -38,15 +39,17 @@ class MainViewModel : ViewModel() {
             if (DateUtils.isToday(day.time)) {
                 dayModel.type = DayType.ACTIVE
                 dayModel.isToday = true
+                daysList.add(dayModel)
+                todayIndex = daysList.size
+            } else {
+                daysList.add(dayModel)
             }
-
-            daysList.add(dayModel)
         }
-        mutableState.value = MainViewState.OnInitDays(daysList)
+        mutableState.value = MainViewState.OnInitDays(daysList, todayIndex)
     }
 
     fun onDayItemClick(day: Day) {
-        Timber.d("onClick | Day: ${day}")
+        Timber.d("onClick | Day: $day")
 
         //change today to current
         this.daysList.find { it.isToday }.apply {
@@ -63,7 +66,8 @@ class MainViewModel : ViewModel() {
             this?.type = DayType.ACTIVE
         }
 
-        mutableState.value = MainViewState.OnDayItemClick(daysList)
+        mutableState.value = MainViewState.OnDaysListUpdate(daysList)
+        mutableState.value = MainViewState.OnDayItemClick(day)
     }
 
     private fun Date.addDays(days: Int): Date {
