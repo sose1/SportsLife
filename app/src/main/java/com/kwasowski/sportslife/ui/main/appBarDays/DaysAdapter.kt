@@ -4,18 +4,36 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.kwasowski.sportslife.data.model.Day
+import com.kwasowski.sportslife.data.model.DayType
 import com.kwasowski.sportslife.databinding.ItemDayActiveBinding
 import com.kwasowski.sportslife.databinding.ItemDayCurrentBinding
 import com.kwasowski.sportslife.databinding.ItemDayDefaultBinding
 
-class DaysAdapter : RecyclerView.Adapter<ViewHolder>() {
-    private var daysList = mutableListOf<DayFormat>()
+class DaysAdapter(private val onSelect: (Day) -> Unit) : RecyclerView.Adapter<ViewHolder>() {
+    private var daysList = listOf<Day>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            Day.DEFAULT.value -> DayDefaultViewHolder(
+            DayType.DEFAULT.value -> DayDefaultViewHolder(
                 ItemDayDefaultBinding.inflate(
+                    inflater,
+                    parent,
+                    false
+                )
+            )
+
+            DayType.CURRENT.value -> DayCurrentViewHolder(
+                ItemDayCurrentBinding.inflate(
+                    inflater,
+                    parent,
+                    false
+                )
+            )
+
+            DayType.ACTIVE.value -> DayActiveViewHolder(
+                ItemDayActiveBinding.inflate(
                     inflater,
                     parent,
                     false
@@ -36,45 +54,66 @@ class DaysAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            Day.DEFAULT.value -> (holder as DayDefaultViewHolder).bind(daysList[position])
+            DayType.DEFAULT.value -> (holder as DayDefaultViewHolder).bind(
+                daysList[position], onSelect
+            )
+
+            DayType.CURRENT.value -> (holder as DayCurrentViewHolder).bind(
+                daysList[position]
+            )
+
+            DayType.ACTIVE.value -> (holder as DayActiveViewHolder).bind(
+                daysList[position]
+            )
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return Day.DEFAULT.value
+        return daysList[position].type.value
     }
 
-
-    fun setDays(daysList: MutableList<DayFormat>) {
+    fun updateList(daysList: List<Day>) {
         this.daysList = daysList
         notifyItemInserted(itemCount)
     }
 
     inner class DayDefaultViewHolder(private val binding: ItemDayDefaultBinding) :
         ViewHolder(binding.root) {
-        fun bind(dayFormat: DayFormat) {
-            binding.day = dayFormat
+
+        fun bind(day: Day, onSelect: (Day) -> Unit) {
+            day.position = adapterPosition
+            binding.day = day
             binding.executePendingBindings()
+
+            binding.root.setOnClickListener {
+                onSelect(day)
+            }
         }
     }
 
     inner class DayActiveViewHolder(private val binding: ItemDayActiveBinding) :
         ViewHolder(binding.root) {
-        fun bind() {
+
+        fun bind(day: Day) {
+            day.position = adapterPosition
+            binding.day = day
             binding.executePendingBindings()
+            binding.root.setOnClickListener {
+                onSelect(day)
+            }
         }
     }
 
     inner class DayCurrentViewHolder(private val binding: ItemDayCurrentBinding) :
         ViewHolder(binding.root) {
-        fun bind() {
-            binding.executePendingBindings()
-        }
-    }
 
-    enum class Day(val value: Int) {
-        DEFAULT(0),
-        ACTIVE(1),
-        CURRENT(2);
+        fun bind(day: Day) {
+            day.position = adapterPosition
+            binding.day = day
+            binding.executePendingBindings()
+            binding.root.setOnClickListener {
+                onSelect(day)
+            }
+        }
     }
 }

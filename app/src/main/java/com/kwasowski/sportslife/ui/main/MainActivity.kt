@@ -4,20 +4,23 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.model.Day
 import com.kwasowski.sportslife.databinding.ActivityMainBinding
-import com.kwasowski.sportslife.ui.main.appBarDays.DayFormat
 import com.kwasowski.sportslife.ui.main.appBarDays.DaysAdapter
-import org.koin.android.ext.android.inject
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModel()
-    private val daysAdapter: DaysAdapter by inject()
+
+    private val daysAdapter = DaysAdapter {
+        viewModel.onDayItemClick(it)
+    }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -26,42 +29,36 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        onViewStateChanged()
+        viewModel.initializeDays()
 
-        binding.topAppBar.setNavigationOnClickListener {
-            Timber.d("NavigationOnClick")
-        }
-        binding.topAppBar.setOnMenuItemClickListener {
-            onMenuItemClickListener(it)
-        }
+        binding.topAppBar.setNavigationOnClickListener { Timber.d("NavigationOnClick") }
+        binding.topAppBar.setOnMenuItemClickListener { onMenuItemClickListener(it) }
 
         binding.daysList.setHasFixedSize(true)
+
         binding.daysList.adapter = daysAdapter
-
-        val currentDate = Date()
-        val daysList = mutableListOf<DayFormat>()
-
-        val calendar = Calendar.getInstance()
-
-
-
-        for (i in -10..10) {
-            val day = currentDate.addDays(i)
-            calendar.time = day
-            val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.NARROW_FORMAT, Locale.getDefault())
-            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-            val dayFormat = DayFormat(dayOfWeek.uppercase(), dayOfMonth.toString())
-            daysList.add(dayFormat)
-        }
-
-        daysAdapter.setDays(daysList)
-        binding.daysList.scrollToPosition(daysAdapter.itemCount / 2)
     }
 
-    private fun Date.addDays(days: Int): Date {
-        val calendar = Calendar.getInstance()
-        calendar.time = this
-        calendar.add(Calendar.DAY_OF_YEAR, days)
-        return calendar.time
+    private fun onViewStateChanged() = lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.uiState.collect {
+                when (it) {
+                    MainViewState.Default -> Unit
+                    is MainViewState.OnInitDays -> onInitDays(it.days)
+                    is MainViewState.OnDayItemClick -> onDayItemClick(it.days)
+                }
+            }
+        }
+    }
+
+    private fun onDayItemClick(days: List<Day>) {
+        daysAdapter.updateList(days)
+    }
+
+    private fun onInitDays(days: List<Day>) {
+        daysAdapter.updateList(days)
+        binding.daysList.scrollToPosition(daysAdapter.itemCount / 2)
     }
 
     private fun onMenuItemClickListener(menuItem: MenuItem): Boolean {

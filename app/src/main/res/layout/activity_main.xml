@@ -26,6 +26,7 @@
                 android:layout_height="?android:attr/actionBarSize"
                 app:menu="@menu/top_app_bar"
                 app:navigationIcon="@drawable/baseline_menu_24"
+                app:titleTextColor="@color/white"
                 app:title="@string/app_name"
                 app:titleCentered="true" />
 
@@ -33,8 +34,8 @@
                 android:id="@+id/days_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:background="@color/light_primary"
+                android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="7"
                 tools:listitem="@layout/item_day_active" />
