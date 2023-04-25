@@ -81,7 +81,6 @@ class DaysAdapter(private val onSelect: (Day) -> Unit) : RecyclerView.Adapter<Vi
         ViewHolder(binding.root) {
 
         fun bind(day: Day, onSelect: (Day) -> Unit) {
-            day.position = adapterPosition
             binding.day = day
             binding.executePendingBindings()
 
@@ -95,7 +94,6 @@ class DaysAdapter(private val onSelect: (Day) -> Unit) : RecyclerView.Adapter<Vi
         ViewHolder(binding.root) {
 
         fun bind(day: Day) {
-            day.position = adapterPosition
             binding.day = day
             binding.executePendingBindings()
             binding.root.setOnClickListener {
@@ -108,7 +106,6 @@ class DaysAdapter(private val onSelect: (Day) -> Unit) : RecyclerView.Adapter<Vi
         ViewHolder(binding.root) {
 
         fun bind(day: Day) {
-            day.position = adapterPosition
             binding.day = day
             binding.executePendingBindings()
             binding.root.setOnClickListener {

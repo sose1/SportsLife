@@ -8,7 +8,6 @@ data class Day(
     val month: Int,
     val year: Int,
     var type: DayType,
-    var position: Int = 0,
     var isToday: Boolean = false,
     val date: Date
 )
