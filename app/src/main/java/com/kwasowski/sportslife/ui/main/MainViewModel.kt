@@ -2,8 +2,10 @@ package com.kwasowski.sportslife.ui.main
 
 import android.text.format.DateUtils
 import androidx.lifecycle.ViewModel
+import com.google.android.material.datepicker.CalendarConstraints
 import com.kwasowski.sportslife.data.model.Day
 import com.kwasowski.sportslife.data.model.DayType
+import com.kwasowski.sportslife.data.model.findByCalendarDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -45,29 +47,59 @@ class MainViewModel : ViewModel() {
                 daysList.add(dayModel)
             }
         }
-        mutableState.value = MainViewState.OnInitDays(daysList, todayIndex)
+        Timber.d("todayIndex: $todayIndex")
+        mutableState.value = MainViewState.OnInitDays(daysList, todayIndex - 1)
     }
 
     fun onDayItemClick(day: Day) {
         Timber.d("onClick | Day: $day")
-
         //change today to current
-        this.daysList.find { it.isToday }.apply {
+        daysList.find { it.isToday }.apply {
             this?.type = DayType.CURRENT
         }
 
         //change active to default
-        this.daysList.find { it.type == DayType.ACTIVE }.apply {
+        daysList.find { it.type == DayType.ACTIVE }.apply {
             this?.type = DayType.DEFAULT
         }
 
         //change clicked item to active
-        this.daysList.find { it.position == day.position }.apply {
-            this?.type = DayType.ACTIVE
+        try {
+            daysList.findByCalendarDate(day.number, day.month, day.year).apply {
+                this.type = DayType.ACTIVE
+            }
+        } catch (e: IndexOutOfBoundsException) {
+            mutableState.value = MainViewState.OnIndexOutOfBoundsException
         }
 
         mutableState.value = MainViewState.OnDaysListUpdate(daysList)
-        mutableState.value = MainViewState.OnDayItemClick(day)
+        mutableState.value = MainViewState.OnDayItemClick(day, daysList.indexOf(day))
+    }
+
+    fun onDataPickerOpen() {
+        val startFrom = Date().addDays(-numberOfDays).time
+        val endTo = Date().addDays(numberOfDays).time
+        val constraints = CalendarConstraints.Builder()
+            .setStart(startFrom)
+            .setEnd(endTo)
+            .build()
+        mutableState.value = MainViewState.OnDataPickerOpen(constraints)
+    }
+
+    fun onSelectedDateInDatePicker(timestamp: Long?) {
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(timestamp!!)
+        val number = calendar.get(Calendar.DAY_OF_MONTH).toString()
+        val month = calendar.get(Calendar.MONTH)
+        val year = calendar.get(Calendar.YEAR)
+
+        try {
+            onDayItemClick(
+                daysList.findByCalendarDate(number, month, year)
+            )
+        } catch (e: IndexOutOfBoundsException) {
+            mutableState.value = MainViewState.OnIndexOutOfBoundsException
+        }
     }
 
     private fun Date.addDays(days: Int): Date {

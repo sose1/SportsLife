@@ -13,6 +13,11 @@ data class Day(
     val date: Date = Date()
 )
 
+fun MutableList<Day>.findByCalendarDate(number: String, month: Int, year: Int): Day {
+    return this.filter { it.year == year }.filter { it.month == month }
+        .filter { it.number == number }[0]
+}
+
 enum class DayType(val value: Int) {
     DEFAULT(0),
     ACTIVE(1),

@@ -74,7 +74,7 @@ class DaysAdapter(private val onSelect: (Day) -> Unit) : RecyclerView.Adapter<Vi
 
     fun updateList(daysList: List<Day>) {
         this.daysList = daysList
-        notifyItemInserted(itemCount)
+        notifyDataSetChanged()
     }
 
     inner class DayDefaultViewHolder(private val binding: ItemDayDefaultBinding) :
