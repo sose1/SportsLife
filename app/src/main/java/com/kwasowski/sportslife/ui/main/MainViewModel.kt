@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.main
 
+import android.text.format.DateFormat
 import android.text.format.DateUtils
 import androidx.lifecycle.ViewModel
 import com.google.android.material.datepicker.CalendarConstraints
@@ -20,11 +21,10 @@ class MainViewModel : ViewModel() {
 
     private val daysList = mutableListOf<Day>()
     private val numberOfDays = 3652
-
     fun initializeDays() {
         val currentDate = Date()
         val calendar = Calendar.getInstance()
-        var todayIndex: Int = 0
+        var todayIndex = 0
 
         for (i in -numberOfDays..numberOfDays) {
             val day = currentDate.addDays(i)
@@ -35,7 +35,8 @@ class MainViewModel : ViewModel() {
                 number = calendar.get(Calendar.DAY_OF_MONTH).toString(),
                 month = calendar.get(Calendar.MONTH),
                 year = calendar.get(Calendar.YEAR),
-                type = DayType.DEFAULT
+                type = DayType.DEFAULT,
+                date = day
             )
 
             if (DateUtils.isToday(day.time)) {
@@ -115,4 +116,10 @@ class MainViewModel : ViewModel() {
             Calendar.NARROW_FORMAT,
             Locale.getDefault()
         ) as String
+
+    fun onScrollDays(itemPosition: Int) {
+        val day = daysList[itemPosition]
+        val month = DateFormat.format("LLLL", day.date)
+        mutableState.value = MainViewState.OnTitleChange(month, day.year)
+    }
 }

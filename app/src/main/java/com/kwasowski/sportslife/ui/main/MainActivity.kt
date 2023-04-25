@@ -7,6 +7,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
@@ -21,11 +23,23 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModel()
 
+    private lateinit var binding: ActivityMainBinding
+
     private val daysAdapter = DaysAdapter {
         viewModel.onDayItemClick(it)
     }
 
-    private lateinit var binding: ActivityMainBinding
+    private val onRecyclerViewScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            val layoutManager = binding.daysList.layoutManager as LinearLayoutManager
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                viewModel.onScrollDays(layoutManager.findFirstVisibleItemPosition())
+            } else {
+                binding.topAppBar.setTitle(R.string.app_name)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.daysList.setHasFixedSize(true)
         binding.daysList.adapter = daysAdapter
+        binding.daysList.addOnScrollListener(onRecyclerViewScrollListener)
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
@@ -51,7 +66,8 @@ class MainActivity : AppCompatActivity() {
                     is MainViewState.OnDaysListUpdate -> onDaysListUpdate(it.days)
                     is MainViewState.OnDayItemClick -> onDayItemClick(it.day, it.indexOf)
                     is MainViewState.OnDataPickerOpen -> onDataPickerOpen(it.constraints)
-                    MainViewState.OnIndexOutOfBoundsException -> showSnackBarInfo(R.string.you_cannot_select_this_date_please_try_another_one)
+                    is MainViewState.OnIndexOutOfBoundsException -> showSnackBarInfo(R.string.you_cannot_select_this_date_please_try_another_one)
+                    is MainViewState.OnTitleChange -> onTitleChange(it.month, it.year)
                 }
             }
         }
@@ -69,6 +85,10 @@ class MainActivity : AppCompatActivity() {
     private fun onDayItemClick(day: Day, indexOf: Int) {
         binding.text.text = "$day"
         binding.daysList.scrollToPosition(indexOf)
+    }
+
+    private fun onTitleChange(month: CharSequence, year: Int) {
+        binding.topAppBar.title = "${month.toString().replaceFirstChar { it.uppercase() }} $year"
     }
 
     private fun onMenuItemClickListener(menuItem: MenuItem): Boolean {

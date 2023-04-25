@@ -10,7 +10,7 @@ data class Day(
     var type: DayType,
     var position: Int = 0,
     var isToday: Boolean = false,
-    val date: Date = Date()
+    val date: Date
 )
 
 fun MutableList<Day>.findByCalendarDate(number: String, month: Int, year: Int): Day {
