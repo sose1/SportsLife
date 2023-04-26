@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModel()
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var layoutManager: LinearLayoutManager
 
     private val daysAdapter = DaysAdapter {
         viewModel.onDayItemClick(it)
@@ -39,10 +40,10 @@ class MainActivity : AppCompatActivity() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            val layoutManager = binding.daysList.layoutManager as LinearLayoutManager
-            if (dx != 0)
-                viewModel.onScrollDays(layoutManager.findFirstVisibleItemPosition())
-
+            when {
+                dx < 0 -> viewModel.onScrollDays(layoutManager.findFirstVisibleItemPosition())
+                dx > 0 -> viewModel.onScrollDays(layoutManager.findLastVisibleItemPosition())
+            }
         }
     }
 
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.daysList.setHasFixedSize(true)
         binding.daysList.adapter = daysAdapter
+        layoutManager = binding.daysList.layoutManager as LinearLayoutManager
         binding.daysList.addOnScrollListener(onRecyclerViewScrollListener)
     }
 
