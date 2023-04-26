@@ -1,5 +1,5 @@
-
 <resources>
+
     <style name="Theme.SportsLife" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/dark_primary</item>
         <item name="colorOnPrimary">@color/dark_onPrimary</item>
@@ -28,5 +28,7 @@
         <item name="colorOnSurfaceInverse">@color/dark_inverseOnSurface</item>
         <item name="colorPrimaryInverse">@color/dark_inversePrimary</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:statusBarColor">@color/light_primary</item>
+        <item name="actionBarStyle">@style/ActionBar</item>
     </style>
 </resources>
