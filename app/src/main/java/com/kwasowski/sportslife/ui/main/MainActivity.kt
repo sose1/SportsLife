@@ -32,12 +32,17 @@ class MainActivity : AppCompatActivity() {
     private val onRecyclerViewScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            val layoutManager = binding.daysList.layoutManager as LinearLayoutManager
-            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                viewModel.onScrollDays(layoutManager.findFirstVisibleItemPosition())
-            } else {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE)
                 binding.topAppBar.setTitle(R.string.app_name)
-            }
+
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val layoutManager = binding.daysList.layoutManager as LinearLayoutManager
+            if (dx != 0)
+                viewModel.onScrollDays(layoutManager.findFirstVisibleItemPosition())
+
         }
     }
 
@@ -91,16 +96,13 @@ class MainActivity : AppCompatActivity() {
         binding.topAppBar.title = "${month.toString().replaceFirstChar { it.uppercase() }} $year"
     }
 
-    private fun onMenuItemClickListener(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
-            R.id.select_date -> {
-                viewModel.onDataPickerOpen()
-                true
-            }
-
-            else -> false
+    private fun onMenuItemClickListener(menuItem: MenuItem): Boolean = when (menuItem.itemId) {
+        R.id.select_date -> {
+            viewModel.onDataPickerOpen()
+            true
         }
-        return false
+
+        else -> false
     }
 
     private fun onDataPickerOpen(constraints: CalendarConstraints) {
