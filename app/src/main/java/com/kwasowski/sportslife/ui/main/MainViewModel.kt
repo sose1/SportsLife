@@ -4,6 +4,8 @@ import android.text.format.DateFormat
 import android.text.format.DateUtils
 import androidx.lifecycle.ViewModel
 import com.google.android.material.datepicker.CalendarConstraints
+import com.kwasowski.sportslife.data.extension.addDays
+import com.kwasowski.sportslife.data.extension.getNarrowName
 import com.kwasowski.sportslife.data.model.Day
 import com.kwasowski.sportslife.data.model.DayType
 import com.kwasowski.sportslife.data.model.findByCalendarDate
@@ -13,7 +15,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import timber.log.Timber
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 class MainViewModel : ViewModel() {
     private val mutableState = MutableStateFlow<MainViewState>(MainViewState.Default)
@@ -103,23 +104,12 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private fun Date.addDays(days: Int): Date {
-        val calendar = Calendar.getInstance()
-        calendar.time = this
-        calendar.add(Calendar.DAY_OF_YEAR, days)
-        return calendar.time
-    }
-
-    private fun Calendar.getNarrowName(): String =
-        this.getDisplayName(
-            Calendar.DAY_OF_WEEK,
-            Calendar.NARROW_FORMAT,
-            Locale.getDefault()
-        ) as String
-
     fun onScrollDays(itemPosition: Int) {
         val day = daysList[itemPosition]
         val month = DateFormat.format("LLLL", day.date)
         mutableState.value = MainViewState.OnTitleChange(month, day.year)
     }
+
+
+
 }
