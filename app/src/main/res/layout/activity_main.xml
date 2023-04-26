@@ -17,7 +17,8 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="?android:colorBackground">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/top_app_bar"
@@ -34,8 +35,9 @@
                 android:id="@+id/days_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_primary"
+                android:background="@drawable/app_bar_days_background"
                 android:orientation="horizontal"
+                android:paddingBottom="3dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="7"
                 tools:listitem="@layout/item_day_active" />
