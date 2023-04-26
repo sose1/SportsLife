@@ -109,7 +109,4 @@ class MainViewModel : ViewModel() {
         val month = DateFormat.format("LLLL", day.date)
         mutableState.value = MainViewState.OnTitleChange(month, day.year)
     }
-
-
-
 }
