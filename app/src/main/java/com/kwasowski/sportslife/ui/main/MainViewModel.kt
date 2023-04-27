@@ -4,6 +4,8 @@ import android.text.format.DateFormat
 import android.text.format.DateUtils
 import androidx.lifecycle.ViewModel
 import com.google.android.material.datepicker.CalendarConstraints
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.data.extension.addDays
 import com.kwasowski.sportslife.data.extension.getNarrowName
 import com.kwasowski.sportslife.data.model.Day
@@ -19,6 +21,8 @@ import java.util.Date
 class MainViewModel : ViewModel() {
     private val mutableState = MutableStateFlow<MainViewState>(MainViewState.Default)
     val uiState: StateFlow<MainViewState> = mutableState.asStateFlow()
+
+    val auth = Firebase.auth
 
     private val daysList = mutableListOf<Day>()
     private val numberOfDays = 3652
@@ -108,5 +112,10 @@ class MainViewModel : ViewModel() {
         val day = daysList[itemPosition]
         val month = DateFormat.format("LLLL", day.date)
         mutableState.value = MainViewState.OnTitleChange(month, day.year)
+    }
+
+    fun onLogoutClick() {
+        auth.signOut()
+        mutableState.value = MainViewState.OnLogout
     }
 }

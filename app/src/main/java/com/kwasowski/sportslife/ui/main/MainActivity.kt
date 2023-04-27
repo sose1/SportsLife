@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.main
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
@@ -17,9 +18,11 @@ import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.model.Day
 import com.kwasowski.sportslife.databinding.ActivityMainBinding
 import com.kwasowski.sportslife.databinding.HeaderNavigationDrawerBinding
+import com.kwasowski.sportslife.ui.login.LoginActivity
 import com.kwasowski.sportslife.ui.main.appBarDays.DaysAdapter
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModel()
@@ -83,6 +86,7 @@ class MainActivity : AppCompatActivity() {
                     is MainViewState.OnDataPickerOpen -> onDataPickerOpen(it.constraints)
                     is MainViewState.OnIndexOutOfBoundsException -> showSnackBarInfo(R.string.you_cannot_select_this_date_please_try_another_one)
                     is MainViewState.OnTitleChange -> onTitleChange(it.month, it.year)
+                    MainViewState.OnLogout -> openLoginActivity()
                 }
             }
         }
@@ -115,6 +119,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.logout_item -> {
+                viewModel.onLogoutClick()
                 true
             }
 
@@ -170,5 +175,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSnackBarInfo(stringId: Int) {
         Snackbar.make(binding.root, stringId, Snackbar.LENGTH_LONG).show()
+    }
+
+
+    private fun openLoginActivity() {
+        Timber.d("openLoginActivity()")
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 }
