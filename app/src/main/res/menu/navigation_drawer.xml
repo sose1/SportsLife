@@ -19,6 +19,11 @@
             android:icon="@drawable/plans"
             android:title="@string/training_plans" />
         <item
+            android:id="@+id/exercises_list"
+            android:checkable="true"
+            android:icon="@drawable/baseline_list_24"
+            android:title="@string/exercise_list"/>
+        <item
             android:id="@+id/favorite_exercises_item"
             android:checkable="true"
             android:icon="@drawable/favorite"

@@ -17,9 +17,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.model.Day
 import com.kwasowski.sportslife.databinding.ActivityMainBinding
-import com.kwasowski.sportslife.databinding.HeaderNavigationDrawerBinding
+import com.kwasowski.sportslife.ui.exercisesList.ExercisesListActivity
+import com.kwasowski.sportslife.ui.favExercises.FavExercisesActivity
 import com.kwasowski.sportslife.ui.login.LoginActivity
 import com.kwasowski.sportslife.ui.main.appBarDays.DaysAdapter
+import com.kwasowski.sportslife.ui.profile.ProfileActivity
+import com.kwasowski.sportslife.ui.settings.SettingsActivity
+import com.kwasowski.sportslife.ui.trainingLog.TrainingLogActivity
+import com.kwasowski.sportslife.ui.trainingPlans.TrainingPlansActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -28,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModel()
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navHeaderBinding: HeaderNavigationDrawerBinding
     private lateinit var layoutManager: LinearLayoutManager
 
     private val daysAdapter = DaysAdapter {
@@ -59,9 +63,6 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         viewModel.initializeDays()
         window.statusBarColor = Color.TRANSPARENT
-
-        navHeaderBinding =
-            HeaderNavigationDrawerBinding.bind(binding.navigationView.getHeaderView(0))
 
         binding.navigationView.setCheckedItem(R.id.calendar_item)
         binding.navigationView.setNavigationItemSelectedListener {
@@ -99,22 +100,32 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.training_log_item -> {
+                openTrainingLogActivity()
                 true
             }
 
             R.id.training_plans_item -> {
+                openTrainingPlansActivity()
+                true
+            }
+
+            R.id.exercises_list -> {
+                openExercisesListActivity()
                 true
             }
 
             R.id.favorite_exercises_item -> {
+                openFavoriteExercisesActivity()
                 true
             }
 
             R.id.profile_item -> {
+                openProfileActivity()
                 true
             }
 
             R.id.settings_item -> {
+                openSettingsActivity()
                 true
             }
 
@@ -177,9 +188,44 @@ class MainActivity : AppCompatActivity() {
         Snackbar.make(binding.root, stringId, Snackbar.LENGTH_LONG).show()
     }
 
+    private fun openTrainingLogActivity() {
+        Timber.d("openTrainingLogActivity()")
+        startActivity(Intent(this, TrainingLogActivity::class.java))
+    }
+
+    private fun openTrainingPlansActivity() {
+        Timber.d("openTrainingPlansActivity()")
+        startActivity(Intent(this, TrainingPlansActivity::class.java))
+    }
+
+    private fun openExercisesListActivity() {
+        Timber.d("openExercisesListActivity()")
+        startActivity(Intent(this, ExercisesListActivity::class.java))
+    }
+
+    private fun openFavoriteExercisesActivity() {
+        Timber.d("openFavoriteExercisesActivity()")
+        startActivity(Intent(this, FavExercisesActivity::class.java))
+    }
+
+    private fun openProfileActivity() {
+        Timber.d("openProfileActivity()")
+        startActivity(Intent(this, ProfileActivity::class.java))
+    }
+
+    private fun openSettingsActivity() {
+        Timber.d("openSettingsActivity()")
+        startActivity(Intent(this, SettingsActivity::class.java))
+    }
 
     private fun openLoginActivity() {
         Timber.d("openLoginActivity()")
         startActivity(Intent(this, LoginActivity::class.java))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.navigationView.setCheckedItem(R.id.calendar_item)
+
     }
 }
