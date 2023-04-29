@@ -11,4 +11,5 @@ sealed class MainViewState {
     class OnDayItemClick(val day: Day, val indexOf: Int) : MainViewState()
     class OnDataPickerOpen(val constraints: CalendarConstraints) : MainViewState()
     class OnTitleChange(val month: CharSequence, val year: Int) : MainViewState()
+    object OnLogout : MainViewState()
 }

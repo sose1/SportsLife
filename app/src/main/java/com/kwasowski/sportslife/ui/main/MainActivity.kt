@@ -1,5 +1,7 @@
 package com.kwasowski.sportslife.ui.main
 
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +17,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.model.Day
 import com.kwasowski.sportslife.databinding.ActivityMainBinding
+import com.kwasowski.sportslife.ui.exercisesList.ExercisesListActivity
+import com.kwasowski.sportslife.ui.favExercises.FavExercisesActivity
+import com.kwasowski.sportslife.ui.login.LoginActivity
 import com.kwasowski.sportslife.ui.main.appBarDays.DaysAdapter
+import com.kwasowski.sportslife.ui.profile.ProfileActivity
+import com.kwasowski.sportslife.ui.settings.SettingsActivity
+import com.kwasowski.sportslife.ui.trainingLog.TrainingLogActivity
+import com.kwasowski.sportslife.ui.trainingPlans.TrainingPlansActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -52,16 +61,19 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        onViewStateChanged()
         viewModel.initializeDays()
+        window.statusBarColor = Color.TRANSPARENT
 
-        binding.topAppBar.setNavigationOnClickListener { Timber.d("NavigationOnClick") }
+        binding.navigationView.setCheckedItem(R.id.calendar_item)
+        binding.navigationView.setNavigationItemSelectedListener {
+            onNavigationItemSelected(it)
+        }
+
+        binding.topAppBar.setNavigationOnClickListener { binding.drawerLayout.open() }
         binding.topAppBar.setOnMenuItemClickListener { onMenuItemClickListener(it) }
 
-        binding.daysList.setHasFixedSize(true)
-        binding.daysList.adapter = daysAdapter
-        layoutManager = binding.daysList.layoutManager as LinearLayoutManager
-        binding.daysList.addOnScrollListener(onRecyclerViewScrollListener)
+        onViewStateChanged()
+        initDaysAdapter()
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
@@ -75,9 +87,62 @@ class MainActivity : AppCompatActivity() {
                     is MainViewState.OnDataPickerOpen -> onDataPickerOpen(it.constraints)
                     is MainViewState.OnIndexOutOfBoundsException -> showSnackBarInfo(R.string.you_cannot_select_this_date_please_try_another_one)
                     is MainViewState.OnTitleChange -> onTitleChange(it.month, it.year)
+                    MainViewState.OnLogout -> openLoginActivity()
                 }
             }
         }
+    }
+
+    private fun onNavigationItemSelected(it: MenuItem): Boolean {
+        return when (it.itemId) {
+            R.id.calendar_item -> {
+                true
+            }
+
+            R.id.training_log_item -> {
+                openTrainingLogActivity()
+                true
+            }
+
+            R.id.training_plans_item -> {
+                openTrainingPlansActivity()
+                true
+            }
+
+            R.id.exercises_list -> {
+                openExercisesListActivity()
+                true
+            }
+
+            R.id.favorite_exercises_item -> {
+                openFavoriteExercisesActivity()
+                true
+            }
+
+            R.id.profile_item -> {
+                openProfileActivity()
+                true
+            }
+
+            R.id.settings_item -> {
+                openSettingsActivity()
+                true
+            }
+
+            R.id.logout_item -> {
+                viewModel.onLogoutClick()
+                true
+            }
+
+            else -> false
+        }
+    }
+
+    private fun initDaysAdapter() {
+        binding.daysList.setHasFixedSize(true)
+        binding.daysList.adapter = daysAdapter
+        layoutManager = binding.daysList.layoutManager as LinearLayoutManager
+        binding.daysList.addOnScrollListener(onRecyclerViewScrollListener)
     }
 
     private fun onInitDays(days: List<Day>, todayIndex: Int) {
@@ -121,5 +186,46 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSnackBarInfo(stringId: Int) {
         Snackbar.make(binding.root, stringId, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun openTrainingLogActivity() {
+        Timber.d("openTrainingLogActivity()")
+        startActivity(Intent(this, TrainingLogActivity::class.java))
+    }
+
+    private fun openTrainingPlansActivity() {
+        Timber.d("openTrainingPlansActivity()")
+        startActivity(Intent(this, TrainingPlansActivity::class.java))
+    }
+
+    private fun openExercisesListActivity() {
+        Timber.d("openExercisesListActivity()")
+        startActivity(Intent(this, ExercisesListActivity::class.java))
+    }
+
+    private fun openFavoriteExercisesActivity() {
+        Timber.d("openFavoriteExercisesActivity()")
+        startActivity(Intent(this, FavExercisesActivity::class.java))
+    }
+
+    private fun openProfileActivity() {
+        Timber.d("openProfileActivity()")
+        startActivity(Intent(this, ProfileActivity::class.java))
+    }
+
+    private fun openSettingsActivity() {
+        Timber.d("openSettingsActivity()")
+        startActivity(Intent(this, SettingsActivity::class.java))
+    }
+
+    private fun openLoginActivity() {
+        Timber.d("openLoginActivity()")
+        startActivity(Intent(this, LoginActivity::class.java))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.navigationView.setCheckedItem(R.id.calendar_item)
+
     }
 }
