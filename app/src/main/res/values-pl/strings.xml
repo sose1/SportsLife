@@ -20,4 +20,10 @@
     <string name="settings">Ustawienia</string>
     <string name="logout">Wyloguj się</string>
     <string name="exercise_list">Lista ćwiczeń</string>
+    <string name="gender">Płeć</string>
+    <string name="woman">Kobieta</string>
+    <string name="man">Mężczyzna</string>
+    <string name="height">Wzrost</string>
+    <string name="weight">Waga</string>
+    <string name="your_bmi">Twoje BMI</string>
 </resources>

@@ -25,4 +25,10 @@
     <string name="settings">Settings</string>
     <string name="logout">Logout</string>
     <string name="exercise_list">Exercises list</string>
+    <string name="gender">Gender</string>
+    <string name="woman">Woman</string>
+    <string name="man">Man</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="your_bmi">Your BMI</string>
 </resources>
