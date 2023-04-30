@@ -31,7 +31,6 @@ class FirestoreProfileRepository : ProfileRepository {
                 .addOnFailureListener { exception ->
                     continuation.resumeWithException(exception)
                 }
-
         }
     }
 }
