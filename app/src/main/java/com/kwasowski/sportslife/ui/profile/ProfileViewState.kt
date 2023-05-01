@@ -7,4 +7,6 @@ sealed class ProfileViewState {
     class OnBMIChanged(val BMI: Double) : ProfileViewState()
     class OnGetProfile(val gender: Gender, val height: Int, val weight: Int, val bmi: Double) :
         ProfileViewState()
+
+    object OnGetProfileError : ProfileViewState()
 }

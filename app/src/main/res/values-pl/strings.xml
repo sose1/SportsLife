@@ -26,4 +26,5 @@
     <string name="height">Wzrost</string>
     <string name="weight">Waga</string>
     <string name="your_bmi">Twoje BMI</string>
+    <string name="unable_to_download_profile">Nie można pobrać profilu.</string>
 </resources>

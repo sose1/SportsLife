@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.slider.Slider
+import com.google.android.material.snackbar.Snackbar
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.profile.Gender
 import com.kwasowski.sportslife.databinding.ActivityProfileBinding
@@ -45,7 +46,14 @@ class ProfileActivity : AppCompatActivity() {
                 when (it) {
                     ProfileViewState.Default -> Unit
                     is ProfileViewState.OnBMIChanged -> binding.bmiValue.text = it.BMI.toString()
-                    is ProfileViewState.OnGetProfile -> updateProfileUI(it.gender, it.height, it.weight, it.bmi)
+                    is ProfileViewState.OnGetProfile -> updateProfileUI(
+                        it.gender,
+                        it.height,
+                        it.weight,
+                        it.bmi
+                    )
+
+                    ProfileViewState.OnGetProfileError -> showSnackBarInfo(R.string.unable_to_download_profile)
                 }
             }
         }
@@ -108,5 +116,9 @@ class ProfileActivity : AppCompatActivity() {
         binding.bmiValue.text = bmi.toString()
         binding.progress.visibility = View.GONE
         binding.content.visibility = View.VISIBLE
+    }
+
+    private fun showSnackBarInfo(stringId: Int) {
+        Snackbar.make(binding.root, stringId, Snackbar.LENGTH_LONG).show()
     }
 }

@@ -2,6 +2,7 @@ package com.kwasowski.sportslife.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kwasowski.sportslife.data.Result
 import com.kwasowski.sportslife.data.profile.Gender
 import com.kwasowski.sportslife.domain.profile.GetProfileUseCase
 import com.kwasowski.sportslife.domain.profile.SaveProfileUseCase
@@ -43,13 +44,18 @@ class ProfileViewModel(
 
     suspend fun getProfile() {
         viewModelScope.launch {
-            getProfileUseCase.execute()?.let {
-                gender = it.gender
-                height = it.height
-                weight = it.weight
-                bmi = it.bmi
-
-                mutableState.value = ProfileViewState.OnGetProfile(gender, height, weight, bmi)
+            getProfileUseCase.execute().let {
+                when (it) {
+                    is Result.Failure -> mutableState.value = ProfileViewState.OnGetProfileError
+                    is Result.Success -> {
+                        gender = it.data.gender
+                        height = it.data.height
+                        weight = it.data.weight
+                        bmi = it.data.bmi
+                        mutableState.value =
+                            ProfileViewState.OnGetProfile(gender, height, weight, bmi)
+                    }
+                }
             }
         }
     }
