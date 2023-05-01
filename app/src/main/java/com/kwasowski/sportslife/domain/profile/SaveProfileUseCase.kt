@@ -11,10 +11,17 @@ import kotlin.math.round
 class SaveProfileUseCase(private val profileRepository: ProfileRepository) {
     suspend fun execute(gender: Gender, height: Int, weight: Int): Double {
         val bmi = calculateBMI(height, weight)
-        val uid = Firebase.auth.currentUser?.uid
-        if (uid != null)
-            profileRepository.saveProfile(uid, Profile(gender, height, weight, bmi))
-
+        Firebase.auth.currentUser?.uid?.let {
+            profileRepository.saveProfile(
+                uid = it,
+                profile = Profile(
+                    gender = gender,
+                    height = height,
+                    weight = weight,
+                    bmi = bmi
+                )
+            )
+        }
         return bmi
     }
 

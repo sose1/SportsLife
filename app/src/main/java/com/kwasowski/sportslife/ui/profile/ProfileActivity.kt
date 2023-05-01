@@ -35,9 +35,7 @@ class ProfileActivity : AppCompatActivity() {
 
         setOnGenderChangeListener()
         onViewStateChanged()
-        lifecycleScope.launch {
-            viewModel.getProfile()
-        }
+        viewModel.getProfile()
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
@@ -46,7 +44,7 @@ class ProfileActivity : AppCompatActivity() {
                 when (it) {
                     ProfileViewState.Default -> Unit
                     is ProfileViewState.OnBMIChanged -> binding.bmiValue.text = it.BMI.toString()
-                    is ProfileViewState.OnGetProfile -> updateProfileUI(
+                    is ProfileViewState.OnSuccessGetProfile -> updateProfileUI(
                         it.gender,
                         it.height,
                         it.weight,
@@ -60,16 +58,15 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setOnGenderChangeListener() {
-        binding.genderGroup.setOnCheckedChangeListener { group, checkedId ->
-            lifecycleScope.launch {
-                when (checkedId) {
-                    R.id.woman -> {
-                        viewModel.onGenderChanged(Gender.WOMAN)
-                    }
+        binding.genderGroup.setOnCheckedChangeListener { _, checkedId ->
 
-                    R.id.man -> {
-                        viewModel.onGenderChanged(Gender.MAN)
-                    }
+            when (checkedId) {
+                R.id.woman -> {
+                    viewModel.onGenderChanged(Gender.WOMAN)
+                }
+
+                R.id.man -> {
+                    viewModel.onGenderChanged(Gender.MAN)
                 }
             }
         }
@@ -82,9 +79,9 @@ class ProfileActivity : AppCompatActivity() {
         override fun onStopTrackingTouch(slider: Slider) {
             Timber.d("onStopTrackingTouch: ${slider.value}")
             binding.heightValue.text = slider.value.roundToInt().toString()
-            lifecycleScope.launch {
-                viewModel.updateProfile(newHeight = slider.value.roundToInt())
-            }
+
+            viewModel.updateProfile(newHeight = slider.value.roundToInt())
+
         }
     }
 
@@ -95,9 +92,9 @@ class ProfileActivity : AppCompatActivity() {
         override fun onStopTrackingTouch(slider: Slider) {
             Timber.d("onStopTrackingTouch: ${slider.value}")
             binding.weightValue.text = slider.value.roundToInt().toString()
-            lifecycleScope.launch {
-                viewModel.updateProfile(newWeight = slider.value.roundToInt())
-            }
+
+            viewModel.updateProfile(newWeight = slider.value.roundToInt())
+
         }
     }
 

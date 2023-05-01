@@ -24,7 +24,7 @@ class ProfileViewModel(
     private var bmi: Double = 0.0
     private var gender: Gender = Gender.WOMAN
 
-    suspend fun onGenderChanged(newGender: Gender) {
+    fun onGenderChanged(newGender: Gender) {
         Timber.d("$newGender")
         gender = newGender
         viewModelScope.launch {
@@ -32,7 +32,7 @@ class ProfileViewModel(
         }
     }
 
-    suspend fun updateProfile(newHeight: Int = height, newWeight: Int = weight) {
+    fun updateProfile(newHeight: Int = height, newWeight: Int = weight) {
         height = newHeight
         weight = newWeight
 
@@ -42,7 +42,7 @@ class ProfileViewModel(
         }
     }
 
-    suspend fun getProfile() {
+    fun getProfile() {
         viewModelScope.launch {
             getProfileUseCase.execute().let {
                 when (it) {
@@ -53,7 +53,7 @@ class ProfileViewModel(
                         weight = it.data.weight
                         bmi = it.data.bmi
                         mutableState.value =
-                            ProfileViewState.OnGetProfile(gender, height, weight, bmi)
+                            ProfileViewState.OnSuccessGetProfile(gender, height, weight, bmi)
                     }
                 }
             }

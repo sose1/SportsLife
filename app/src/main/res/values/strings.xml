@@ -32,4 +32,15 @@
     <string name="weight">Weight</string>
     <string name="your_bmi">Your BMI</string>
     <string name="unable_to_download_profile">Unable to download profile.</string>
+    <string name="units">Units</string>
+    <string name="kg_m" translatable="false">kg, m</string>
+    <string name="lbs_mi" translatable="false">lbs, mi</string>
+    <string name="language">Language</string>
+    <string name="notifications">Notifications</string>
+    <string name="notifications_about_today_s_trainings">Notifications about today\'s trainings</string>
+    <string name="notifications_of_the_day_s_summary">Notifications of the day\'s summary</string>
+    <string name="polish" translatable="false">Polski</string>
+    <string name="english" translatable="false">English</string>
+    <string name="unable_to_download_settings">Unable to download settings.</string>
+    <string name="select_language_icon" translatable="false">select_language_icon</string>
 </resources>
