@@ -27,15 +27,14 @@ class ProfileActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        onViewStateChanged()
+        viewModel.getProfile()
+
         binding.content.visibility = View.GONE
         binding.topAppBar.setNavigationOnClickListener { finish() }
 
         binding.heightSlider.addOnSliderTouchListener(onHeightSliderTouchListener)
         binding.weightSlider.addOnSliderTouchListener(onWeightSliderTouchListener)
-
-        setOnGenderChangeListener()
-        onViewStateChanged()
-        viewModel.getProfile()
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
@@ -113,6 +112,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.bmiValue.text = bmi.toString()
         binding.progress.visibility = View.GONE
         binding.content.visibility = View.VISIBLE
+        setOnGenderChangeListener()
     }
 
     private fun showSnackBarInfo(stringId: Int) {
