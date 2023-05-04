@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kwasowski.sportslife.data.Result
 import com.kwasowski.sportslife.data.settings.Settings
+import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.settings.Units
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
 import com.kwasowski.sportslife.domain.settings.SaveSettingsUseCase
@@ -15,7 +16,8 @@ import timber.log.Timber
 
 class SettingsViewModel(
     private val saveSettingsUseCase: SaveSettingsUseCase,
-    private val getSettingsUseCase: GetSettingsUseCase
+    private val getSettingsUseCase: GetSettingsUseCase,
+    private val settingsManager: SettingsManager
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<SettingsViewState>(SettingsViewState.Default)
@@ -31,6 +33,7 @@ class SettingsViewModel(
                     is Result.Failure -> mutableState.value = SettingsViewState.OnGetSettingsError
                     is Result.Success -> {
                         currentSettings = it.data
+                        settingsManager.saveSettings(currentSettings)
                         mutableState.value = SettingsViewState.OnGetSettings(currentSettings)
                     }
                 }

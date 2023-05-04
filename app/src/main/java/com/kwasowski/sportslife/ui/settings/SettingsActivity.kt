@@ -37,10 +37,6 @@ class SettingsActivity : AppCompatActivity() {
         binding.topAppBar.setNavigationOnClickListener { finish() }
         binding.selectLanguage.setOnClickListener { openLanguageMenu() }
         setOnUnitChangeListener()
-
-        val x = AppCompatDelegate.getApplicationLocales()
-        x.toLanguageTags()
-        Timber.d("DUPA: ${x.toLanguageTags()}")
     }
 
     override fun onRestart() {

@@ -3,29 +3,60 @@ package com.kwasowski.sportslife.ui.main
 import android.text.format.DateFormat
 import android.text.format.DateUtils
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.kwasowski.sportslife.data.Result
 import com.kwasowski.sportslife.data.extension.addDays
 import com.kwasowski.sportslife.data.extension.getNarrowName
 import com.kwasowski.sportslife.data.model.Day
 import com.kwasowski.sportslife.data.model.DayType
 import com.kwasowski.sportslife.data.model.findByCalendarDate
+import com.kwasowski.sportslife.data.settings.Settings
+import com.kwasowski.sportslife.data.settings.SettingsManager
+import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.Calendar
 import java.util.Date
 
-class MainViewModel : ViewModel() {
+class MainViewModel(
+    private val getSettingsUseCase: GetSettingsUseCase,
+    private val settingsManager: SettingsManager
+) : ViewModel() {
+    private val auth = Firebase.auth
     private val mutableState = MutableStateFlow<MainViewState>(MainViewState.Default)
-    val uiState: StateFlow<MainViewState> = mutableState.asStateFlow()
 
-    val auth = Firebase.auth
+    val uiState: StateFlow<MainViewState> = mutableState.asStateFlow()
 
     private val daysList = mutableListOf<Day>()
     private val numberOfDays = 3652
+
+    private var currentSettings = Settings()
+
+    init {
+        viewModelScope.launch {
+            getSettingsUseCase.execute().let {
+                when (it) {
+                    is Result.Failure -> Unit
+                    is Result.Success -> {
+                        currentSettings = it.data
+                        onGetSettings(currentSettings)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onGetSettings(settings: Settings) {
+        settingsManager.saveSettings(settings)
+        mutableState.value = MainViewState.OnGetSettings(settings.language)
+    }
+
     fun initializeDays() {
         val currentDate = Date()
         val calendar = Calendar.getInstance()

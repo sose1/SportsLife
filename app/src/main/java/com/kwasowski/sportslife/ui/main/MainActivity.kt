@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -62,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         viewModel.initializeDays()
+
         window.statusBarColor = Color.TRANSPARENT
 
         binding.navigationView.setCheckedItem(R.id.calendar_item)
@@ -76,6 +79,12 @@ class MainActivity : AppCompatActivity() {
         initDaysAdapter()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.navigationView.setCheckedItem(R.id.calendar_item)
+
+    }
+
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.uiState.collect {
@@ -88,6 +97,7 @@ class MainActivity : AppCompatActivity() {
                     is MainViewState.OnIndexOutOfBoundsException -> showSnackBarInfo(R.string.you_cannot_select_this_date_please_try_another_one)
                     is MainViewState.OnTitleChange -> onTitleChange(it.month, it.year)
                     MainViewState.OnLogout -> openLoginActivity()
+                    is MainViewState.OnGetSettings -> onGetSettings(it.language)
                 }
             }
         }
@@ -223,9 +233,25 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.navigationView.setCheckedItem(R.id.calendar_item)
+    private fun onGetSettings(language: String) {
+        when (language) {
+            "en" -> onLanguageChanged("en")
+            "pl" -> onLanguageChanged("pl")
+            else -> {
+                val locales = AppCompatDelegate.getApplicationLocales()
+                when (val tag = locales.toLanguageTags()) {
+                    "en" -> onLanguageChanged(tag)
+                    "pl" -> onLanguageChanged(tag)
+                    else -> onLanguageChanged("en")
+                }
+            }
+        }
+    }
 
+    private fun onLanguageChanged(
+        language: String,
+    ) {
+        val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(language)
+        AppCompatDelegate.setApplicationLocales(appLocale)
     }
 }
