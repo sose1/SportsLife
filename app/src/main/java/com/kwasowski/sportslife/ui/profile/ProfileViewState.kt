@@ -5,7 +5,7 @@ import com.kwasowski.sportslife.data.profile.Gender
 sealed class ProfileViewState {
     object Default : ProfileViewState()
     class OnBMIChanged(val BMI: Double) : ProfileViewState()
-    class OnGetProfile(val gender: Gender, val height: Int, val weight: Int, val bmi: Double) :
+    class OnSuccessGetProfile(val gender: Gender, val height: Int, val weight: Int, val bmi: Double) :
         ProfileViewState()
 
     object OnGetProfileError : ProfileViewState()
