@@ -12,10 +12,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.settings.Settings
 import com.kwasowski.sportslife.data.settings.Units
 import com.kwasowski.sportslife.databinding.ActivitySettingsBinding
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class SettingsActivity : AppCompatActivity() {
     private val viewModel: SettingsViewModel by viewModel()
@@ -24,16 +26,33 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.d("SettingsActivity | onCreate")
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        onViewStateChanged()
 
         binding.content.visibility = View.GONE
         binding.topAppBar.setNavigationOnClickListener { finish() }
-
-        onViewStateChanged()
-        setOnUnitChangeListener()
         binding.selectLanguage.setOnClickListener { openLanguageMenu() }
+        setOnUnitChangeListener()
+
+        val x = AppCompatDelegate.getApplicationLocales()
+        x.toLanguageTags()
+        Timber.d("DUPA: ${x.toLanguageTags()}")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Timber.d("SettingsActivity | onRestart")
+        viewModel.isAfterInitSettings = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Timber.d("SettingsActivity | onDestory")
+        viewModel.isAfterInitSettings = false
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
@@ -43,11 +62,39 @@ class SettingsActivity : AppCompatActivity() {
                     SettingsViewState.Default -> Unit
                     SettingsViewState.OnSelectLanguageClick -> openLanguageMenu()
                     SettingsViewState.OnGetSettingsError -> showSnackBarInfo(R.string.unable_to_download_settings)
+                    is SettingsViewState.OnGetSettings -> onSettingsInit(it.settings)
                 }
             }
         }
     }
 
+    private fun onSettingsInit(settings: Settings) {
+        when (settings.units) {
+            Units.KG_M -> binding.unitsGroup.check(R.id.kg_m)
+            Units.LBS_MI -> binding.unitsGroup.check(R.id.lbs_mi)
+        }
+
+        binding.notificationsTodayTrainings.isChecked = settings.notifyTodayTraining
+        binding.notificationsTodaySummary.isChecked = settings.notifyDaySummary
+
+        when (settings.language) {
+            "en" -> onLanguageChanged("en", R.string.english)
+            "pl" -> onLanguageChanged("pl", R.string.polish)
+            else -> {
+                val locales = AppCompatDelegate.getApplicationLocales()
+                when (val tag = locales.toLanguageTags()) {
+                    "en" -> onLanguageChanged(tag, R.string.english)
+                    "pl" -> onLanguageChanged(tag, R.string.polish)
+                    else -> onLanguageChanged("en", R.string.english)
+                }
+            }
+        }
+        viewModel.isAfterInitSettings = true
+
+        binding.progress.visibility = View.GONE
+        binding.content.visibility = View.VISIBLE
+
+    }
 
     private fun setOnUnitChangeListener() {
         binding.unitsGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -88,7 +135,8 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun onLanguageChanged(
         language: String,
-        languageText: Int) {
+        languageText: Int
+    ) {
         binding.languageValue.text = getText(languageText)
         viewModel.onLanguageChanged(language)
         val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(language)

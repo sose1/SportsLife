@@ -33,4 +33,5 @@
     <string name="notifications_about_today_s_trainings">Powiadomienia o dzisiejszych treningach</string>
     <string name="notifications_of_the_day_s_summary">Powiadomienia o podsumowaniu dnia</string>
     <string name="unable_to_download_settings">Nie można pobrać ustawień</string>
+    <string name="unknown">Nieznany</string>
 </resources>

@@ -14,13 +14,14 @@ class FirestoreSettingsRepository : SettingsRepository {
     private val collection = Firebase.firestore.collection(path)
 
     override suspend fun saveSettings(uid: String, settings: Settings) {
+        Timber.d("FirestoreSettingsRepository | saveSettings: $settings")
         collection
             .document(uid)
             .set(settings, SetOptions.merge())
             .addOnSuccessListener {
-                Timber.d("SUCCESS: ")
+                Timber.d("saveSettings | SUCCESS")
             }
-            .addOnFailureListener { Timber.d("FAILURE") }
+            .addOnFailureListener { Timber.d("saveSettings | FAILURE") }
     }
 
     override suspend fun getSettings(uid: String): Result<Settings> {

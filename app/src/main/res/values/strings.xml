@@ -43,4 +43,5 @@
     <string name="english" translatable="false">English</string>
     <string name="unable_to_download_settings">Unable to download settings.</string>
     <string name="select_language_icon" translatable="false">select_language_icon</string>
+    <string name="unknown">Unknown</string>
 </resources>
