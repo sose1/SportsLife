@@ -9,7 +9,7 @@
         <item name="colorOnSecondary">@color/light_onSecondary</item>
         <item name="colorSecondaryContainer">@color/light_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/light_onSecondaryContainer</item>
-        <item name="colorTertiary">@color/light_tertiary</item>
+        <item name="colorTertiary">@color/dark_tertiary</item>
         <item name="colorOnTertiary">@color/light_onTertiary</item>
         <item name="colorTertiaryContainer">@color/light_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/light_onTertiaryContainer</item>

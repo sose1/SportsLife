@@ -10,12 +10,12 @@ import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.data.Result
 import com.kwasowski.sportslife.data.extension.addDays
 import com.kwasowski.sportslife.data.extension.getNarrowName
-import com.kwasowski.sportslife.data.model.Day
-import com.kwasowski.sportslife.data.model.DayType
-import com.kwasowski.sportslife.data.model.findByCalendarDate
 import com.kwasowski.sportslife.data.settings.Settings
 import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
+import com.kwasowski.sportslife.ui.main.appBarDays.Day
+import com.kwasowski.sportslife.ui.main.appBarDays.DayType
+import com.kwasowski.sportslife.ui.main.appBarDays.findByCalendarDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

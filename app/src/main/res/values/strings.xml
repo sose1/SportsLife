@@ -44,4 +44,8 @@
     <string name="unable_to_download_settings">Unable to download settings.</string>
     <string name="select_language_icon" translatable="false">select_language_icon</string>
     <string name="unknown">Unknown</string>
+    <string name="list_of_exercises">List of exercises</string>
+    <string name="own">Own</string>
+    <string name="communities">Communities</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

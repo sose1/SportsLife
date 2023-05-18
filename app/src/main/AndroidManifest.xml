@@ -33,10 +33,10 @@
             android:name=".ui.trainingLog.TrainingLogActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.favExercises.FavExercisesActivity"
+            android:name="com.kwasowski.sportslife.ui.exercise.favorite.FavExercisesActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.exercisesList.ExercisesListActivity"
+            android:name="com.kwasowski.sportslife.ui.exercise.exercisesList.activity.ExercisesListActivity"
             android:exported="false" />
         <activity
             android:name=".ui.settings.SettingsActivity"

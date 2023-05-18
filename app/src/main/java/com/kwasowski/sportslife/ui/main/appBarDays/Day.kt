@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.data.model
+package com.kwasowski.sportslife.ui.main.appBarDays
 
 import java.util.Date
 

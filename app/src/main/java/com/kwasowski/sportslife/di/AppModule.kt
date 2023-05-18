@@ -9,6 +9,8 @@ import com.kwasowski.sportslife.domain.profile.GetProfileUseCase
 import com.kwasowski.sportslife.domain.profile.SaveProfileUseCase
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
 import com.kwasowski.sportslife.domain.settings.SaveSettingsUseCase
+import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.CommunitiesExercisesListViewModel
+import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.OwnExerciseListViewModel
 import com.kwasowski.sportslife.ui.login.LoginViewModel
 import com.kwasowski.sportslife.ui.main.MainViewModel
 import com.kwasowski.sportslife.ui.profile.ProfileViewModel
@@ -23,6 +25,8 @@ val appModule = module {
     viewModelOf(::MainViewModel)
     viewModelOf(::ProfileViewModel)
     viewModelOf(::SettingsViewModel)
+    viewModelOf(::OwnExerciseListViewModel)
+    viewModelOf(::CommunitiesExercisesListViewModel)
 
     single<ProfileRepository> { FirestoreProfileRepository() }
     single<SettingsRepository> { FirestoreSettingsRepository() }

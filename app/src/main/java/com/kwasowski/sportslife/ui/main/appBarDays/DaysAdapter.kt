@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.kwasowski.sportslife.data.model.Day
-import com.kwasowski.sportslife.data.model.DayType
 import com.kwasowski.sportslife.databinding.ItemDayActiveBinding
 import com.kwasowski.sportslife.databinding.ItemDayCurrentBinding
 import com.kwasowski.sportslife.databinding.ItemDayDefaultBinding

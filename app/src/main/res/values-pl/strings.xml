@@ -34,4 +34,7 @@
     <string name="notifications_of_the_day_s_summary">Powiadomienia o podsumowaniu dnia</string>
     <string name="unable_to_download_settings">Nie można pobrać ustawień</string>
     <string name="unknown">Nieznany</string>
+    <string name="list_of_exercises">Lista ćwiczeń</string>
+    <string name="own">Własne</string>
+    <string name="communities">Społeczności</string>
 </resources>

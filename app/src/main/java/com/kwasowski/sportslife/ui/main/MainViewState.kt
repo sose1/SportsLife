@@ -1,7 +1,7 @@
 package com.kwasowski.sportslife.ui.main
 
 import com.google.android.material.datepicker.CalendarConstraints
-import com.kwasowski.sportslife.data.model.Day
+import com.kwasowski.sportslife.ui.main.appBarDays.Day
 
 sealed class MainViewState {
     object Default : MainViewState()
