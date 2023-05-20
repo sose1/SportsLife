@@ -7,7 +7,6 @@ import com.kwasowski.sportslife.data.Result
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class FirestoreExerciseRepository : ExerciseRepository {
     private val path = "exercises"
@@ -24,11 +23,9 @@ class FirestoreExerciseRepository : ExerciseRepository {
 
         documentReference.set(exercise, SetOptions.merge())
             .addOnSuccessListener {
-                Timber.d("SUCCESS")
                 deferred.complete(Result.Success(Unit))
             }
             .addOnFailureListener { exception ->
-                Timber.d("FAILURE")
                 deferred.complete(Result.Failure(exception))
             }
 

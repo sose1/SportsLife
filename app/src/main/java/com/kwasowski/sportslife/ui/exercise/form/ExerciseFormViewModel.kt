@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class ExerciseFormViewModel(private val saveExerciseUseCase: SaveExerciseUseCase) : ViewModel() {
     private val mutableState = MutableStateFlow<ExerciseFormState>(ExerciseFormState.Default)
@@ -32,12 +31,6 @@ class ExerciseFormViewModel(private val saveExerciseUseCase: SaveExerciseUseCase
 
     fun saveExercise() {
         if (validateInputData()) {
-            Timber.d(
-                "saveExercise() | name: ${name.value} |" +
-                        " description: ${description.value} |" +
-                        " category: ${category.value} |" +
-                        " videoLink: ${videoLink.value}"
-            )
             viewModelScope.launch {
                val result= saveExerciseUseCase.execute(
                     id = null,
