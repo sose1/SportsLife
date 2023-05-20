@@ -8,11 +8,11 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.data.Result
-import com.kwasowski.sportslife.data.extension.addDays
-import com.kwasowski.sportslife.data.extension.getNarrowName
 import com.kwasowski.sportslife.data.settings.Settings
 import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
+import com.kwasowski.sportslife.extensions.addDays
+import com.kwasowski.sportslife.extensions.getNarrowName
 import com.kwasowski.sportslife.ui.main.appBarDays.Day
 import com.kwasowski.sportslife.ui.main.appBarDays.DayType
 import com.kwasowski.sportslife.ui.main.appBarDays.findByCalendarDate

@@ -4,5 +4,7 @@ data class Exercise(
     val name: String,
     val description: String,
     val category: String,
-    val videoLink: String
+    val videoLink: String?,
+    var isShared: Boolean = false,
+    var ownerId: String
 )

@@ -1,10 +1,13 @@
 package com.kwasowski.sportslife.di
 
+import com.kwasowski.sportslife.data.exercise.ExerciseRepository
+import com.kwasowski.sportslife.data.exercise.FirestoreExerciseRepository
 import com.kwasowski.sportslife.data.profile.FirestoreProfileRepository
 import com.kwasowski.sportslife.data.profile.ProfileRepository
 import com.kwasowski.sportslife.data.settings.FirestoreSettingsRepository
 import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.settings.SettingsRepository
+import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
 import com.kwasowski.sportslife.domain.profile.GetProfileUseCase
 import com.kwasowski.sportslife.domain.profile.SaveProfileUseCase
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
@@ -32,10 +35,12 @@ val appModule = module {
 
     single<ProfileRepository> { FirestoreProfileRepository() }
     single<SettingsRepository> { FirestoreSettingsRepository() }
+    single<ExerciseRepository> { FirestoreExerciseRepository() }
     singleOf(::SettingsManager)
 
     factoryOf(::SaveProfileUseCase)
     factoryOf(::GetProfileUseCase)
     factoryOf(::SaveSettingsUseCase)
     factoryOf(::GetSettingsUseCase)
+    factoryOf(::SaveExerciseUseCase)
 }

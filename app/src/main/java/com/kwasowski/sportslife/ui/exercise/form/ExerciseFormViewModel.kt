@@ -3,12 +3,16 @@ package com.kwasowski.sportslife.ui.exercise.form
 import android.webkit.URLUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.kwasowski.sportslife.data.Result
+import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class ExerciseFormViewModel : ViewModel() {
+class ExerciseFormViewModel(private val saveExerciseUseCase: SaveExerciseUseCase) : ViewModel() {
     private val mutableState = MutableStateFlow<ExerciseFormState>(ExerciseFormState.Default)
     val uiState: StateFlow<ExerciseFormState> = mutableState.asStateFlow()
 
@@ -34,6 +38,19 @@ class ExerciseFormViewModel : ViewModel() {
                         " category: ${category.value} |" +
                         " videoLink: ${videoLink.value}"
             )
+            viewModelScope.launch {
+               val result= saveExerciseUseCase.execute(
+                    id = null,
+                    name = name.value,
+                    description = description.value,
+                    category = category.value,
+                    videoLink = videoLink.value
+                )
+                when (result) {
+                    is Result.Failure -> mutableState.value = ExerciseFormState.OnError
+                    is Result.Success -> mutableState.value = ExerciseFormState.OnSuccessSave
+                }
+            }
         }
     }
 

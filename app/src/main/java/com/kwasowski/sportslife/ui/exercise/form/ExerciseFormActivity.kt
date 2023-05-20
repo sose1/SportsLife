@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityExerciseFormBinding
@@ -136,6 +138,12 @@ class ExerciseFormActivity : AppCompatActivity() {
                         binding.exerciseDescriptionInputLayout,
                         R.string.description_length_error_message
                     )
+
+                    ExerciseFormState.OnError -> showSnackBarInfo(R.string.network_connection_error_please_try_again_later)
+                    ExerciseFormState.OnSuccessSave -> {
+                        showToast(R.string.success_save_exercise)
+                        finish()
+                    }
                 }
             }
         }
@@ -178,4 +186,11 @@ class ExerciseFormActivity : AppCompatActivity() {
         inputLayout.error = getString(stringId)
     }
 
+    private fun showSnackBarInfo(stringId: Int) {
+        Snackbar.make(binding.root, stringId, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showToast(stringId: Int) {
+        Toast.makeText(this, stringId, Toast.LENGTH_LONG).show()
+    }
 }

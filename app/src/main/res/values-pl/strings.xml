@@ -75,4 +75,5 @@
         <item>Tennis</item>
         <item>Trening siłowy</item>
     </string-array>
+    <string name="success_save_exercise">Pomyślnie zapisano ćwiczenie</string>
 </resources>

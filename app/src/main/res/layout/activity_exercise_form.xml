@@ -79,12 +79,12 @@
                             android:layout_height="34dp"
                             android:background="@drawable/form_input"
                             android:gravity="start|center"
+                            android:hint="@string/enter_the_name_of_the_exercise"
                             android:paddingStart="10dp"
                             android:paddingTop="5dp"
                             android:paddingEnd="10dp"
                             android:paddingBottom="5dp"
                             android:saveEnabled="true"
-                            android:hint="@string/enter_the_name_of_the_exercise"
                             android:text="@={viewModel.name}"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -114,11 +114,11 @@
                             android:layout_height="84dp"
                             android:background="@drawable/form_input"
                             android:gravity="start|top"
+                            android:hint="@string/describe_your_exercise"
                             android:paddingStart="10dp"
                             android:paddingTop="5dp"
                             android:paddingEnd="10dp"
                             android:paddingBottom="5dp"
-                            android:hint="@string/describe_your_exercise"
                             android:saveEnabled="true"
                             android:text="@={viewModel.description}"
                             android:textSize="16sp" />
@@ -136,8 +136,8 @@
                         android:textSize="16sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:id="@+id/exercise_category_input_layout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:errorEnabled="true"
@@ -148,16 +148,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="34dp"
                             android:background="@drawable/form_input"
+                            android:dropDownHeight="@dimen/auto_complete_dropdown_max_height"
                             android:gravity="start|center"
+                            android:hint="@string/select_a_category"
+                            android:inputType="none"
                             android:paddingStart="10dp"
                             android:paddingTop="5dp"
                             android:paddingEnd="10dp"
-                            android:inputType="none"
-                            android:hint="@string/select_a_category"
                             android:paddingBottom="5dp"
                             android:saveEnabled="true"
                             android:text="@={viewModel.category}"
-                            android:dropDownHeight="@dimen/auto_complete_dropdown_max_height"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -185,26 +185,27 @@
                             android:layout_height="34dp"
                             android:background="@drawable/form_input"
                             android:gravity="start|center"
+                            android:hint="@string/provide_a_website_link_to_the_exercise_video"
+                            android:inputType="textUri"
                             android:paddingStart="10dp"
                             android:paddingTop="5dp"
                             android:paddingEnd="10dp"
                             android:paddingBottom="5dp"
                             android:saveEnabled="true"
-                            android:inputType="textUri"
-                            android:hint="@string/provide_a_website_link_to_the_exercise_video"
                             android:text="@={viewModel.videoLink}"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
             </ScrollView>
+
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="0dp"
-                android:paddingTop="0dp"/>
+                android:layout_marginBottom="20dp"
+                android:paddingTop="0dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/buttons_section"

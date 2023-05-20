@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.data.extension
+package com.kwasowski.sportslife.extensions
 
 import java.util.Calendar
 import java.util.Date

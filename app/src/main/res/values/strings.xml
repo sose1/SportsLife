@@ -65,6 +65,7 @@
     <string name="select_a_category">Select a category</string>
     <string name="describe_your_exercise">Describe your exercise…</string>
     <string name="enter_the_name_of_the_exercise">Enter the name of the exercise…</string>
+    <string name="success_save_exercise">Successfully saving the exercise</string>
     <string-array name="exercise_category">
         <item>Aerobics</item>
         <item>American soccer</item>

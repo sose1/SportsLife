@@ -8,4 +8,6 @@ sealed class ExerciseFormState {
     object OnVideoLinkInvalidUrlError: ExerciseFormState()
     object OnNameLengthLimitError: ExerciseFormState()
     object OnDescriptionLengthLimitError: ExerciseFormState()
+    object OnError : ExerciseFormState()
+    object OnSuccessSave : ExerciseFormState()
 }
