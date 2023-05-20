@@ -59,14 +59,11 @@ class ExerciseFormViewModel : ViewModel() {
             isValid = false
             mutableState.value = ExerciseFormState.OnCategoryEmptyError
         }
-        if (!URLUtil.isValidUrl(videoLink.value)) {
+
+        if (!URLUtil.isValidUrl(videoLink.value) && !videoLink.value.isNullOrBlank()) {
             isValid = false
             mutableState.value = ExerciseFormState.OnVideoLinkInvalidUrlError
         }
-
-
-
-
 
         return isValid
     }

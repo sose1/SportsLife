@@ -3,6 +3,7 @@ package com.kwasowski.sportslife.ui.exercise.form
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -97,6 +98,8 @@ class ExerciseFormActivity : AppCompatActivity() {
         binding.exerciseDescription.addTextChangedListener(descriptionEditTextWatcher)
         binding.exerciseCategory.addTextChangedListener(categoryEditTextWatcher)
         binding.exerciseVideoLink.addTextChangedListener(videoLinkEditTextWatcher)
+
+        initCategoryDropdownMenu()
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
@@ -138,10 +141,6 @@ class ExerciseFormActivity : AppCompatActivity() {
         }
     }
 
-    private fun showInputError(inputLayout: TextInputLayout, stringId: Int) {
-        inputLayout.error = getString(stringId)
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(
@@ -165,5 +164,18 @@ class ExerciseFormActivity : AppCompatActivity() {
         binding.exerciseDescription.setText(savedInstanceState.getString(BundleFormKey.DESCRIPTION.toString()))
         binding.exerciseCategory.setText(savedInstanceState.getString(BundleFormKey.CATEGORY.toString()))
         binding.exerciseVideoLink.setText(savedInstanceState.getString(BundleFormKey.VIDEO_LINK.toString()))
+        initCategoryDropdownMenu()
     }
+
+    private fun initCategoryDropdownMenu() {
+        val categories = resources.getStringArray(R.array.exercise_category)
+        binding.exerciseCategory.setAdapter(
+            ArrayAdapter(this, R.layout.dropdown_item, categories.toList())
+        )
+    }
+
+    private fun showInputError(inputLayout: TextInputLayout, stringId: Int) {
+        inputLayout.error = getString(stringId)
+    }
+
 }

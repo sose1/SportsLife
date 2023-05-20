@@ -65,4 +65,25 @@
     <string name="select_a_category">Select a category</string>
     <string name="describe_your_exercise">Describe your exercise…</string>
     <string name="enter_the_name_of_the_exercise">Enter the name of the exercise…</string>
+    <string-array name="exercise_category">
+        <item>Aerobics</item>
+        <item>American soccer</item>
+        <item>Basketball</item>
+        <item>Boxing</item>
+        <item>Calisthenics</item>
+        <item>Cycling</item>
+        <item>Football</item>
+        <item>Gymnastics</item>
+        <item>Handball</item>
+        <item>Ice hokey</item>
+        <item>MMA</item>
+        <item>Running</item>
+        <item>Rugby</item>
+        <item>Squash</item>
+        <item>Table tennis</item>
+        <item>Tennis</item>
+        <item>Volleyball</item>
+        <item>Weight training</item>
+        <item>Yoga</item>
+    </string-array>
 </resources>

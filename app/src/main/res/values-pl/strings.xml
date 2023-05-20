@@ -54,4 +54,25 @@
     <string name="select_a_category">Wybierz kategorię</string>
     <string name="describe_your_exercise">Opisz swoje ćwiczenię…</string>
     <string name="enter_the_name_of_the_exercise">Podaj nazwę ćwiczenia…</string>
+    <string-array name="exercise_category">
+        <item>Aerobik</item>
+        <item>Bieganie</item>
+        <item>Boks</item>
+        <item>Futbol amerykański</item>
+        <item>Gimnastyka</item>
+        <item>Hokej na lodzie</item>
+        <item>Jazda na rowerze</item>
+        <item>Joga</item>
+        <item>Kalistenika</item>
+        <item>Koszykówka</item>
+        <item>MMA</item>
+        <item>Piłka nożna</item>
+        <item>Piłka ręczna</item>
+        <item>Rugby</item>
+        <item>Siatkówka</item>
+        <item>Squash</item>
+        <item>Tenis stołowy</item>
+        <item>Tennis</item>
+        <item>Trening siłowy</item>
+    </string-array>
 </resources>
