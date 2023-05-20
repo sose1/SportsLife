@@ -28,4 +28,13 @@ class CommunitiesExercisesListFragment : Fragment() {
         binding.viewModel = viewModel
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val searchInput = binding.searchInput
+        searchInput.setOnClickListener {
+            searchInput.isIconified = !searchInput.isIconified
+        }
+    }
 }

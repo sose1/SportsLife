@@ -47,5 +47,22 @@
     <string name="list_of_exercises">List of exercises</string>
     <string name="own">Own</string>
     <string name="communities">Communities</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="add_exercise_fab" translatable="false">add_exercise_fab</string>
+    <string name="add_a_new_exercise">Add a new exercise</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="video_link">Video link</string>
+    <string name="empty_name_error_message">The name of the exercise must be completed!</string>
+    <string name="empty_description_error_message">The description of the exercise must be completed!</string>
+    <string name="empty_category_error_message">The category of the exercise must be selected!</string>
+    <string name="invalid_video_link_error_message">The address of the video is wrong! The correct form is https://example.com.</string>
+    <string name="name_length_error_message">The name of the exercise is too long!</string>
+    <string name="description_length_error_message">The description of the exercise is too long!</string>
+    <string name="provide_a_website_link_to_the_exercise_video">Provide a website link to the exercise video</string>
+    <string name="select_a_category">Select a category</string>
+    <string name="describe_your_exercise">Describe your exercise…</string>
+    <string name="enter_the_name_of_the_exercise">Enter the name of the exercise…</string>
 </resources>

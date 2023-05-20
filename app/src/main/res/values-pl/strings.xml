@@ -37,4 +37,21 @@
     <string name="list_of_exercises">Lista ćwiczeń</string>
     <string name="own">Własne</string>
     <string name="communities">Społeczności</string>
+    <string name="add_a_new_exercise">Dodaj nowe ćwiczenie</string>
+    <string name="save">Zapisz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="name">Nazwa</string>
+    <string name="description">Opis</string>
+    <string name="category">Kategoria</string>
+    <string name="video_link">Adres filmu</string>
+    <string name="empty_name_error_message">Nazwa ćwiczenia musi być uzupełniona!</string>
+    <string name="empty_description_error_message">Opis ćwiczenia musi być uzupełniony!</string>
+    <string name="empty_category_error_message">Kategoria ćwiczenia musi być wybrana!</string>
+    <string name="invalid_video_link_error_message">Adres filmu jest błędny! Poprawna forma to https://example.com.</string>
+    <string name="name_length_error_message">Nazwa ćwiczenia jest za długa!</string>
+    <string name="description_length_error_message">Opis ćwiczenia jest za długa!</string>
+    <string name="provide_a_website_link_to_the_exercise_video">Podaj link strony do filmu ćwiczenia</string>
+    <string name="select_a_category">Wybierz kategorię</string>
+    <string name="describe_your_exercise">Opisz swoje ćwiczenię…</string>
+    <string name="enter_the_name_of_the_exercise">Podaj nazwę ćwiczenia…</string>
 </resources>

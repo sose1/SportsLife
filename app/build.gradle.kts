@@ -45,6 +45,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -75,6 +76,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
 
     implementation("com.google.android.gms:play-services-auth:20.5.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 
     //tests
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")

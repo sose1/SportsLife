@@ -3,7 +3,8 @@
     <style name="Theme.SportsLife" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/light_primary</item>
         <item name="colorOnPrimary">@color/light_onPrimary</item>
-        <item name="colorPrimaryContainer">@color/light_primaryContainer</item>
+        <item name="colorPrimaryContainer">@color/dark_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/dark_onPrimaryContainer</item>
         <item name="colorSecondary">@color/dark_secondary</item>
         <item name="colorOnSecondary">@color/dark_onSecondary</item>
         <item name="colorSecondaryContainer">@color/dark_secondaryContainer</item>
@@ -29,5 +30,10 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:statusBarColor">@color/light_primary</item>
         <item name="actionBarStyle">@style/ActionBar</item>
+    </style>
+  <!-- Base application theme. -->
+    <style name="Base.Theme.SportsLife" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
 </resources>

@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.exercise.exercisesList.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -13,6 +14,7 @@ import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityExercisesListBinding
 import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.CommunitiesExercisesListFragment
 import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.OwnExerciseListFragment
+import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 
 class ExercisesListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityExercisesListBinding
@@ -23,6 +25,12 @@ class ExercisesListActivity : AppCompatActivity() {
         { CommunitiesExercisesListFragment() } to R.string.communities,
     )
 
+    private inner class FragmentPagerAdapter(fm: FragmentManager, lifecycle: Lifecycle) :
+        FragmentStateAdapter(fm, lifecycle) {
+        override fun getItemCount(): Int = fragments.size
+
+        override fun createFragment(position: Int): Fragment = fragments[position].first.invoke()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,16 +50,10 @@ class ExercisesListActivity : AppCompatActivity() {
 
         binding.topAppBar.setNavigationOnClickListener { finish() }
 
-//        val searchInput = binding.searchInput
-//        searchInput.setOnClickListener {
-//            searchInput.isIconified = !searchInput.isIconified
-//        }
+        binding.fab.setOnClickListener {
+            startActivity(Intent(this, ExerciseFormActivity::class.java))
+        }
     }
 
-    private inner class FragmentPagerAdapter(fm: FragmentManager, lifecycle: Lifecycle) :
-        FragmentStateAdapter(fm, lifecycle) {
-        override fun getItemCount(): Int = fragments.size
 
-        override fun createFragment(position: Int): Fragment = fragments[position].first.invoke()
-    }
 }
