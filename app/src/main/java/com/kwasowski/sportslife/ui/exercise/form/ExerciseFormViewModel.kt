@@ -52,7 +52,7 @@ class ExerciseFormViewModel(private val saveExerciseUseCase: SaveExerciseUseCase
         if (name.value.isNullOrBlank()) {
             isValid = false
             mutableState.value = ExerciseFormState.OnNameEmptyError
-        } else if (name.value!!.length >= InputLengthLimit.NAME.value) {
+        } else if (name.value!!.length > InputLengthLimit.NAME.value) {
             isValid = false
             mutableState.value = ExerciseFormState.OnNameLengthLimitError
         }
@@ -60,7 +60,7 @@ class ExerciseFormViewModel(private val saveExerciseUseCase: SaveExerciseUseCase
         if (description.value.isNullOrBlank()) {
             isValid = false
             mutableState.value = ExerciseFormState.OnDescriptionEmptyError
-        } else if (description.value!!.length >= InputLengthLimit.DESCRIPTION.value) {
+        } else if (description.value!!.length > InputLengthLimit.DESCRIPTION.value) {
             isValid = false
             mutableState.value = ExerciseFormState.OnDescriptionLengthLimitError
         }

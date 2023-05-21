@@ -1,10 +1,13 @@
 package com.kwasowski.sportslife.data.exercise
 
-data class Exercise(
-    val name: String,
-    val description: String,
-    val category: String,
-    val videoLink: String?,
-    var isShared: Boolean = false,
-    var ownerId: String
+import java.util.Date
+
+data class Exercise @JvmOverloads constructor(
+    val name: String = "",
+    val description: String = "",
+    val category: String = "",
+    val videoLink: String? = "",
+    var shared: Boolean = false,
+    var ownerId: String = "",
+    val creationDate: Date = Date()
 )
