@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -23,10 +24,24 @@ class OwnExerciseListFragment : Fragment() {
     private val adapter = OwnExercisesAdapter()
     private var queryText: String = ""
 
+    private val onQueryTextListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            newText?.let {
+                queryText = newText
+                viewModel.filterExercises(queryText)
+            }
+            return false
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_own_exercise_list,
@@ -35,6 +50,7 @@ class OwnExerciseListFragment : Fragment() {
         )
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+        binding.progress.visibility = View.VISIBLE
         return binding.root
     }
 
@@ -51,27 +67,38 @@ class OwnExerciseListFragment : Fragment() {
 
         onViewStateChanged()
 
-        searchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-                    queryText = newText
-                    adapter.updateList(viewModel.filterExercises(queryText))
-                }
-                return false
-            }
-        })
+        searchInput.setOnQueryTextListener(onQueryTextListener)
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.uiState.collect{
-                when(it) {
+            viewModel.uiState.collect {
+                when (it) {
                     OwnExerciseListState.Default -> Unit
-                    is OwnExerciseListState.OnSuccessGetExerciseList -> adapter.updateList(it.exercises)
+                    OwnExerciseListState.OnFailure -> {
+                        binding.emptyListInfo.visibility = View.VISIBLE
+                        binding.progress.visibility = View.GONE
+                        adapter.updateList(emptyList())
+                        Toast.makeText(
+                            context,
+                            R.string.network_connection_error_please_try_again_later,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    OwnExerciseListState.OnSuccessGetEmptyList -> {
+                        binding.emptyListInfo.visibility = View.VISIBLE
+                        binding.progress.visibility = View.GONE
+                        adapter.updateList(emptyList())
+                    }
+
+                    OwnExerciseListState.OnSuccessGetExerciseList -> {
+                        binding.emptyListInfo.visibility = View.GONE
+                        binding.progress.visibility = View.GONE
+                        viewModel.filterExercises(queryText)
+                    }
+
+                    is OwnExerciseListState.OnFilteredExercises -> adapter.updateList(it.filteredList)
                 }
             }
         }
@@ -79,6 +106,6 @@ class OwnExerciseListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getExerciseList(queryText)
+        viewModel.getExerciseList()
     }
 }

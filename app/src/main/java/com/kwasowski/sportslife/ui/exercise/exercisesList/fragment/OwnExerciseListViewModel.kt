@@ -18,32 +18,34 @@ class OwnExerciseListViewModel(
     private val mutableState = MutableStateFlow<OwnExerciseListState>(OwnExerciseListState.Default)
     val uiState: StateFlow<OwnExerciseListState> = mutableState.asStateFlow()
 
-    private val list = mutableListOf<Exercise>()
+    private val exercises = mutableListOf<Exercise>()
 
-    init {
-        getExerciseList()
-    }
-
-    fun getExerciseList(queryText: String = "") {
+    fun getExerciseList() {
+        Timber.d("getExerciseList()")
         viewModelScope.launch {
             when (val result = getExerciseListByOwnerIdUseCase.execute()) {
-                is Result.Failure -> Timber.e(result.exception)
+                is Result.Failure -> mutableState.value = OwnExerciseListState.OnFailure
                 is Result.Success -> {
-                    list.clear()
-                    list.addAll(result.data)
-                    mutableState.value = OwnExerciseListState.OnSuccessGetExerciseList(filterExercises(queryText))
+                    if (result.data.isEmpty()) {
+                        exercises.clear()
+                        mutableState.value = OwnExerciseListState.OnSuccessGetEmptyList
+                    } else {
+                        exercises.clear()
+                        exercises.addAll(result.data)
+                        mutableState.value = OwnExerciseListState.OnSuccessGetExerciseList
+                    }
                 }
             }
         }
     }
 
-    fun filterExercises(queryText: String): List<Exercise> {
+    fun filterExercises(queryText: String) {
         val filteredList = mutableListOf<Exercise>()
-        list.forEach {
+        exercises.forEach {
             if (it.name.lowercase().contains(queryText.lowercase())) {
                 filteredList.add(it)
             }
         }
-        return filteredList
+        mutableState.value = OwnExerciseListState.OnFilteredExercises(filteredList)
     }
 }

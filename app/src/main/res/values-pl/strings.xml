@@ -76,4 +76,5 @@
         <item>Trening siłowy</item>
     </string-array>
     <string name="success_save_exercise">Pomyślnie zapisano ćwiczenie</string>
+    <string name="exercise_empty_list_message">Trochę tutaj pusto…\nDodaj swoje ćwiczenia i\nuzupełnij bazę aktywności!</string>
 </resources>
