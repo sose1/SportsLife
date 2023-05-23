@@ -7,8 +7,10 @@ import com.kwasowski.sportslife.data.profile.ProfileRepository
 import com.kwasowski.sportslife.data.settings.FirestoreSettingsRepository
 import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.settings.SettingsRepository
+import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.GetExerciseListByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
+import com.kwasowski.sportslife.domain.exercise.ShareExerciseUseCase
 import com.kwasowski.sportslife.domain.profile.GetProfileUseCase
 import com.kwasowski.sportslife.domain.profile.SaveProfileUseCase
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
@@ -45,4 +47,6 @@ val appModule = module {
     factoryOf(::GetSettingsUseCase)
     factoryOf(::SaveExerciseUseCase)
     factoryOf(::GetExerciseListByOwnerIdUseCase)
+    factoryOf(::ShareExerciseUseCase)
+    factoryOf(::DeleteOwnExerciseUseCase)
 }

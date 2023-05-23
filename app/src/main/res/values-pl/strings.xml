@@ -77,4 +77,11 @@
     </string-array>
     <string name="success_save_exercise">Pomyślnie zapisano ćwiczenie</string>
     <string name="exercise_empty_list_message">Trochę tutaj pusto…\nDodaj swoje ćwiczenia i\nuzupełnij bazę aktywności!</string>
+    <string name="exercise_was_successfully_shared">Pomyślnie udostępniono ćwiczenie.</string>
+    <string name="correctly_deleted_exercise">Poprawnie usunięto ćwiczenie.</string>
+    <string name="add_to_training">Dodaj do treningu</string>
+    <string name="add_to_favorites">Dodaj do ulubionych</string>
+    <string name="edit">Edytuj</string>
+    <string name="delete">Usuń</string>
+    <string name="share">Udostępnij</string>
 </resources>

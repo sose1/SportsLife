@@ -88,4 +88,11 @@
         <item>Weight training</item>
         <item>Yoga</item>
     </string-array>
+    <string name="exercise_was_successfully_shared">The exercise was successfully shared.</string>
+    <string name="correctly_deleted_exercise">Correctly deleted exercise.</string>
+    <string name="add_to_training">Add to training</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
 </resources>

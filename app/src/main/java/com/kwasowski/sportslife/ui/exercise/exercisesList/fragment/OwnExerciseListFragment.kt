@@ -12,16 +12,20 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.FragmentOwnExerciseListBinding
 import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.adapter.OwnExercisesAdapter
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
+// TODO: 3. Edit -> Włączenie formularza z uzupełnionymi już danymi
+// TODO: 4. Add to fav -> Relacja many-to-many: Wiele ćwiczeń do wielu userów np. favExercies > userId_Likes > 2 property: userId iexerciseId
 class OwnExerciseListFragment : Fragment() {
     private val viewModel: OwnExerciseListViewModel by viewModel()
     private lateinit var binding: FragmentOwnExerciseListBinding
 
-    private val adapter = OwnExercisesAdapter()
+    private lateinit var adapter: OwnExercisesAdapter
     private var queryText: String = ""
 
     private val onQueryTextListener = object : SearchView.OnQueryTextListener {
@@ -51,6 +55,11 @@ class OwnExerciseListFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         binding.progress.visibility = View.VISIBLE
+        onViewStateChanged()
+
+        adapter = OwnExercisesAdapter(requireContext()) { exercise, menuItemId ->
+            onExerciseMenuItemSelected(exercise, menuItemId)
+        }
         return binding.root
     }
 
@@ -65,7 +74,6 @@ class OwnExerciseListFragment : Fragment() {
         binding.exerciseList.setHasFixedSize(true)
         binding.exerciseList.adapter = adapter
 
-        onViewStateChanged()
 
         searchInput.setOnQueryTextListener(onQueryTextListener)
     }
@@ -79,11 +87,7 @@ class OwnExerciseListFragment : Fragment() {
                         binding.emptyListInfo.visibility = View.VISIBLE
                         binding.progress.visibility = View.GONE
                         adapter.updateList(emptyList())
-                        Toast.makeText(
-                            context,
-                            R.string.network_connection_error_please_try_again_later,
-                            Toast.LENGTH_LONG
-                        ).show()
+                        showToast(R.string.network_connection_error_please_try_again_later)
                     }
 
                     OwnExerciseListState.OnSuccessGetEmptyList -> {
@@ -98,6 +102,15 @@ class OwnExerciseListFragment : Fragment() {
                         viewModel.filterExercises(queryText)
                     }
 
+                    OwnExerciseListState.OnSuccessSharedExercise ->
+                        showToast(R.string.exercise_was_successfully_shared)
+
+
+                    OwnExerciseListState.OnSuccessDeletingExercise -> {
+                        showToast(R.string.correctly_deleted_exercise)
+                        viewModel.getExerciseList()
+                    }
+
                     is OwnExerciseListState.OnFilteredExercises -> adapter.updateList(it.filteredList)
                 }
             }
@@ -107,5 +120,39 @@ class OwnExerciseListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getExerciseList()
+    }
+
+    private fun onExerciseMenuItemSelected(exercise: ExerciseDto, menuItemId: Int) {
+        Timber.d("$menuItemId | $exercise")
+        when (menuItemId) {
+            R.id.add_to_training -> {
+                Timber.d("Add to training")
+            }
+
+            R.id.add_to_fav -> {
+                Timber.d("Add to fav")
+
+            }
+
+            R.id.edit -> {
+                Timber.d("Edit")
+
+            }
+
+            R.id.delete -> {
+                Timber.d("Delete")
+                viewModel.deleteExercise(exercise)
+
+            }
+
+            R.id.share -> {
+                Timber.d("Share")
+                viewModel.shareExercise(exercise)
+            }
+        }
+    }
+
+    private fun showToast(stringId: Int) {
+        Toast.makeText(context, stringId, Toast.LENGTH_LONG).show()
     }
 }

@@ -6,7 +6,7 @@
 
         <variable
             name="exercise"
-            type="com.kwasowski.sportslife.data.exercise.Exercise" />
+            type="com.kwasowski.sportslife.data.exercise.ExerciseDto" />
     </data>
 
     <androidx.cardview.widget.CardView
