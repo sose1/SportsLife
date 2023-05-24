@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.exercise.exercisesList.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.FragmentOwnExerciseListBinding
 import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.adapter.OwnExercisesAdapter
+import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -136,6 +138,9 @@ class OwnExerciseListFragment : Fragment() {
 
             R.id.edit -> {
                 Timber.d("Edit")
+                val intent = Intent(requireContext(), ExerciseFormActivity::class.java)
+                intent.putExtra("EXERCISE", exercise)
+                startActivity(intent)
 
             }
 

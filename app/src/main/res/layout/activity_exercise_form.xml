@@ -196,6 +196,39 @@
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="2dp"
+
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/shared"
+                        android:textSize="16sp" />
+
+                    <RadioGroup
+                        android:id="@+id/shared_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/yes"
+                            style="@style/Widget.Material3.CompoundButton.RadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/no"
+                            style="@style/Widget.Material3.CompoundButton.RadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:text="@string/no" />
+                    </RadioGroup>
                 </LinearLayout>
             </ScrollView>
 

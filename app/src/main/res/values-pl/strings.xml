@@ -84,4 +84,8 @@
     <string name="edit">Edytuj</string>
     <string name="delete">Usuń</string>
     <string name="share">Udostępnij</string>
+    <string name="editing">Edycja</string>
+    <string name="shared">Udostępniono</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
 </resources>

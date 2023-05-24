@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.data.exercise
 
+import java.io.Serializable
 import java.util.Date
 
 data class ExerciseDto @JvmOverloads constructor(
@@ -11,4 +12,4 @@ data class ExerciseDto @JvmOverloads constructor(
     var shared: Boolean = false,
     var ownerId: String = "",
     val creationDate: Date?
-)
+) : Serializable

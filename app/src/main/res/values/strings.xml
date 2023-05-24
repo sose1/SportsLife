@@ -95,4 +95,8 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="share">Share</string>
+    <string name="editing">Editing</string>
+    <string name="shared">Shared</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

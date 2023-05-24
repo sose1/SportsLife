@@ -15,10 +15,12 @@ class ExerciseFormViewModel(private val saveExerciseUseCase: SaveExerciseUseCase
     private val mutableState = MutableStateFlow<ExerciseFormState>(ExerciseFormState.Default)
     val uiState: StateFlow<ExerciseFormState> = mutableState.asStateFlow()
 
+    val id = MutableLiveData<String>()
     val name = MutableLiveData<String>()
     val description = MutableLiveData<String>()
     val category = MutableLiveData<String>()
     val videoLink = MutableLiveData<String>()
+    val shared = MutableLiveData<Boolean>()
 
     enum class InputLengthLimit(val value: Int) {
         NAME(50),
@@ -32,12 +34,13 @@ class ExerciseFormViewModel(private val saveExerciseUseCase: SaveExerciseUseCase
     fun saveExercise() {
         if (validateInputData()) {
             viewModelScope.launch {
-               val result= saveExerciseUseCase.execute(
-                    id = null,
+                val result = saveExerciseUseCase.execute(
+                    id = id.value,
                     name = name.value,
                     description = description.value,
                     category = category.value,
-                    videoLink = videoLink.value
+                    videoLink = videoLink.value,
+                    shared = shared.value
                 )
                 when (result) {
                     is Result.Failure -> mutableState.value = ExerciseFormState.OnError
