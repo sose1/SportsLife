@@ -37,7 +37,7 @@
             android:name=".ui.exercise.favorite.FavExercisesActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.exercise.exercisesList.activity.ExercisesListActivity"
+            android:name=".ui.exercise.exerciseList.activity.ExercisesListActivity"
             android:exported="false" />
         <activity
             android:name=".ui.exercise.form.ExerciseFormActivity"

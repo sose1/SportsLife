@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.adapter
+package com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -14,11 +14,10 @@ import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.ItemExerciseBinding
 import timber.log.Timber
 
-class OwnExercisesAdapter(
-    val context: Context,
+class CommunitiesExercisesAdapter(
+    private val context: Context,
     private val onMenuItemSelected: (ExerciseDto, Int) -> Unit
-) :
-    RecyclerView.Adapter<ViewHolder>() {
+) : RecyclerView.Adapter<ViewHolder>() {
     private var exercises = listOf<ExerciseDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,7 +34,7 @@ class OwnExercisesAdapter(
     override fun getItemCount(): Int = exercises.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        (holder as ExerciseViewHolder).bind(exercises[position])
+        (holder as CommunitiesExercisesAdapter.ExerciseViewHolder).bind(exercises[position])
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(exercises: List<ExerciseDto>) {
@@ -59,7 +58,7 @@ class OwnExercisesAdapter(
         private fun createPopupMenu() {
             val popupMenu = PopupMenu(context, binding.root)
             popupMenu.setOnMenuItemClickListener(onMenuItemClickListener)
-            popupMenu.menuInflater.inflate(R.menu.own_exercise, popupMenu.menu)
+            popupMenu.menuInflater.inflate(R.menu.communities_exercise, popupMenu.menu)
             popupMenu.gravity = Gravity.RIGHT
 
             try {
@@ -78,33 +77,9 @@ class OwnExercisesAdapter(
         }
 
         private val onMenuItemClickListener = OnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.add_to_training -> {
-                    onMenuItemSelected(this.exercise, it.itemId)
-                    true
-                }
-
-                R.id.add_to_fav -> {
-                    onMenuItemSelected(this.exercise, it.itemId)
-                    true
-                }
-
-                R.id.edit -> {
-                    onMenuItemSelected(this.exercise, it.itemId)
-                    true
-                }
-
-                R.id.delete -> {
-                    onMenuItemSelected(this.exercise, it.itemId)
-                    true
-                }
-
-                R.id.share -> {
-                    onMenuItemSelected(this.exercise, it.itemId)
-                    true
-                }
-
-                else -> false
+            run {
+                onMenuItemSelected(this.exercise, it.itemId)
+                true
             }
         }
     }

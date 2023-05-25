@@ -9,14 +9,15 @@ import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.settings.SettingsRepository
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.GetExerciseListByOwnerIdUseCase
+import com.kwasowski.sportslife.domain.exercise.GetSharedExercisesUseCase
 import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.ShareExerciseUseCase
 import com.kwasowski.sportslife.domain.profile.GetProfileUseCase
 import com.kwasowski.sportslife.domain.profile.SaveProfileUseCase
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
 import com.kwasowski.sportslife.domain.settings.SaveSettingsUseCase
-import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.CommunitiesExercisesListViewModel
-import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.OwnExerciseListViewModel
+import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities.CommunitiesExerciseListViewModel
+import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own.OwnExerciseListViewModel
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormViewModel
 import com.kwasowski.sportslife.ui.login.LoginViewModel
 import com.kwasowski.sportslife.ui.main.MainViewModel
@@ -33,7 +34,7 @@ val appModule = module {
     viewModelOf(::ProfileViewModel)
     viewModelOf(::SettingsViewModel)
     viewModelOf(::OwnExerciseListViewModel)
-    viewModelOf(::CommunitiesExercisesListViewModel)
+    viewModelOf(::CommunitiesExerciseListViewModel)
     viewModelOf(::ExerciseFormViewModel)
 
     single<ProfileRepository> { FirestoreProfileRepository() }
@@ -49,4 +50,5 @@ val appModule = module {
     factoryOf(::GetExerciseListByOwnerIdUseCase)
     factoryOf(::ShareExerciseUseCase)
     factoryOf(::DeleteOwnExerciseUseCase)
+    factoryOf(::GetSharedExercisesUseCase)
 }

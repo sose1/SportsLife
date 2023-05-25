@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.ui.exercise.exercisesList.activity
+package com.kwasowski.sportslife.ui.exercise.exerciseList.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,8 +12,8 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityExercisesListBinding
-import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.CommunitiesExercisesListFragment
-import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.OwnExerciseListFragment
+import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities.CommunitiesExerciseListFragment
+import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own.OwnExerciseListFragment
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 
 class ExercisesListActivity : AppCompatActivity() {
@@ -22,7 +22,7 @@ class ExercisesListActivity : AppCompatActivity() {
 
     val fragments = listOf(
         { OwnExerciseListFragment() } to R.string.own,
-        { CommunitiesExercisesListFragment() } to R.string.communities,
+        { CommunitiesExerciseListFragment() } to R.string.communities,
     )
 
     private inner class FragmentPagerAdapter(fm: FragmentManager, lifecycle: Lifecycle) :

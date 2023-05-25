@@ -18,7 +18,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityMainBinding
-import com.kwasowski.sportslife.ui.exercise.exercisesList.activity.ExercisesListActivity
+import com.kwasowski.sportslife.ui.exercise.exerciseList.activity.ExercisesListActivity
 import com.kwasowski.sportslife.ui.exercise.favorite.FavExercisesActivity
 import com.kwasowski.sportslife.ui.login.LoginActivity
 import com.kwasowski.sportslife.ui.main.appBarDays.Day

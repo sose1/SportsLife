@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own.OwnExerciseListViewModel" />
+            type="com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities.CommunitiesExerciseListViewModel" />
     </data>
 
     <RelativeLayout
@@ -37,22 +37,9 @@
                 android:scrollbarStyle="outsideOverlay"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="7"
-                tools:listitem="@layout/item_exercise">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <TextView
-                android:id="@+id/emptyListInfo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/exercise_empty_list_message"
-                android:textAlignment="center"
-                android:textSize="36sp"
-                android:visibility="gone" />
+                tools:listitem="@layout/item_exercise" />
 
         </LinearLayout>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -68,6 +55,4 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
-
-
 </layout>

@@ -48,6 +48,7 @@ class FirestoreExerciseRepository : ExerciseRepository {
         }
     }
 
+
     override suspend fun getExerciseListByOwnerId(ownerId: String): Result<List<ExerciseDto>> =
         suspendCoroutine { continuation ->
             collection.whereEqualTo("ownerId", ownerId)
@@ -78,4 +79,38 @@ class FirestoreExerciseRepository : ExerciseRepository {
                     continuation.resume(Result.Failure(exception))
                 }
         }
+
+    override suspend fun getSharedExercises(ownerId: String): Result<List<ExerciseDto>> =
+        suspendCoroutine { continuation ->
+            collection.whereEqualTo(Exercise::shared.name, true)
+                .whereNotEqualTo(Exercise::ownerId.name, ownerId)
+                .orderBy(Exercise::ownerId.name)
+                .orderBy(Exercise::name.name, Query.Direction.ASCENDING)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    val exerciseList = mutableListOf<ExerciseDto>()
+                    querySnapshot.documents.forEach {
+                        val exercise = it.toObject<Exercise>()
+                        if (exercise != null) {
+                            exerciseList.add(
+                                ExerciseDto(
+                                    it.id,
+                                    exercise.name,
+                                    exercise.description,
+                                    exercise.category,
+                                    exercise.videoLink,
+                                    exercise.shared,
+                                    exercise.ownerId,
+                                    exercise.creationDate
+                                )
+                            )
+                        }
+                    }
+                    continuation.resume(Result.Success(exerciseList))
+                }
+                .addOnFailureListener { exception ->
+                    continuation.resume(Result.Failure(exception))
+                }
+        }
+
 }

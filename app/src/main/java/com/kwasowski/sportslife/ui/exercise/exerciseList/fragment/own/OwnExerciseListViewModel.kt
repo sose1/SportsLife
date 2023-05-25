@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.ui.exercise.exercisesList.fragment
+package com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -58,7 +58,8 @@ class OwnExerciseListViewModel(
         viewModelScope.launch {
             when (shareExerciseUseCase.execute(exercise)) {
                 is Result.Failure -> mutableState.value = OwnExerciseListState.OnFailure
-                is Result.Success -> mutableState.value = OwnExerciseListState.OnSuccessSharedExercise
+                is Result.Success -> mutableState.value =
+                    OwnExerciseListState.OnSuccessSharedExercise
             }
         }
     }
@@ -68,7 +69,8 @@ class OwnExerciseListViewModel(
         viewModelScope.launch {
             when(deleteOwnExerciseUseCase.execute(exercise.id)) {
                 is Result.Failure -> mutableState.value = OwnExerciseListState.OnFailure
-                is Result.Success -> mutableState.value = OwnExerciseListState.OnSuccessDeletingExercise
+                is Result.Success -> mutableState.value =
+                    OwnExerciseListState.OnSuccessDeletingExercise
             }
         }
     }

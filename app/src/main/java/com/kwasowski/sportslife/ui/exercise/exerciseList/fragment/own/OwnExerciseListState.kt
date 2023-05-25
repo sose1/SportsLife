@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.ui.exercise.exercisesList.fragment
+package com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own
 
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
 

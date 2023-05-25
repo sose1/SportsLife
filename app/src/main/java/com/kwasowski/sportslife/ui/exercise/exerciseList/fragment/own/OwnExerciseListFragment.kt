@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.ui.exercise.exercisesList.fragment
+package com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,14 +15,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.FragmentOwnExerciseListBinding
-import com.kwasowski.sportslife.ui.exercise.exercisesList.fragment.adapter.OwnExercisesAdapter
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-// TODO: 3. Edit -> Włączenie formularza z uzupełnionymi już danymi
-// TODO: 4. Add to fav -> Relacja many-to-many: Wiele ćwiczeń do wielu userów np. favExercies > userId_Likes > 2 property: userId iexerciseId
 class OwnExerciseListFragment : Fragment() {
     private val viewModel: OwnExerciseListViewModel by viewModel()
     private lateinit var binding: FragmentOwnExerciseListBinding
@@ -62,6 +59,10 @@ class OwnExerciseListFragment : Fragment() {
         adapter = OwnExercisesAdapter(requireContext()) { exercise, menuItemId ->
             onExerciseMenuItemSelected(exercise, menuItemId)
         }
+
+        binding.exerciseList.setHasFixedSize(true)
+        binding.exerciseList.adapter = adapter
+
         return binding.root
     }
 
@@ -72,9 +73,6 @@ class OwnExerciseListFragment : Fragment() {
         searchInput.setOnClickListener {
             searchInput.isIconified = !searchInput.isIconified
         }
-
-        binding.exerciseList.setHasFixedSize(true)
-        binding.exerciseList.adapter = adapter
 
 
         searchInput.setOnQueryTextListener(onQueryTextListener)
