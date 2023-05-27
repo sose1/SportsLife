@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                     is MainViewState.OnDataPickerOpen -> onDataPickerOpen(it.constraints)
                     is MainViewState.OnIndexOutOfBoundsException -> showSnackBarInfo(R.string.you_cannot_select_this_date_please_try_another_one)
                     is MainViewState.OnTitleChange -> onTitleChange(it.month, it.year)
-                    MainViewState.OnLogout -> openLoginActivity()
+                    MainViewState.OnLogout -> openActivity(LoginActivity::class.java)
                     is MainViewState.OnGetSettings -> onGetSettings(it.language)
                 }
             }
@@ -110,32 +110,32 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.training_log_item -> {
-                openTrainingLogActivity()
+                openActivity(TrainingLogActivity::class.java)
                 true
             }
 
             R.id.training_plans_item -> {
-                openTrainingPlansActivity()
+                openActivity(TrainingPlansActivity::class.java)
                 true
             }
 
             R.id.exercises_list -> {
-                openExercisesListActivity()
+                openActivity(ExercisesListActivity::class.java)
                 true
             }
 
             R.id.favorite_exercises_item -> {
-                openFavoriteExercisesActivity()
+                openActivity(FavExercisesActivity::class.java)
                 true
             }
 
             R.id.profile_item -> {
-                openProfileActivity()
+                openActivity(ProfileActivity::class.java)
                 true
             }
 
             R.id.settings_item -> {
-                openSettingsActivity()
+                openActivity(SettingsActivity::class.java)
                 true
             }
 
@@ -183,6 +183,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onDataPickerOpen(constraints: CalendarConstraints) {
+        Timber.d("onDataPickerOpen")
         val datePicker = MaterialDatePicker.Builder.datePicker()
             .setCalendarConstraints(constraints)
             .setTitleText(R.string.select_date)
@@ -191,6 +192,14 @@ class MainActivity : AppCompatActivity() {
         datePicker.addOnPositiveButtonClickListener {
             viewModel.onSelectedDateInDatePicker(it)
         }
+        datePicker.addOnCancelListener {
+            it.cancel()
+            viewModel.onDataPickerClose()
+        }
+        datePicker.addOnNegativeButtonClickListener {
+            viewModel.onDataPickerClose()
+        }
+
         datePicker.show(supportFragmentManager, "DATE_PICKER")
     }
 
@@ -198,39 +207,9 @@ class MainActivity : AppCompatActivity() {
         Snackbar.make(binding.root, stringId, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun openTrainingLogActivity() {
-        Timber.d("openTrainingLogActivity()")
-        startActivity(Intent(this, TrainingLogActivity::class.java))
-    }
-
-    private fun openTrainingPlansActivity() {
-        Timber.d("openTrainingPlansActivity()")
-        startActivity(Intent(this, TrainingPlansActivity::class.java))
-    }
-
-    private fun openExercisesListActivity() {
-        Timber.d("openExercisesListActivity()")
-        startActivity(Intent(this, ExercisesListActivity::class.java))
-    }
-
-    private fun openFavoriteExercisesActivity() {
-        Timber.d("openFavoriteExercisesActivity()")
-        startActivity(Intent(this, FavExercisesActivity::class.java))
-    }
-
-    private fun openProfileActivity() {
-        Timber.d("openProfileActivity()")
-        startActivity(Intent(this, ProfileActivity::class.java))
-    }
-
-    private fun openSettingsActivity() {
-        Timber.d("openSettingsActivity()")
-        startActivity(Intent(this, SettingsActivity::class.java))
-    }
-
-    private fun openLoginActivity() {
-        Timber.d("openLoginActivity()")
-        startActivity(Intent(this, LoginActivity::class.java))
+    private fun openActivity(activity: Class<out AppCompatActivity>) {
+        Timber.d("openActivity() | $activity")
+        startActivity(Intent(this, activity))
     }
 
     private fun onGetSettings(language: String) {

@@ -149,4 +149,8 @@ class MainViewModel(
         auth.signOut()
         mutableState.value = MainViewState.OnLogout
     }
+
+    fun onDataPickerClose() {
+        mutableState.value = MainViewState.Default
+    }
 }
