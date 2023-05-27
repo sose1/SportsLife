@@ -7,7 +7,7 @@
 
         <variable
             name="day"
-            type="com.kwasowski.sportslife.data.model.Day" />
+            type="com.kwasowski.sportslife.ui.main.appBarDays.Day" />
 
     </data>
 
