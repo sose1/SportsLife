@@ -189,17 +189,9 @@ class MainActivity : AppCompatActivity() {
             .setTitleText(R.string.select_date)
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
-        datePicker.addOnPositiveButtonClickListener {
-            viewModel.onSelectedDateInDatePicker(it)
-        }
-        datePicker.addOnCancelListener {
-            it.cancel()
-            viewModel.onDataPickerClose()
-        }
-        datePicker.addOnNegativeButtonClickListener {
-            viewModel.onDataPickerClose()
-        }
-
+        datePicker.addOnPositiveButtonClickListener { viewModel.onSelectedDateInDatePicker(it) }
+        datePicker.addOnCancelListener { viewModel.onDataPickerClose() }
+        datePicker.addOnNegativeButtonClickListener { viewModel.onDataPickerClose() }
         datePicker.show(supportFragmentManager, "DATE_PICKER")
     }
 
