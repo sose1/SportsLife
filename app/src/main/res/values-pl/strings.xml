@@ -90,4 +90,5 @@
     <string name="no">Nie</string>
     <string name="copy_to_own">Kopiuj do własnych</string>
     <string name="success_copy_to_own">Udane kopiowanie ćwiczenia do własnych</string>
+    <string name="account">Konto</string>
 </resources>
