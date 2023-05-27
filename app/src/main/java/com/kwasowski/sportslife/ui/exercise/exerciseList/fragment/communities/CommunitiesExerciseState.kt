@@ -6,5 +6,7 @@ sealed class CommunitiesExerciseState {
     object Default: CommunitiesExerciseState()
     object OnSuccessGetExerciseList : CommunitiesExerciseState()
     object OnFailure : CommunitiesExerciseState()
+    object OnSuccessCopy : CommunitiesExerciseState()
+
     class OnFilteredExercises(val filteredList: List<ExerciseDto>) : CommunitiesExerciseState()
 }

@@ -38,6 +38,7 @@ class CommunitiesExerciseListFragment : Fragment() {
             return false
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -92,6 +93,7 @@ class CommunitiesExerciseListFragment : Fragment() {
                         viewModel.filterExercises(queryText)
                     }
                     is CommunitiesExerciseState.OnFilteredExercises -> adapter.updateList(it.filteredList)
+                    CommunitiesExerciseState.OnSuccessCopy -> showToast(R.string.success_copy_to_own)
                 }
             }
         }
@@ -106,11 +108,10 @@ class CommunitiesExerciseListFragment : Fragment() {
 
             R.id.add_to_fav -> {
                 Timber.d("Add to fav")
-
             }
 
             R.id.copy_to_own -> {
-                Timber.d("Copy to own")
+                viewModel.copyToOwn(exercise)
             }
         }
     }
