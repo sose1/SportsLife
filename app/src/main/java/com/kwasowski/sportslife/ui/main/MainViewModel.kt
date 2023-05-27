@@ -123,6 +123,10 @@ class MainViewModel(
         mutableState.value = MainViewState.OnDataPickerOpen(constraints)
     }
 
+    fun onDataPickerClose() {
+        mutableState.value = MainViewState.Default
+    }
+
     fun onSelectedDateInDatePicker(timestamp: Long?) {
         val calendar = Calendar.getInstance()
         calendar.time = Date(timestamp!!)
