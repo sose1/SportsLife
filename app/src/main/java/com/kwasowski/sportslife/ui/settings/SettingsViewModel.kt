@@ -2,6 +2,8 @@ package com.kwasowski.sportslife.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.data.Result
 import com.kwasowski.sportslife.data.settings.Settings
 import com.kwasowski.sportslife.data.settings.SettingsManager
@@ -25,6 +27,7 @@ class SettingsViewModel(
 
     private var currentSettings = Settings()
     var isAfterInitSettings: Boolean = false
+    val account = Firebase.auth.currentUser?.email
 
     init {
         viewModelScope.launch {
