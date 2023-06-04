@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.FragmentCommunitiesExerciseListBinding
+import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -54,9 +56,15 @@ class CommunitiesExerciseListFragment : Fragment() {
         binding.progress.visibility = View.VISIBLE
         onViewStateChanged()
 
-        adapter = CommunitiesExercisesAdapter(requireContext()) { exercise, menuItemId ->
-            onExerciseMenuItemSelected(exercise, menuItemId)
-        }
+        adapter = CommunitiesExercisesAdapter(
+            context = requireContext(),
+            onMenuItemSelected = { exercise, menuItemId ->
+                onExerciseMenuItemSelected(exercise, menuItemId)
+            },
+            onItemClick = { exercise ->
+                onItemClick(exercise)
+            }
+        )
 
         binding.exerciseList.setHasFixedSize(true)
         binding.exerciseList.adapter = adapter
@@ -88,15 +96,25 @@ class CommunitiesExerciseListFragment : Fragment() {
                         adapter.updateList(emptyList())
                         showToast(R.string.network_connection_error_please_try_again_later)
                     }
+
                     CommunitiesExerciseState.OnSuccessGetExerciseList -> {
                         binding.progress.visibility = View.GONE
                         viewModel.filterExercises(queryText)
                     }
+
                     is CommunitiesExerciseState.OnFilteredExercises -> adapter.updateList(it.filteredList)
                     CommunitiesExerciseState.OnSuccessCopy -> showToast(R.string.success_copy_to_own)
                 }
             }
         }
+    }
+
+
+    private fun onItemClick(exercise: ExerciseDto) {
+        val intent = Intent(requireContext(), ExerciseDetailsActivity::class.java)
+        intent.putExtra("EXERCISE_ID", exercise.id)
+        intent.putExtra("IS_COMMUNITY", true)
+        startActivity(intent)
     }
 
     private fun onExerciseMenuItemSelected(exercise: ExerciseDto, menuItemId: Int) {

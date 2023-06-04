@@ -48,7 +48,6 @@ class FirestoreExerciseRepository : ExerciseRepository {
         }
     }
 
-
     override suspend fun getExerciseListByOwnerId(ownerId: String): Result<List<ExerciseDto>> =
         suspendCoroutine { continuation ->
             collection.whereEqualTo("ownerId", ownerId)
@@ -113,4 +112,27 @@ class FirestoreExerciseRepository : ExerciseRepository {
                 }
         }
 
+    override suspend fun getExerciseById(exerciseId: String): Result<ExerciseDto> =
+        suspendCoroutine { continuation ->
+            collection.document(exerciseId)
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    documentSnapshot.toObject<Exercise>()?.let {
+                        val exerciseDto = ExerciseDto(
+                            id = documentSnapshot.id,
+                            name = it.name,
+                            description = it.description,
+                            category = it.category,
+                            videoLink = it.videoLink,
+                            shared = it.shared,
+                            ownerId = it.ownerId,
+                            creationDate = it.creationDate
+                        )
+                        continuation.resume(Result.Success(exerciseDto))
+                    } ?: Result.Failure(NullPointerException("Exercise not found"))
+                }
+                .addOnFailureListener {
+                    continuation.resume(Result.Failure(it))
+                }
+        }
 }

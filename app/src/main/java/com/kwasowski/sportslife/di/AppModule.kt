@@ -8,6 +8,7 @@ import com.kwasowski.sportslife.data.settings.FirestoreSettingsRepository
 import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.settings.SettingsRepository
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
+import com.kwasowski.sportslife.domain.exercise.GetExerciseByIdUseCase
 import com.kwasowski.sportslife.domain.exercise.GetExerciseListByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.exercise.GetSharedExercisesUseCase
 import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
@@ -16,6 +17,7 @@ import com.kwasowski.sportslife.domain.profile.GetProfileUseCase
 import com.kwasowski.sportslife.domain.profile.SaveProfileUseCase
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
 import com.kwasowski.sportslife.domain.settings.SaveSettingsUseCase
+import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsViewModel
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities.CommunitiesExerciseListViewModel
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own.OwnExerciseListViewModel
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormViewModel
@@ -36,6 +38,7 @@ val appModule = module {
     viewModelOf(::OwnExerciseListViewModel)
     viewModelOf(::CommunitiesExerciseListViewModel)
     viewModelOf(::ExerciseFormViewModel)
+    viewModelOf(::ExerciseDetailsViewModel)
 
     single<ProfileRepository> { FirestoreProfileRepository() }
     single<SettingsRepository> { FirestoreSettingsRepository() }
@@ -51,4 +54,5 @@ val appModule = module {
     factoryOf(::ShareExerciseUseCase)
     factoryOf(::DeleteOwnExerciseUseCase)
     factoryOf(::GetSharedExercisesUseCase)
+    factoryOf(::GetExerciseByIdUseCase)
 }

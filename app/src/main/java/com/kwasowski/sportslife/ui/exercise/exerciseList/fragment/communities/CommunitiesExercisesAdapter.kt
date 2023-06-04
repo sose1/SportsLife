@@ -16,7 +16,8 @@ import timber.log.Timber
 
 class CommunitiesExercisesAdapter(
     private val context: Context,
-    private val onMenuItemSelected: (ExerciseDto, Int) -> Unit
+    private val onMenuItemSelected: (ExerciseDto, Int) -> Unit,
+    private val onItemClick: (ExerciseDto) -> Unit
 ) : RecyclerView.Adapter<ViewHolder>() {
     private var exercises = listOf<ExerciseDto>()
 
@@ -49,6 +50,9 @@ class CommunitiesExercisesAdapter(
             this.exercise = exercise
             binding.exercise = exercise
             binding.root.setOnClickListener {
+                onItemClick(exercise)
+            }
+            binding.moreButton.setOnClickListener {
                 createPopupMenu()
             }
             binding.executePendingBindings()
@@ -56,7 +60,7 @@ class CommunitiesExercisesAdapter(
 
         @SuppressLint("DiscouragedPrivateApi", "RtlHardcoded")
         private fun createPopupMenu() {
-            val popupMenu = PopupMenu(context, binding.root)
+            val popupMenu = PopupMenu(context, binding.moreButton)
             popupMenu.setOnMenuItemClickListener(onMenuItemClickListener)
             popupMenu.menuInflater.inflate(R.menu.communities_exercise, popupMenu.menu)
             popupMenu.gravity = Gravity.RIGHT
