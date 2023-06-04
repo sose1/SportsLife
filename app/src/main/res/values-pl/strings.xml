@@ -89,6 +89,10 @@
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="copy_to_own">Kopiuj do własnych</string>
-    <string name="success_copy_to_own">Udane kopiowanie ćwiczenia do własnych</string>
+    <string name="success_copy_to_own">Pomyślne skopiowanie ćwiczenia do własnej bazy.</string>
     <string name="account">Konto</string>
+    <string name="details">Szczegóły</string>
+    <string name="video">Film</string>
+    <string name="watch_video">Obejrzyj film</string>
+    <string name="more">Więcej</string>
 </resources>

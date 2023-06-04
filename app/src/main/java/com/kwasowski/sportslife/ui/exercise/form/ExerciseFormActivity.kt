@@ -28,63 +28,6 @@ class ExerciseFormActivity : AppCompatActivity() {
         NAME, DESCRIPTION, CATEGORY, VIDEO_LINK
     }
 
-    private val nameEditTextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (!s.isNullOrBlank()) {
-                binding.exerciseNameInputLayout.error = null
-                viewModel.setStateToDefault()
-            }
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-        }
-    }
-    private val descriptionEditTextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (!s.isNullOrBlank()) {
-                binding.exerciseDescriptionInputLayout.error = null
-                viewModel.setStateToDefault()
-            }
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-        }
-    }
-    private val categoryEditTextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (!s.isNullOrBlank()) {
-                binding.exerciseCategoryInputLayout.error = null
-                viewModel.setStateToDefault()
-            }
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-        }
-    }
-    private val videoLinkEditTextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (!s.isNullOrBlank()) {
-                binding.exerciseVideoLinkInputLayout.error = null
-                viewModel.setStateToDefault()
-            }
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_exercise_form)
@@ -135,7 +78,6 @@ class ExerciseFormActivity : AppCompatActivity() {
         binding.exerciseVideoLink.setText(savedInstanceState.getString(BundleFormKey.VIDEO_LINK.toString()))
         initCategoryDropdownMenu()
     }
-
 
     private fun getDataFromIntent() {
         intent.serializable<ExerciseDto>("EXERCISE")?.let {
@@ -194,6 +136,63 @@ class ExerciseFormActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private val nameEditTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (!s.isNullOrBlank()) {
+                binding.exerciseNameInputLayout.error = null
+                viewModel.setStateToDefault()
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+        }
+    }
+    private val descriptionEditTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (!s.isNullOrBlank()) {
+                binding.exerciseDescriptionInputLayout.error = null
+                viewModel.setStateToDefault()
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+        }
+    }
+    private val categoryEditTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (!s.isNullOrBlank()) {
+                binding.exerciseCategoryInputLayout.error = null
+                viewModel.setStateToDefault()
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+        }
+    }
+    private val videoLinkEditTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (!s.isNullOrBlank()) {
+                binding.exerciseVideoLinkInputLayout.error = null
+                viewModel.setStateToDefault()
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {
         }
     }
 

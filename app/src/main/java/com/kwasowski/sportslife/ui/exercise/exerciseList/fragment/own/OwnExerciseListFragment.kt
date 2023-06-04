@@ -15,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.FragmentOwnExerciseListBinding
+import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsActivity
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -56,15 +57,22 @@ class OwnExerciseListFragment : Fragment() {
         binding.progress.visibility = View.VISIBLE
         onViewStateChanged()
 
-        adapter = OwnExercisesAdapter(requireContext()) { exercise, menuItemId ->
-            onExerciseMenuItemSelected(exercise, menuItemId)
-        }
+        adapter = OwnExercisesAdapter(
+            context = requireContext(),
+            onMenuItemSelected = { exercise, menuItemId ->
+                onExerciseMenuItemSelected(exercise, menuItemId)
+            },
+            onItemClick = { exercise ->
+                onItemClick(exercise)
+            }
+        )
 
         binding.exerciseList.setHasFixedSize(true)
         binding.exerciseList.adapter = adapter
 
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -122,6 +130,12 @@ class OwnExerciseListFragment : Fragment() {
         viewModel.getExerciseList()
     }
 
+    private fun onItemClick(exercise: ExerciseDto) {
+        val intent = Intent(requireContext(), ExerciseDetailsActivity::class.java)
+        intent.putExtra("EXERCISE_ID", exercise.id)
+        startActivity(intent)
+    }
+
     private fun onExerciseMenuItemSelected(exercise: ExerciseDto, menuItemId: Int) {
         Timber.d("$menuItemId | $exercise")
         when (menuItemId) {
@@ -139,13 +153,11 @@ class OwnExerciseListFragment : Fragment() {
                 val intent = Intent(requireContext(), ExerciseFormActivity::class.java)
                 intent.putExtra("EXERCISE", exercise)
                 startActivity(intent)
-
             }
 
             R.id.delete -> {
                 Timber.d("Delete")
                 viewModel.deleteExercise(exercise)
-
             }
 
             R.id.share -> {

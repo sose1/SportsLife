@@ -7,4 +7,5 @@ interface ExerciseRepository {
     suspend fun getExerciseListByOwnerId(ownerId: String): Result<List<ExerciseDto>>
     suspend fun deleteExercise(id: String): Result<Unit>
     suspend fun getSharedExercises(ownerId: String): Result<List<ExerciseDto>>
+    suspend fun getExerciseById(exerciseId: String): Result<ExerciseDto>
 }
