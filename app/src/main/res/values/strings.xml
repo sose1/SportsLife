@@ -67,26 +67,45 @@
     <string name="enter_the_name_of_the_exercise">Enter the name of the exercise…</string>
     <string name="success_save_exercise">Successfully saving the exercise</string>
     <string name="exercise_empty_list_message">A little empty here…"\n"Add your exercises and"\n"complete your activity base!</string>
+    <string name="aerobics">Aerobics</string>
+    <string name="american_soccer">American soccer</string>
+    <string name="basketball">Basketball</string>
+    <string name="boxing">Boxing</string>
+    <string name="calisthenics">Calisthenics</string>
+    <string name="cycling">Cycling</string>
+    <string name="football">Football</string>
+    <string name="gymnastics">Gymnastics</string>
+    <string name="handball">Handball</string>
+    <string name="ice_hokey">Ice hokey</string>
+    <string name="mma">MMA</string>
+    <string name="running">Running</string>
+    <string name="rugby">Rugby</string>
+    <string name="squash">Squash</string>
+    <string name="table_tennis">Table tennis</string>
+    <string name="tennis">Tennis</string>
+    <string name="volleyball">Volleyball</string>
+    <string name="weight_training">Weight training</string>
+    <string name="yoga">Yoga</string>
     <string-array name="exercise_category">
-        <item>Aerobics</item>
-        <item>American soccer</item>
-        <item>Basketball</item>
-        <item>Boxing</item>
-        <item>Calisthenics</item>
-        <item>Cycling</item>
-        <item>Football</item>
-        <item>Gymnastics</item>
-        <item>Handball</item>
-        <item>Ice hokey</item>
-        <item>MMA</item>
-        <item>Running</item>
-        <item>Rugby</item>
-        <item>Squash</item>
-        <item>Table tennis</item>
-        <item>Tennis</item>
-        <item>Volleyball</item>
-        <item>Weight training</item>
-        <item>Yoga</item>
+        <item>@string/aerobics </item>
+        <item>@string/american_soccer</item>
+        <item>@string/basketball</item>
+        <item>@string/boxing</item>
+        <item>@string/calisthenics</item>
+        <item>@string/cycling</item>
+        <item>@string/football</item>
+        <item>@string/gymnastics</item>
+        <item>@string/handball</item>
+        <item>@string/ice_hokey</item>
+        <item>@string/mma</item>
+        <item>@string/running</item>
+        <item>@string/rugby</item>
+        <item>@string/squash</item>
+        <item>@string/table_tennis</item>
+        <item>@string/tennis</item>
+        <item>@string/volleyball</item>
+        <item>@string/weight_training</item>
+        <item>@string/yoga</item>
     </string-array>
     <string name="exercise_was_successfully_shared">The exercise was successfully shared.</string>
     <string name="correctly_deleted_exercise">Correctly deleted exercise.</string>

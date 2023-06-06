@@ -5,13 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kwasowski.sportslife.data.Result
+import com.kwasowski.sportslife.data.exercise.Category
 import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ExerciseFormViewModel(private val saveExerciseUseCase: SaveExerciseUseCase) : ViewModel() {
+class ExerciseFormViewModel(
+    private val saveExerciseUseCase: SaveExerciseUseCase) : ViewModel() {
+    lateinit var categoriesResourcesList: Array<String>
+
     private val mutableState = MutableStateFlow<ExerciseFormState>(ExerciseFormState.Default)
     val uiState: StateFlow<ExerciseFormState> = mutableState.asStateFlow()
 
@@ -38,7 +42,8 @@ class ExerciseFormViewModel(private val saveExerciseUseCase: SaveExerciseUseCase
                     id = id.value,
                     name = name.value,
                     description = description.value,
-                    category = category.value,
+                    category = Category.fromString
+                        (category.value, categoriesResourcesList).toString(),
                     videoLink = videoLink.value,
                     shared = shared.value
                 )

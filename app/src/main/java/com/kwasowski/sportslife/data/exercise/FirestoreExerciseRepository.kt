@@ -51,7 +51,7 @@ class FirestoreExerciseRepository : ExerciseRepository {
     override suspend fun getExerciseListByOwnerId(ownerId: String): Result<List<ExerciseDto>> =
         suspendCoroutine { continuation ->
             collection.whereEqualTo("ownerId", ownerId)
-                .orderBy(Exercise::creationDate.name, Query.Direction.DESCENDING)
+                .orderBy(Exercise::updateDate.name, Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
                     val exerciseList = mutableListOf<ExerciseDto>()
@@ -67,7 +67,7 @@ class FirestoreExerciseRepository : ExerciseRepository {
                                     exercise.videoLink,
                                     exercise.shared,
                                     exercise.ownerId,
-                                    exercise.creationDate
+                                    exercise.updateDate
                                 )
                             )
                         }
@@ -100,7 +100,7 @@ class FirestoreExerciseRepository : ExerciseRepository {
                                     exercise.videoLink,
                                     exercise.shared,
                                     exercise.ownerId,
-                                    exercise.creationDate
+                                    exercise.updateDate
                                 )
                             )
                         }
@@ -126,7 +126,7 @@ class FirestoreExerciseRepository : ExerciseRepository {
                             videoLink = it.videoLink,
                             shared = it.shared,
                             ownerId = it.ownerId,
-                            creationDate = it.creationDate
+                            updateDate = it.updateDate
                         )
                         continuation.resume(Result.Success(exerciseDto))
                     } ?: Result.Failure(NullPointerException("Exercise not found"))
