@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.exercise.Category
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.ActivityExerciseFormBinding
 import com.kwasowski.sportslife.extensions.serializable
@@ -86,7 +87,8 @@ class ExerciseFormActivity : AppCompatActivity() {
             viewModel.name.value = it.name
             viewModel.description.value = it.description
             viewModel.videoLink.value = it.videoLink
-            viewModel.category.value = it.category
+            viewModel.category.value = Category.toResourceString(this, it.category)
+
             binding.sharedGroup.check(
                 if (it.shared) R.id.yes
                 else R.id.no
@@ -198,6 +200,7 @@ class ExerciseFormActivity : AppCompatActivity() {
 
     private fun initCategoryDropdownMenu() {
         val categories = resources.getStringArray(R.array.exercise_category)
+        viewModel.categoriesResourcesList = categories
         val categoryAdapter =
             object : ArrayAdapter<String>(this, R.layout.dropdown_item, categories.toList()) {
                 override fun getFilter(): Filter {

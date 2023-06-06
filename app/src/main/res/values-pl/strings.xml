@@ -54,26 +54,47 @@
     <string name="select_a_category">Wybierz kategorię</string>
     <string name="describe_your_exercise">Opisz swoje ćwiczenię…</string>
     <string name="enter_the_name_of_the_exercise">Podaj nazwę ćwiczenia…</string>
+
+
+    <string name="aerobics">Aerobik</string>
+    <string name="american_soccer">Futbol amerykański</string>
+    <string name="basketball">Koszykówka</string>
+    <string name="boxing">Boks</string>
+    <string name="calisthenics">Kalistenika</string>
+    <string name="cycling">Jazda na rowerze</string>
+    <string name="football">Piłka nożna</string>
+    <string name="gymnastics">Gimnastyka</string>
+    <string name="handball">Piłka ręczna</string>
+    <string name="ice_hokey">Hokej na lodzie</string>
+    <string name="mma">MMA</string>
+    <string name="running">Bieganie</string>
+    <string name="rugby">Rugby</string>
+    <string name="squash">Squash</string>
+    <string name="table_tennis">Tenis stołowy</string>
+    <string name="tennis">Tennis</string>
+    <string name="volleyball">Siatkówka</string>
+    <string name="weight_training">Trening siłowy</string>
+    <string name="yoga">Joga</string>
     <string-array name="exercise_category">
-        <item>Aerobik</item>
-        <item>Bieganie</item>
-        <item>Boks</item>
-        <item>Futbol amerykański</item>
-        <item>Gimnastyka</item>
-        <item>Hokej na lodzie</item>
-        <item>Jazda na rowerze</item>
-        <item>Joga</item>
-        <item>Kalistenika</item>
-        <item>Koszykówka</item>
-        <item>MMA</item>
-        <item>Piłka nożna</item>
-        <item>Piłka ręczna</item>
-        <item>Rugby</item>
-        <item>Siatkówka</item>
-        <item>Squash</item>
-        <item>Tenis stołowy</item>
-        <item>Tennis</item>
-        <item>Trening siłowy</item>
+        <item>@string/aerobics </item>
+        <item>@string/american_soccer</item>
+        <item>@string/basketball</item>
+        <item>@string/boxing</item>
+        <item>@string/calisthenics</item>
+        <item>@string/cycling</item>
+        <item>@string/football</item>
+        <item>@string/gymnastics</item>
+        <item>@string/handball</item>
+        <item>@string/ice_hokey</item>
+        <item>@string/mma</item>
+        <item>@string/running</item>
+        <item>@string/rugby</item>
+        <item>@string/squash</item>
+        <item>@string/table_tennis</item>
+        <item>@string/tennis</item>
+        <item>@string/volleyball</item>
+        <item>@string/weight_training</item>
+        <item>@string/yoga</item>
     </string-array>
     <string name="success_save_exercise">Pomyślnie zapisano ćwiczenie</string>
     <string name="exercise_empty_list_message">Trochę tutaj pusto…\nDodaj swoje ćwiczenia i\nuzupełnij bazę aktywności!</string>

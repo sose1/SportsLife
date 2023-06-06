@@ -20,7 +20,7 @@ class ShareExerciseUseCase(private val exerciseRepository: ExerciseRepository) {
                     videoLink = exercise.videoLink,
                     shared = exercise.shared,
                     ownerId = exercise.ownerId,
-                    creationDate = exercise.creationDate!!
+                    updateDate = exercise.updateDate!!
                 )
             )
         } ?: Result.Failure(Exception())

@@ -47,6 +47,12 @@ android {
         dataBinding = true
         viewBinding = true
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -81,5 +87,7 @@ dependencies {
 
     //tests
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testImplementation("androidx.test:core:1.5.0")
+    testImplementation("io.mockk:mockk:1.13.5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }

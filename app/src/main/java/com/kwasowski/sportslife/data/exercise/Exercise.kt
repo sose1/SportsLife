@@ -9,5 +9,5 @@ data class Exercise @JvmOverloads constructor(
     val videoLink: String? = "",
     var shared: Boolean = false,
     var ownerId: String = "",
-    val creationDate: Date = Date()
+    val updateDate: Date = Date()
 )
