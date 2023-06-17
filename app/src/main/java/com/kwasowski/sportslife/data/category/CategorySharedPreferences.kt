@@ -2,22 +2,24 @@ package com.kwasowski.sportslife.data.category
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import com.kwasowski.sportslife.utils.Constants
+import com.kwasowski.sportslife.utils.LanguageTag
 
 class CategorySharedPreferences(context: Context) {
-    private val sharedPreferences = context.getSharedPreferences("sports-life-categories", Context.MODE_PRIVATE)
+    private val sharedPreferences = context.getSharedPreferences(Constants.CATEGORIES_SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
     fun saveToPreferences(categories: List<CategoryDto>) {
         val categoriesSet = HashSet<String>()
         categories.mapTo(categoriesSet) { "${it.id},${it.PL},${it.EN}" }
         with(sharedPreferences.edit()) {
-            putStringSet("categories", categoriesSet)
+            putStringSet(Constants.CATEGORIES_KEY, categoriesSet)
             apply()
         }
     }
 
     fun getCategories(): List<CategoryDto> {
         val categoriesList = mutableListOf<CategoryDto>()
-        sharedPreferences.getStringSet("categories", emptySet())?.forEach { categoryString ->
+        sharedPreferences.getStringSet(Constants.CATEGORIES_KEY, emptySet())?.forEach { categoryString ->
             val parts = categoryString.split(",")
             if (parts.size == 3) {
                 val id = parts[0]
@@ -37,8 +39,8 @@ class CategorySharedPreferences(context: Context) {
     fun getCategoriesByTranslation(translation: String?): CategoryDto? {
         return getCategories().find {
             when(AppCompatDelegate.getApplicationLocales().toLanguageTags()) {
-                "en" -> it.EN == translation
-                "pl" -> it.PL == translation
+                LanguageTag.EN -> it.EN == translation
+                LanguageTag.PL -> it.PL == translation
                 else -> it.EN == translation
             }
         }

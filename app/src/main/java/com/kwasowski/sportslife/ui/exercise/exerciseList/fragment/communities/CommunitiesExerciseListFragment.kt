@@ -16,6 +16,7 @@ import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.FragmentCommunitiesExerciseListBinding
 import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsActivity
+import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -112,8 +113,8 @@ class CommunitiesExerciseListFragment : Fragment() {
 
     private fun onItemClick(exercise: ExerciseDto) {
         val intent = Intent(requireContext(), ExerciseDetailsActivity::class.java)
-        intent.putExtra("EXERCISE_ID", exercise.id)
-        intent.putExtra("IS_COMMUNITY", true)
+        intent.putExtra(Constants.EXERCISE_ID_INTENT, exercise.id)
+        intent.putExtra(Constants.IS_COMMUNITY_INTENT, true)
         startActivity(intent)
     }
 

@@ -15,6 +15,7 @@ import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.settings.Settings
 import com.kwasowski.sportslife.data.settings.Units
 import com.kwasowski.sportslife.databinding.ActivitySettingsBinding
+import com.kwasowski.sportslife.utils.LanguageTag
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -74,14 +75,14 @@ class SettingsActivity : AppCompatActivity() {
         binding.notificationsTodaySummary.isChecked = settings.notifyDaySummary
 
         when (settings.language) {
-            "en" -> onLanguageChanged("en", R.string.english)
-            "pl" -> onLanguageChanged("pl", R.string.polish)
+            LanguageTag.EN -> onLanguageChanged( LanguageTag.EN, R.string.english)
+            LanguageTag.PL -> onLanguageChanged( LanguageTag.PL, R.string.polish)
             else -> {
                 val locales = AppCompatDelegate.getApplicationLocales()
                 when (val tag = locales.toLanguageTags()) {
-                    "en" -> onLanguageChanged(tag, R.string.english)
-                    "pl" -> onLanguageChanged(tag, R.string.polish)
-                    else -> onLanguageChanged("en", R.string.english)
+                    LanguageTag.EN -> onLanguageChanged(tag, R.string.english)
+                    LanguageTag.PL -> onLanguageChanged(tag, R.string.polish)
+                    else -> onLanguageChanged( LanguageTag.EN, R.string.english)
                 }
             }
         }
@@ -114,12 +115,12 @@ class SettingsActivity : AppCompatActivity() {
         popup.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.polish -> {
-                    onLanguageChanged("pl", R.string.polish)
+                    onLanguageChanged( LanguageTag.PL, R.string.polish)
                     true
                 }
 
                 R.id.english -> {
-                    onLanguageChanged("en", R.string.english)
+                    onLanguageChanged( LanguageTag.EN, R.string.english)
                     true
                 }
 

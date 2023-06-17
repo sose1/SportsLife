@@ -1,6 +1,7 @@
 package com.kwasowski.sportslife.data.category
 
 import androidx.appcompat.app.AppCompatDelegate
+import com.kwasowski.sportslife.utils.LanguageTag
 
 data class CategoryDto @JvmOverloads constructor(
     val id: String = "",
@@ -10,7 +11,7 @@ data class CategoryDto @JvmOverloads constructor(
 
 fun CategoryDto.getTranslation(): String = when (
     AppCompatDelegate.getApplicationLocales().toLanguageTags()) {
-    "en" -> EN
-    "pl" -> PL
+    LanguageTag.EN -> EN
+    LanguageTag.PL -> PL
     else -> EN
 }

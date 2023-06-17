@@ -17,6 +17,7 @@ import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.FragmentOwnExerciseListBinding
 import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsActivity
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
+import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -132,7 +133,7 @@ class OwnExerciseListFragment : Fragment() {
 
     private fun onItemClick(exercise: ExerciseDto) {
         val intent = Intent(requireContext(), ExerciseDetailsActivity::class.java)
-        intent.putExtra("EXERCISE_ID", exercise.id)
+        intent.putExtra(Constants.EXERCISE_ID_INTENT, exercise.id)
         startActivity(intent)
     }
 
@@ -151,7 +152,7 @@ class OwnExerciseListFragment : Fragment() {
             R.id.edit -> {
                 Timber.d("Edit")
                 val intent = Intent(requireContext(), ExerciseFormActivity::class.java)
-                intent.putExtra("EXERCISE_ID", exercise.id)
+                intent.putExtra(Constants.EXERCISE_ID_INTENT, exercise.id)
                 startActivity(intent)
             }
 
