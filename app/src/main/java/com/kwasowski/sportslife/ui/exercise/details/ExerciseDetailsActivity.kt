@@ -17,6 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityExerciseDetailsBinding
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
+import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -80,7 +81,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
     }
 
     private fun setVisibilityOfEditAndDeleteIcon() {
-        intent.getBooleanExtra("IS_COMMUNITY", false).let {
+        intent.getBooleanExtra(Constants.IS_COMMUNITY_INTENT, false).let {
             if (it) {
                 binding.topAppBar.menu.getItem(0).isVisible = false
                 binding.topAppBar.menu.getItem(1).isVisible = false
@@ -88,7 +89,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun getExerciseIdFromIntent() = intent.getStringExtra("EXERCISE_ID")
+    private fun getExerciseIdFromIntent() = intent.getStringExtra(Constants.EXERCISE_ID_INTENT)
 
     private fun showToast(stringId: Int) {
         Toast.makeText(this, stringId, Toast.LENGTH_LONG).show()
@@ -102,7 +103,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
 
     private val onEditCLickListener = MenuItem.OnMenuItemClickListener {
         val intent = Intent(this, ExerciseFormActivity::class.java)
-        intent.putExtra("EXERCISE_ID", viewModel.exerciseDtoMutableLiveData.value?.id)
+        intent.putExtra(Constants.EXERCISE_ID_INTENT, viewModel.exerciseDtoMutableLiveData.value?.id)
         startActivity(intent)
         true
     }
@@ -122,7 +123,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
         val popupMenu = PopupMenu(this, binding.topAppBar)
         popupMenu.setOnMenuItemClickListener(onMenuItemClickListener)
 
-        val menuResId = if (intent.getBooleanExtra("IS_COMMUNITY", false)) {
+        val menuResId = if (intent.getBooleanExtra(Constants.IS_COMMUNITY_INTENT, false)) {
             R.menu.communities_exercise
         } else {
             R.menu.own_exercise_details

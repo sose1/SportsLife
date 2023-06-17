@@ -27,6 +27,8 @@ import com.kwasowski.sportslife.ui.profile.ProfileActivity
 import com.kwasowski.sportslife.ui.settings.SettingsActivity
 import com.kwasowski.sportslife.ui.trainingLog.TrainingLogActivity
 import com.kwasowski.sportslife.ui.trainingPlans.TrainingPlansActivity
+import com.kwasowski.sportslife.utils.Constants
+import com.kwasowski.sportslife.utils.LanguageTag
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -192,7 +194,7 @@ class MainActivity : AppCompatActivity() {
         datePicker.addOnPositiveButtonClickListener { viewModel.onSelectedDateInDatePicker(it) }
         datePicker.addOnCancelListener { viewModel.onDataPickerClose() }
         datePicker.addOnNegativeButtonClickListener { viewModel.onDataPickerClose() }
-        datePicker.show(supportFragmentManager, "DATE_PICKER")
+        datePicker.show(supportFragmentManager, Constants.DATE_PICKER_TAG)
     }
 
     private fun showSnackBarInfo(stringId: Int) {
@@ -206,14 +208,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun onGetSettings(language: String) {
         when (language) {
-            "en" -> onLanguageChanged("en")
-            "pl" -> onLanguageChanged("pl")
+            LanguageTag.EN -> onLanguageChanged(LanguageTag.EN)
+            LanguageTag.PL -> onLanguageChanged(LanguageTag.PL)
             else -> {
                 val locales = AppCompatDelegate.getApplicationLocales()
                 when (val tag = locales.toLanguageTags()) {
-                    "en" -> onLanguageChanged(tag)
-                    "pl" -> onLanguageChanged(tag)
-                    else -> onLanguageChanged("en")
+                    LanguageTag.EN -> onLanguageChanged(tag)
+                    LanguageTag.PL -> onLanguageChanged(tag)
+                    else -> onLanguageChanged(LanguageTag.EN)
                 }
             }
         }
