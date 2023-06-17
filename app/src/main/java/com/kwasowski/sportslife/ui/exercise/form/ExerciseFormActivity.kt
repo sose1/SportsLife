@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityExerciseFormBinding
+import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -82,7 +83,7 @@ class ExerciseFormActivity : AppCompatActivity() {
         initCategoryDropdownMenu()
     }
 
-    private fun getExerciseIdFromIntent() = intent.getStringExtra("EXERCISE_ID")
+    private fun getExerciseIdFromIntent() = intent.getStringExtra(Constants.EXERCISE_ID_INTENT)
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
