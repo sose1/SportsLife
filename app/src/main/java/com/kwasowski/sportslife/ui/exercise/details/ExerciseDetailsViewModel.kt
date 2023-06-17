@@ -1,11 +1,11 @@
 package com.kwasowski.sportslife.ui.exercise.details
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kwasowski.sportslife.data.Result
-import com.kwasowski.sportslife.data.exercise.Category
+import com.kwasowski.sportslife.data.category.CategorySharedPreferences
+import com.kwasowski.sportslife.data.category.getTranslation
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.GetExerciseByIdUseCase
@@ -22,9 +22,8 @@ class ExerciseDetailsViewModel(
     private val deleteOwnExerciseUseCase: DeleteOwnExerciseUseCase,
     private val shareExerciseUseCase: ShareExerciseUseCase,
     private val saveExerciseUseCase: SaveExerciseUseCase,
-    private val context: Context
-) :
-    ViewModel() {
+    private val categorySharedPreferences: CategorySharedPreferences
+) : ViewModel() {
     private val mutableState = MutableStateFlow<ExerciseDetailsState>(ExerciseDetailsState.Default)
     val uiState: StateFlow<ExerciseDetailsState> = mutableState.asStateFlow()
 
@@ -46,7 +45,8 @@ class ExerciseDetailsViewModel(
                             id.value = it.data.id
                             name.value = it.data.name
                             description.value = it.data.description
-                            category.value = Category.toResourceString(context, it.data.category)
+                            category.value = categorySharedPreferences
+                                .getById(it.data.category)?.getTranslation()
                             videoLink.value = it.data.videoLink ?: ""
                             exerciseDtoMutableLiveData.value = it.data
                             mutableState.value = ExerciseDetailsState.OnSuccessGet

@@ -151,7 +151,7 @@ class OwnExerciseListFragment : Fragment() {
             R.id.edit -> {
                 Timber.d("Edit")
                 val intent = Intent(requireContext(), ExerciseFormActivity::class.java)
-                intent.putExtra("EXERCISE", exercise)
+                intent.putExtra("EXERCISE_ID", exercise.id)
                 startActivity(intent)
             }
 

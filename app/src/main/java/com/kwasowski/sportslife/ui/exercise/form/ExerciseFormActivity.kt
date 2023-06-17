@@ -14,10 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
-import com.kwasowski.sportslife.data.exercise.Category
-import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.ActivityExerciseFormBinding
-import com.kwasowski.sportslife.extensions.serializable
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -48,10 +45,15 @@ class ExerciseFormActivity : AppCompatActivity() {
         binding.exerciseDescription.addTextChangedListener(descriptionEditTextWatcher)
         binding.exerciseCategory.addTextChangedListener(categoryEditTextWatcher)
         binding.exerciseVideoLink.addTextChangedListener(videoLinkEditTextWatcher)
-        setOnSharedChangeListener()
 
         initCategoryDropdownMenu()
-        getDataFromIntent()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.setDefaultState()
+        viewModel.getExercise(getExerciseIdFromIntent())
+        setOnSharedChangeListener()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -80,21 +82,7 @@ class ExerciseFormActivity : AppCompatActivity() {
         initCategoryDropdownMenu()
     }
 
-    private fun getDataFromIntent() {
-        intent.serializable<ExerciseDto>("EXERCISE")?.let {
-            binding.topAppBar.title = getString(R.string.editing)
-            viewModel.id.value = it.id
-            viewModel.name.value = it.name
-            viewModel.description.value = it.description
-            viewModel.videoLink.value = it.videoLink
-            viewModel.category.value = Category.toResourceString(this, it.category)
-
-            binding.sharedGroup.check(
-                if (it.shared) R.id.yes
-                else R.id.no
-            )
-        } ?: binding.sharedGroup.check(R.id.no)
-    }
+    private fun getExerciseIdFromIntent() = intent.getStringExtra("EXERCISE_ID")
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -135,6 +123,19 @@ class ExerciseFormActivity : AppCompatActivity() {
                     ExerciseFormState.OnSuccessSave -> {
                         showToast(R.string.success_save_exercise)
                         finish()
+                    }
+
+                    ExerciseFormState.OnFailureGet -> showToast(R.string.network_connection_error_please_try_again_later)
+                    ExerciseFormState.OnSuccessGet -> {
+                        binding.topAppBar.title = getString(R.string.editing)
+                        viewModel.shared.value?.let { shared ->
+                            binding.sharedGroup.check(
+                                if (shared)
+                                    R.id.yes
+                                else
+                                    R.id.no
+                            )
+                        } ?: binding.sharedGroup.check(R.id.no)
                     }
                 }
             }
@@ -199,16 +200,14 @@ class ExerciseFormActivity : AppCompatActivity() {
     }
 
     private fun initCategoryDropdownMenu() {
-        val categories = resources.getStringArray(R.array.exercise_category)
-        viewModel.categoriesResourcesList = categories
         val categoryAdapter =
-            object : ArrayAdapter<String>(this, R.layout.dropdown_item, categories.toList()) {
+            object : ArrayAdapter<String>(this, R.layout.dropdown_item, viewModel.categoriesNames) {
                 override fun getFilter(): Filter {
                     return object : Filter() {
                         override fun performFiltering(constraint: CharSequence?): FilterResults {
                             val filterResults = FilterResults()
-                            filterResults.values = categories
-                            filterResults.count = categories.size
+                            filterResults.values = viewModel.categoriesNames
+                            filterResults.count = viewModel.categoriesNames.size
                             return filterResults
                         }
 

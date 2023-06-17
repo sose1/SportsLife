@@ -102,7 +102,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
 
     private val onEditCLickListener = MenuItem.OnMenuItemClickListener {
         val intent = Intent(this, ExerciseFormActivity::class.java)
-        intent.putExtra("EXERCISE", viewModel.exerciseDtoMutableLiveData.value)
+        intent.putExtra("EXERCISE_ID", viewModel.exerciseDtoMutableLiveData.value?.id)
         startActivity(intent)
         true
     }
