@@ -8,8 +8,10 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.data.Result
+import com.kwasowski.sportslife.data.category.CategorySharedPreferences
 import com.kwasowski.sportslife.data.settings.Settings
 import com.kwasowski.sportslife.data.settings.SettingsManager
+import com.kwasowski.sportslife.domain.category.GetCategoriesUseCase
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
 import com.kwasowski.sportslife.extensions.addDays
 import com.kwasowski.sportslife.extensions.getNarrowName
@@ -26,7 +28,9 @@ import java.util.Date
 
 class MainViewModel(
     private val getSettingsUseCase: GetSettingsUseCase,
-    private val settingsManager: SettingsManager
+    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val settingsManager: SettingsManager,
+    private val categorySharedPreferences: CategorySharedPreferences
 ) : ViewModel() {
     private val auth = Firebase.auth
     private val mutableState = MutableStateFlow<MainViewState>(MainViewState.Default)
@@ -39,6 +43,24 @@ class MainViewModel(
     private var currentSettings = Settings()
 
     init {
+        getSetting()
+        getCategories()
+    }
+
+    private fun getCategories() {
+        viewModelScope.launch {
+            getCategoriesUseCase.execute().let {
+                when (it) {
+                    is Result.Failure -> Unit
+                    is Result.Success -> {
+                        categorySharedPreferences.saveToPreferences(it.data)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getSetting() {
         viewModelScope.launch {
             getSettingsUseCase.execute().let {
                 when (it) {

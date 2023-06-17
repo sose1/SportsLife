@@ -10,4 +10,6 @@ sealed class ExerciseFormState {
     object OnDescriptionLengthLimitError: ExerciseFormState()
     object OnError : ExerciseFormState()
     object OnSuccessSave : ExerciseFormState()
+    object OnSuccessGet : ExerciseFormState()
+    object OnFailureGet : ExerciseFormState()
 }

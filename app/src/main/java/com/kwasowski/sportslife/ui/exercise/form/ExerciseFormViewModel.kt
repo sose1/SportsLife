@@ -5,16 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kwasowski.sportslife.data.Result
-import com.kwasowski.sportslife.data.exercise.Category
+import com.kwasowski.sportslife.data.category.CategorySharedPreferences
+import com.kwasowski.sportslife.data.category.getTranslation
+import com.kwasowski.sportslife.domain.exercise.GetExerciseByIdUseCase
 import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class ExerciseFormViewModel(
-    private val saveExerciseUseCase: SaveExerciseUseCase) : ViewModel() {
-    lateinit var categoriesResourcesList: Array<String>
+    private val saveExerciseUseCase: SaveExerciseUseCase,
+    private val getExerciseByIdUseCase: GetExerciseByIdUseCase,
+    private val categorySharedPreferences: CategorySharedPreferences) : ViewModel() {
 
     private val mutableState = MutableStateFlow<ExerciseFormState>(ExerciseFormState.Default)
     val uiState: StateFlow<ExerciseFormState> = mutableState.asStateFlow()
@@ -26,9 +30,16 @@ class ExerciseFormViewModel(
     val videoLink = MutableLiveData<String>()
     val shared = MutableLiveData<Boolean>()
 
+    var categoriesNames = mutableListOf<String>()
     enum class InputLengthLimit(val value: Int) {
         NAME(50),
         DESCRIPTION(250)
+    }
+
+    init {
+        categoriesNames.clear()
+        categorySharedPreferences.getCategories().forEach { categoriesNames.add(it.getTranslation()) }
+        categoriesNames.sort()
     }
 
     fun setStateToDefault() {
@@ -42,8 +53,7 @@ class ExerciseFormViewModel(
                     id = id.value,
                     name = name.value,
                     description = description.value,
-                    category = Category.fromString
-                        (category.value, categoriesResourcesList).toString(),
+                    category = categorySharedPreferences.getCategoriesByTranslation(category.value)?.id,
                     videoLink = videoLink.value,
                     shared = shared.value
                 )
@@ -84,5 +94,31 @@ class ExerciseFormViewModel(
         }
 
         return isValid
+    }
+
+    fun setDefaultState() {
+        mutableState.value = ExerciseFormState.Default
+    }
+
+    fun getExercise(exerciseId: String?) {
+
+        viewModelScope.launch {
+            if (!exerciseId.isNullOrBlank())
+                getExerciseByIdUseCase.execute(exerciseId).let {
+                    when (it) {
+                        is Result.Failure -> mutableState.value = ExerciseFormState.OnFailureGet
+                        is Result.Success -> {
+                            Timber.d("${it.data}")
+                            id.value = it.data.id
+                            name.value = it.data.name
+                            description.value = it.data.description
+                            category.value = categorySharedPreferences
+                                .getById(it.data.category)?.getTranslation()
+                            videoLink.value = it.data.videoLink ?: ""
+                            mutableState.value = ExerciseFormState.OnSuccessGet
+                        }
+                    }
+                }
+        }
     }
 }
