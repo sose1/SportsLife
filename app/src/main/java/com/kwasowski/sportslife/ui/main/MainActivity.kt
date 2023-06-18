@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                     is MainViewState.OnInitDays -> onInitDays(it.days, it.todayIndex)
                     is MainViewState.OnDaysListUpdate -> onDaysListUpdate(it.days)
                     is MainViewState.OnDayItemClick -> onDayItemClick(it.day, it.indexOf)
-                    is MainViewState.OnDataPickerOpen -> onDataPickerOpen(it.constraints)
+                    is MainViewState.OnDataPickerOpen -> onDatePickerOpen(it.constraints)
                     is MainViewState.OnIndexOutOfBoundsException -> showSnackBarInfo(R.string.you_cannot_select_this_date_please_try_another_one)
                     is MainViewState.OnTitleChange -> onTitleChange(it.month, it.year)
                     MainViewState.OnLogout -> openActivity(LoginActivity::class.java)
@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity() {
         else -> false
     }
 
-    private fun onDataPickerOpen(constraints: CalendarConstraints) {
+    private fun onDatePickerOpen(constraints: CalendarConstraints) {
         Timber.d("onDataPickerOpen")
         val datePicker = MaterialDatePicker.Builder.datePicker()
             .setCalendarConstraints(constraints)
@@ -192,8 +192,8 @@ class MainActivity : AppCompatActivity() {
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
         datePicker.addOnPositiveButtonClickListener { viewModel.onSelectedDateInDatePicker(it) }
-        datePicker.addOnCancelListener { viewModel.onDataPickerClose() }
-        datePicker.addOnNegativeButtonClickListener { viewModel.onDataPickerClose() }
+        datePicker.addOnCancelListener { viewModel.onDatePickerClose() }
+        datePicker.addOnNegativeButtonClickListener { viewModel.onDatePickerClose() }
         datePicker.show(supportFragmentManager, Constants.DATE_PICKER_TAG)
     }
 

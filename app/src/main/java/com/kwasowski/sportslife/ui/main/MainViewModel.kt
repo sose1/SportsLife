@@ -145,7 +145,7 @@ class MainViewModel(
         mutableState.value = MainViewState.OnDataPickerOpen(constraints)
     }
 
-    fun onDataPickerClose() {
+    fun onDatePickerClose() {
         mutableState.value = MainViewState.Default
     }
 
