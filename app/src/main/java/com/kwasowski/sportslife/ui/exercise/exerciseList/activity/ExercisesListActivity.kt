@@ -54,6 +54,4 @@ class ExercisesListActivity : AppCompatActivity() {
             startActivity(Intent(this, ExerciseFormActivity::class.java))
         }
     }
-
-
 }
