@@ -115,6 +115,7 @@ class ExerciseFormViewModel(
                             category.value = categorySharedPreferences
                                 .getById(it.data.category)?.getTranslation()
                             videoLink.value = it.data.videoLink ?: ""
+                            shared.value = it.data.shared
                             mutableState.value = ExerciseFormState.OnSuccessGet
                         }
                     }
