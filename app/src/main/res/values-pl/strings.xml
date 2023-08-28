@@ -116,4 +116,5 @@
     <string name="video">Film</string>
     <string name="watch_video">Obejrzyj film</string>
     <string name="more">Więcej</string>
+    <string name="added_to_favorites">Dodano do ulubionych</string>
 </resources>

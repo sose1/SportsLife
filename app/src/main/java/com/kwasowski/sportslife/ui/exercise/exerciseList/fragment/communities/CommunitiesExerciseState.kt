@@ -7,6 +7,7 @@ sealed class CommunitiesExerciseState {
     object OnSuccessGetExerciseList : CommunitiesExerciseState()
     object OnFailure : CommunitiesExerciseState()
     object OnSuccessCopy : CommunitiesExerciseState()
+    object OnSuccessAddToFav : CommunitiesExerciseState()
 
     class OnFilteredExercises(val filteredList: List<ExerciseDto>) : CommunitiesExerciseState()
 }

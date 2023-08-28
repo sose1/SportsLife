@@ -8,6 +8,7 @@ import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.data.Result
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -135,4 +136,56 @@ class FirestoreExerciseRepository : ExerciseRepository {
                     continuation.resume(Result.Failure(it))
                 }
         }
+
+    override suspend fun getFavoriteExercises(userId: String): Result<List<ExerciseDto>> {
+
+        val junctions = Firebase.firestore.collection("user_exercises")
+            .whereEqualTo("userId", userId)
+            .get()
+            .await()
+
+        val exerciseDocs = junctions.documents.filter {
+            it.exists()
+        }.map {
+            collection.document(it.data?.get("exerciseId").toString()).get().await()
+        }
+
+        val exercisesList = mutableListOf<ExerciseDto>()
+        exerciseDocs.filter { it.exists() }.map { documentSnapshot ->
+            documentSnapshot.toObject<Exercise>()?.let {
+                exercisesList.add(
+                    ExerciseDto(
+                        id = documentSnapshot.id,
+                        name = it.name,
+                        description = it.description,
+                        category = it.category,
+                        videoLink = it.videoLink,
+                        shared = it.shared,
+                        ownerId = it.ownerId,
+                        updateDate = it.updateDate
+                    )
+                )
+            }
+        }
+
+        return Result.Success(exercisesList)
+    }
+
+    override suspend fun addFavoriteExercise(userId: String, exerciseId: String): Result<Unit> {
+        val deferred = CompletableDeferred<Result<Unit>>()
+        Firebase.firestore.collection("user_exercises")
+            .document("$userId-$exerciseId")
+            .set(
+                mapOf(
+                    "userId" to userId,
+                    "exerciseId" to exerciseId
+                )
+            )
+            .addOnSuccessListener { deferred.complete(Result.Success(Unit)) }
+            .addOnFailureListener { deferred.complete(Result.Failure(it)) }
+        return withContext(Dispatchers.Main) {
+            deferred.await()
+        }
+
+    }
 }

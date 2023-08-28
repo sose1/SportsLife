@@ -23,11 +23,6 @@
             android:checkable="true"
             android:icon="@drawable/baseline_list_24"
             android:title="@string/exercise_list"/>
-        <item
-            android:id="@+id/favorite_exercises_item"
-            android:checkable="true"
-            android:icon="@drawable/favorite"
-            android:title="@string/favorite_exercises" />
     </group>
     <group
         android:id="@+id/personalization"

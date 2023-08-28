@@ -121,6 +121,7 @@ class OwnExerciseListFragment : Fragment() {
                     }
 
                     is OwnExerciseListState.OnFilteredExercises -> adapter.updateList(it.filteredList)
+                    OwnExerciseListState.OnSuccessAddToFav -> showToast(R.string.added_to_favorites)
                 }
             }
         }
@@ -146,7 +147,7 @@ class OwnExerciseListFragment : Fragment() {
 
             R.id.add_to_fav -> {
                 Timber.d("Add to fav")
-
+                viewModel.addToFav(exercise)
             }
 
             R.id.edit -> {

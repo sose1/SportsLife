@@ -105,6 +105,7 @@ class CommunitiesExerciseListFragment : Fragment() {
 
                     is CommunitiesExerciseState.OnFilteredExercises -> adapter.updateList(it.filteredList)
                     CommunitiesExerciseState.OnSuccessCopy -> showToast(R.string.success_copy_to_own)
+                    CommunitiesExerciseState.OnSuccessAddToFav -> showToast(R.string.added_to_favorites)
                 }
             }
         }
@@ -127,6 +128,7 @@ class CommunitiesExerciseListFragment : Fragment() {
 
             R.id.add_to_fav -> {
                 Timber.d("Add to fav")
+                viewModel.addToFav(exercise)
             }
 
             R.id.copy_to_own -> {

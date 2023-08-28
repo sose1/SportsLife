@@ -11,9 +11,11 @@ import com.kwasowski.sportslife.data.settings.FirestoreSettingsRepository
 import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.settings.SettingsRepository
 import com.kwasowski.sportslife.domain.category.GetCategoriesUseCase
+import com.kwasowski.sportslife.domain.exercise.AddToFavExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.GetExerciseByIdUseCase
 import com.kwasowski.sportslife.domain.exercise.GetExerciseListByOwnerIdUseCase
+import com.kwasowski.sportslife.domain.exercise.GetFavExercisesUseCase
 import com.kwasowski.sportslife.domain.exercise.GetSharedExercisesUseCase
 import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.ShareExerciseUseCase
@@ -62,4 +64,6 @@ val appModule = module {
     factoryOf(::GetSharedExercisesUseCase)
     factoryOf(::GetExerciseByIdUseCase)
     factoryOf(::GetCategoriesUseCase)
+    factoryOf(::AddToFavExerciseUseCase)
+    factoryOf(::GetFavExercisesUseCase)
 }

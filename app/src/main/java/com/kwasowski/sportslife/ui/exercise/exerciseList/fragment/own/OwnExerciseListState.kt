@@ -9,6 +9,7 @@ sealed class OwnExerciseListState {
     object OnFailure : OwnExerciseListState()
     object OnSuccessSharedExercise : OwnExerciseListState()
     object OnSuccessDeletingExercise : OwnExerciseListState()
+    object OnSuccessAddToFav : OwnExerciseListState()
 
     class OnFilteredExercises(val filteredList: List<ExerciseDto>) : OwnExerciseListState()
 
