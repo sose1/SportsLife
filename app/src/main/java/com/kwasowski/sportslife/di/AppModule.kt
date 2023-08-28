@@ -25,6 +25,7 @@ import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
 import com.kwasowski.sportslife.domain.settings.SaveSettingsUseCase
 import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsViewModel
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities.CommunitiesExerciseListViewModel
+import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.fav.FavExerciseListViewModel
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own.OwnExerciseListViewModel
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormViewModel
 import com.kwasowski.sportslife.ui.login.LoginViewModel
@@ -43,6 +44,7 @@ val appModule = module {
     viewModelOf(::SettingsViewModel)
     viewModelOf(::OwnExerciseListViewModel)
     viewModelOf(::CommunitiesExerciseListViewModel)
+    viewModelOf(::FavExerciseListViewModel)
     viewModelOf(::ExerciseFormViewModel)
     viewModelOf(::ExerciseDetailsViewModel)
 
@@ -51,7 +53,7 @@ val appModule = module {
     single<ExerciseRepository> { FirestoreExerciseRepository() }
     single<CategoryRepository> { FirestoreCategoryRepository() }
     singleOf(::SettingsManager)
-    singleOf( ::CategorySharedPreferences)
+    singleOf(::CategorySharedPreferences)
 
     factoryOf(::SaveProfileUseCase)
     factoryOf(::GetProfileUseCase)

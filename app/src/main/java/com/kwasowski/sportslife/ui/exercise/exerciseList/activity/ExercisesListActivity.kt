@@ -13,6 +13,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityExercisesListBinding
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities.CommunitiesExerciseListFragment
+import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.fav.FavExerciseListFragment
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own.OwnExerciseListFragment
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 
@@ -23,6 +24,7 @@ class ExercisesListActivity : AppCompatActivity() {
     val fragments = listOf(
         { OwnExerciseListFragment() } to R.string.own,
         { CommunitiesExerciseListFragment() } to R.string.communities,
+        { FavExerciseListFragment() } to R.string.favorites
     )
 
     private inner class FragmentPagerAdapter(fm: FragmentManager, lifecycle: Lifecycle) :
