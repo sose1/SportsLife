@@ -40,13 +40,12 @@
                 tools:listitem="@layout/item_exercise">
 
             </androidx.recyclerview.widget.RecyclerView>
-<!--TODO zamiana tekstu-->
             <TextView
                 android:id="@+id/emptyListInfo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/roboto_medium"
-                android:text="@string/exercise_empty_list_message"
+                android:text="@string/exercise_fav_empty_list_message"
                 android:textAlignment="center"
                 android:textSize="36sp"
                 android:visibility="gone" />
