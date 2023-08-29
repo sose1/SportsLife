@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.fav
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.databinding.FragmentFavExerciseListBinding
+import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsActivity
+import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class FavExerciseListFragment : Fragment() {
     private val viewModel: FavExerciseListViewModel by viewModel()
@@ -55,10 +62,10 @@ class FavExerciseListFragment : Fragment() {
         adapter = FavExercisesAdapter(
             context = requireContext(),
             onMenuItemSelected = { exercise, menuItemId ->
-                //TODO implemented()
+                onExerciseMenuItemSelected(exercise, menuItemId)
             },
             onItemClick = { exercise ->
-                //TODO implemented()
+                onItemClick(exercise)
             }
         )
 
@@ -105,6 +112,11 @@ class FavExerciseListFragment : Fragment() {
                         binding.progress.visibility = View.GONE
                         viewModel.filterExercises(queryText)
                     }
+
+                    FavExerciseListState.OnSuccessDeletingExercise -> {
+                        showToast(R.string.removed_exercise_from_favorites)
+                        viewModel.getExerciseList()
+                    }
                 }
             }
         }
@@ -113,6 +125,28 @@ class FavExerciseListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getExerciseList()
+    }
+
+    private fun onExerciseMenuItemSelected(exercise: ExerciseDto, menuItemId: Int) {
+        Timber.d("$menuItemId | $exercise")
+        when (menuItemId) {
+            R.id.add_to_training -> {
+                Timber.d("Add to training")
+            }
+
+            R.id.remove_from_likes -> {
+                Timber.d("Remove from fav")
+                viewModel.removeFromLikes(exercise)
+            }
+        }
+    }
+
+    private fun onItemClick(exercise: ExerciseDto) {
+        val intent = Intent(requireContext(), ExerciseDetailsActivity::class.java)
+        intent.putExtra(Constants.EXERCISE_ID_INTENT, exercise.id)
+        if (exercise.ownerId != Firebase.auth.currentUser?.uid)
+            intent.putExtra(Constants.IS_COMMUNITY_INTENT, true)
+        startActivity(intent)
     }
 
     private fun showToast(stringId: Int) {

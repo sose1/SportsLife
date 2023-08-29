@@ -61,7 +61,7 @@ class FavExercisesAdapter(private val context: Context,
         private fun createPopupMenu() {
             val popupMenu = PopupMenu(context, binding.moreButton)
             popupMenu.setOnMenuItemClickListener(onMenuItemClickListener)
-            popupMenu.menuInflater.inflate(R.menu.own_exercise, popupMenu.menu)
+            popupMenu.menuInflater.inflate(R.menu.fav_exercise, popupMenu.menu)
             popupMenu.gravity = Gravity.RIGHT
 
             try {

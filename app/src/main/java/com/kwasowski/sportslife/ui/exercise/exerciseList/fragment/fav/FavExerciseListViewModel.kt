@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.kwasowski.sportslife.data.Result
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
 import com.kwasowski.sportslife.domain.exercise.GetFavExercisesUseCase
+import com.kwasowski.sportslife.domain.exercise.RemoveFromFavExerciseUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class FavExerciseListViewModel(
-    private val getFavExercisesUseCase: GetFavExercisesUseCase
+    private val getFavExercisesUseCase: GetFavExercisesUseCase,
+    private val removeFromFavExerciseUseCase: RemoveFromFavExerciseUseCase
 ): ViewModel() {
     private val mutableState = MutableStateFlow<FavExerciseListState>(FavExerciseListState.Default)
     val uiState: StateFlow<FavExerciseListState> = mutableState.asStateFlow()
@@ -46,5 +48,16 @@ class FavExerciseListViewModel(
             }
         }
         mutableState.value = FavExerciseListState.OnFilteredExercises(filteredList)
+    }
+
+    fun removeFromLikes(exercise: ExerciseDto) {
+        Timber.d("deleteExercise: $exercise")
+        viewModelScope.launch {
+            when (removeFromFavExerciseUseCase.execute(exercise.id)) {
+                is Result.Failure -> mutableState.value = FavExerciseListState.OnFailure
+                is Result.Success -> mutableState.value =
+                    FavExerciseListState.OnSuccessDeletingExercise
+            }
+        }
     }
 }

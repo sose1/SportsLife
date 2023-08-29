@@ -10,4 +10,5 @@ sealed class FavExerciseListState {
     object OnFailure : FavExerciseListState()
     object OnSuccessGetEmptyList : FavExerciseListState()
     object OnSuccessGetExerciseList : FavExerciseListState()
+    object OnSuccessDeletingExercise : FavExerciseListState()
 }

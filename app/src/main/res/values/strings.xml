@@ -127,4 +127,6 @@
     <string name="more">More</string>
     <string name="added_to_favorites">Added to favorites</string>
     <string name="favorites">Favorites</string>
+    <string name="delete_from_fav">Remove from favorites</string>
+    <string name="removed_exercise_from_favorites">Removed from favorites</string>
 </resources>

@@ -34,7 +34,6 @@ class ExerciseDetailsActivity : AppCompatActivity() {
 
         onViewStateChanged()
         setVisibilityOfEditAndDeleteIcon()
-
         binding.topAppBar.setNavigationOnClickListener { finish() }
         binding.topAppBar.menu.getItem(0)
             .setOnMenuItemClickListener { onEditCLickListener.onMenuItemClick(it) }
@@ -43,6 +42,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
         binding.topAppBar.menu.getItem(2)
             .setOnMenuItemClickListener { onMoreClickListener.onMenuItemClick(it) }
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -74,6 +74,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
 
                     ExerciseDetailsState.OnSuccessCopy -> showToast(R.string.success_copy_to_own)
                     ExerciseDetailsState.OnSuccessSharedExercise -> showToast(R.string.exercise_was_successfully_shared)
+                    ExerciseDetailsState.OnSuccessAddToFav -> showToast(R.string.added_to_favorites)
 
                 }
             }
@@ -103,7 +104,10 @@ class ExerciseDetailsActivity : AppCompatActivity() {
 
     private val onEditCLickListener = MenuItem.OnMenuItemClickListener {
         val intent = Intent(this, ExerciseFormActivity::class.java)
-        intent.putExtra(Constants.EXERCISE_ID_INTENT, viewModel.exerciseDtoMutableLiveData.value?.id)
+        intent.putExtra(
+            Constants.EXERCISE_ID_INTENT,
+            viewModel.exerciseDtoMutableLiveData.value?.id
+        )
         startActivity(intent)
         true
     }
@@ -156,6 +160,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
 
                 R.id.add_to_fav -> {
                     Timber.d("Add to fav")
+                    viewModel.addToFav()
                 }
 
                 R.id.share -> {

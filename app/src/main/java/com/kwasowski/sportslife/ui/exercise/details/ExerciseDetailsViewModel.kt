@@ -7,6 +7,7 @@ import com.kwasowski.sportslife.data.Result
 import com.kwasowski.sportslife.data.category.CategorySharedPreferences
 import com.kwasowski.sportslife.data.category.getTranslation
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
+import com.kwasowski.sportslife.domain.exercise.AddToFavExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.GetExerciseByIdUseCase
 import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
@@ -22,6 +23,7 @@ class ExerciseDetailsViewModel(
     private val deleteOwnExerciseUseCase: DeleteOwnExerciseUseCase,
     private val shareExerciseUseCase: ShareExerciseUseCase,
     private val saveExerciseUseCase: SaveExerciseUseCase,
+    private val addToFavExerciseUseCase: AddToFavExerciseUseCase,
     private val categorySharedPreferences: CategorySharedPreferences
 ) : ViewModel() {
     private val mutableState = MutableStateFlow<ExerciseDetailsState>(ExerciseDetailsState.Default)
@@ -103,6 +105,18 @@ class ExerciseDetailsViewModel(
             )) {
                 is Result.Failure -> mutableState.value = ExerciseDetailsState.OnFailure
                 is Result.Success -> mutableState.value = ExerciseDetailsState.OnSuccessCopy
+            }
+        }
+    }
+
+    fun addToFav() {
+        Timber.d("addToFav: $exerciseDtoMutableLiveData")
+
+        viewModelScope.launch {
+            when (addToFavExerciseUseCase.execute(exerciseDtoMutableLiveData.value!!.id)) {
+                is Result.Failure -> mutableState.value = ExerciseDetailsState.OnFailure
+                is Result.Success -> mutableState.value =
+                    ExerciseDetailsState.OnSuccessAddToFav
             }
         }
     }

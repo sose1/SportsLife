@@ -17,6 +17,7 @@ import com.kwasowski.sportslife.domain.exercise.GetExerciseByIdUseCase
 import com.kwasowski.sportslife.domain.exercise.GetExerciseListByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.exercise.GetFavExercisesUseCase
 import com.kwasowski.sportslife.domain.exercise.GetSharedExercisesUseCase
+import com.kwasowski.sportslife.domain.exercise.RemoveFromFavExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.ShareExerciseUseCase
 import com.kwasowski.sportslife.domain.profile.GetProfileUseCase
@@ -68,4 +69,5 @@ val appModule = module {
     factoryOf(::GetCategoriesUseCase)
     factoryOf(::AddToFavExerciseUseCase)
     factoryOf(::GetFavExercisesUseCase)
+    factoryOf(::RemoveFromFavExerciseUseCase)
 }

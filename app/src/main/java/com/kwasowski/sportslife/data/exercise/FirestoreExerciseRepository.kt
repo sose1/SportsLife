@@ -10,6 +10,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -150,8 +151,16 @@ class FirestoreExerciseRepository : ExerciseRepository {
             collection.document(it.data?.get("exerciseId").toString()).get().await()
         }
 
+
+        Timber.d("Count: ${exerciseDocs.count()}")
+        exerciseDocs.filter { !it.exists() }.forEach {
+            removeFromFav(userId, it.id)
+        }
+        Timber.d("Count: ${exerciseDocs.count()}")
+
         val exercisesList = mutableListOf<ExerciseDto>()
         exerciseDocs.filter { it.exists() }.map { documentSnapshot ->
+            Timber.d("Doc: $documentSnapshot")
             documentSnapshot.toObject<Exercise>()?.let {
                 exercisesList.add(
                     ExerciseDto(
@@ -168,7 +177,8 @@ class FirestoreExerciseRepository : ExerciseRepository {
             }
         }
 
-        return Result.Success(exercisesList)
+        val sortedList = exercisesList.sortedByDescending { it.updateDate }
+        return Result.Success(sortedList)
     }
 
     override suspend fun addFavoriteExercise(userId: String, exerciseId: String): Result<Unit> {
@@ -187,5 +197,16 @@ class FirestoreExerciseRepository : ExerciseRepository {
             deferred.await()
         }
 
+    }
+
+    override suspend fun removeFromFav(userId: String, exerciseId: String): Result<Unit> {
+        val deferred = CompletableDeferred<Result<Unit>>()
+        Firebase.firestore.collection("user_exercises").document("$userId-$exerciseId")
+            .delete()
+            .addOnSuccessListener { deferred.complete(Result.Success(Unit)) }
+            .addOnFailureListener { Result.Failure(it) }
+        return withContext(Dispatchers.Main) {
+            deferred.await()
+        }
     }
 }
