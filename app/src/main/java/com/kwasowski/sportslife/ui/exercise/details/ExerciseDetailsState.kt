@@ -9,4 +9,5 @@ sealed class ExerciseDetailsState {
     object OnSuccessDelete : ExerciseDetailsState()
     object OnSuccessSharedExercise : ExerciseDetailsState()
     object OnSuccessCopy : ExerciseDetailsState()
+    object OnSuccessAddToFav : ExerciseDetailsState()
 }

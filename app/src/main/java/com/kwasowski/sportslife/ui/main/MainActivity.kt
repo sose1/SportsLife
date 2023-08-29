@@ -19,7 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityMainBinding
 import com.kwasowski.sportslife.ui.exercise.exerciseList.activity.ExercisesListActivity
-import com.kwasowski.sportslife.ui.exercise.favorite.FavExercisesActivity
 import com.kwasowski.sportslife.ui.login.LoginActivity
 import com.kwasowski.sportslife.ui.main.appBarDays.Day
 import com.kwasowski.sportslife.ui.main.appBarDays.DaysAdapter
@@ -123,11 +122,6 @@ class MainActivity : AppCompatActivity() {
 
             R.id.exercises_list -> {
                 openActivity(ExercisesListActivity::class.java)
-                true
-            }
-
-            R.id.favorite_exercises_item -> {
-                openActivity(FavExercisesActivity::class.java)
                 true
             }
 

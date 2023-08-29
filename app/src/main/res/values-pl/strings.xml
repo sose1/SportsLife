@@ -98,6 +98,7 @@
     </string-array>
     <string name="success_save_exercise">Pomyślnie zapisano ćwiczenie</string>
     <string name="exercise_empty_list_message">Trochę tutaj pusto…\nDodaj swoje ćwiczenia i\nuzupełnij bazę aktywności!</string>
+    <string name="exercise_fav_empty_list_message">Trochę tutaj pusto…\nPolub ćwiczenia, żeby uzupełnić tę listę!</string>
     <string name="exercise_was_successfully_shared">Pomyślnie udostępniono ćwiczenie.</string>
     <string name="correctly_deleted_exercise">Poprawnie usunięto ćwiczenie.</string>
     <string name="add_to_training">Dodaj do treningu</string>
@@ -116,4 +117,8 @@
     <string name="video">Film</string>
     <string name="watch_video">Obejrzyj film</string>
     <string name="more">Więcej</string>
+    <string name="added_to_favorites">Dodano do ulubionych</string>
+    <string name="favorites">Ulubione</string>
+    <string name="delete_from_fav">Usuń z ulubionych</string>
+    <string name="removed_exercise_from_favorites">Usunięto z ulubionych</string>
 </resources>

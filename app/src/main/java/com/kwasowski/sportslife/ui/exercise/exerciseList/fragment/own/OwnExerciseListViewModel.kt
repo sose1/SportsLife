@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kwasowski.sportslife.data.Result
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
+import com.kwasowski.sportslife.domain.exercise.AddToFavExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.GetExerciseListByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.exercise.ShareExerciseUseCase
@@ -16,7 +17,8 @@ import timber.log.Timber
 class OwnExerciseListViewModel(
     private val getExerciseListByOwnerIdUseCase: GetExerciseListByOwnerIdUseCase,
     private val shareExerciseUseCase: ShareExerciseUseCase,
-    private val deleteOwnExerciseUseCase: DeleteOwnExerciseUseCase
+    private val deleteOwnExerciseUseCase: DeleteOwnExerciseUseCase,
+    private val addToFavExerciseUseCase: AddToFavExerciseUseCase
 ) :
     ViewModel() {
     private val mutableState = MutableStateFlow<OwnExerciseListState>(OwnExerciseListState.Default)
@@ -67,10 +69,22 @@ class OwnExerciseListViewModel(
     fun deleteExercise(exercise: ExerciseDto) {
         Timber.d("deleteExercise: $exercise")
         viewModelScope.launch {
-            when(deleteOwnExerciseUseCase.execute(exercise.id)) {
+            when (deleteOwnExerciseUseCase.execute(exercise.id)) {
                 is Result.Failure -> mutableState.value = OwnExerciseListState.OnFailure
                 is Result.Success -> mutableState.value =
                     OwnExerciseListState.OnSuccessDeletingExercise
+            }
+        }
+    }
+
+    fun addToFav(exercise: ExerciseDto) {
+        Timber.d("addToFav: $exercise")
+
+        viewModelScope.launch {
+            when (addToFavExerciseUseCase.execute(exercise.id)) {
+                is Result.Failure -> mutableState.value = OwnExerciseListState.OnFailure
+                is Result.Success -> mutableState.value =
+                    OwnExerciseListState.OnSuccessAddToFav
             }
         }
     }

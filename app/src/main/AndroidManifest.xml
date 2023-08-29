@@ -35,9 +35,6 @@
             android:name=".ui.trainingLog.TrainingLogActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.exercise.favorite.FavExercisesActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.exercise.exerciseList.activity.ExercisesListActivity"
             android:exported="false" />
         <activity

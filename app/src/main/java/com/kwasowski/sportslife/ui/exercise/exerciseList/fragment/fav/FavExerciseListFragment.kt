@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own
+package com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.fav
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,21 +12,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.exercise.ExerciseDto
-import com.kwasowski.sportslife.databinding.FragmentOwnExerciseListBinding
+import com.kwasowski.sportslife.databinding.FragmentFavExerciseListBinding
 import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsActivity
-import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class OwnExerciseListFragment : Fragment() {
-    private val viewModel: OwnExerciseListViewModel by viewModel()
-    private lateinit var binding: FragmentOwnExerciseListBinding
+class FavExerciseListFragment : Fragment() {
+    private val viewModel: FavExerciseListViewModel by viewModel()
+    private lateinit var binding: FragmentFavExerciseListBinding
 
-    private lateinit var adapter: OwnExercisesAdapter
+    private lateinit var adapter: FavExercisesAdapter
     private var queryText: String = ""
 
     private val onQueryTextListener = object : SearchView.OnQueryTextListener {
@@ -49,7 +50,7 @@ class OwnExerciseListFragment : Fragment() {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_own_exercise_list,
+            R.layout.fragment_fav_exercise_list,
             container,
             false
         )
@@ -58,7 +59,7 @@ class OwnExerciseListFragment : Fragment() {
         binding.progress.visibility = View.VISIBLE
         onViewStateChanged()
 
-        adapter = OwnExercisesAdapter(
+        adapter = FavExercisesAdapter(
             context = requireContext(),
             onMenuItemSelected = { exercise, menuItemId ->
                 onExerciseMenuItemSelected(exercise, menuItemId)
@@ -91,37 +92,31 @@ class OwnExerciseListFragment : Fragment() {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.uiState.collect {
                 when (it) {
-                    OwnExerciseListState.Default -> Unit
-                    OwnExerciseListState.OnFailure -> {
+                    FavExerciseListState.Default -> Unit
+                    FavExerciseListState.OnFailure -> {
                         binding.emptyListInfo.visibility = View.VISIBLE
                         binding.progress.visibility = View.GONE
                         adapter.updateList(emptyList())
                         showToast(R.string.network_connection_error_please_try_again_later)
                     }
 
-                    OwnExerciseListState.OnSuccessGetEmptyList -> {
+                    is FavExerciseListState.OnFilteredExercises -> adapter.updateList(it.filteredList)
+                    FavExerciseListState.OnSuccessGetEmptyList -> {
                         binding.emptyListInfo.visibility = View.VISIBLE
                         binding.progress.visibility = View.GONE
                         adapter.updateList(emptyList())
                     }
 
-                    OwnExerciseListState.OnSuccessGetExerciseList -> {
+                    FavExerciseListState.OnSuccessGetExerciseList -> {
                         binding.emptyListInfo.visibility = View.GONE
                         binding.progress.visibility = View.GONE
                         viewModel.filterExercises(queryText)
                     }
 
-                    OwnExerciseListState.OnSuccessSharedExercise ->
-                        showToast(R.string.exercise_was_successfully_shared)
-
-
-                    OwnExerciseListState.OnSuccessDeletingExercise -> {
-                        showToast(R.string.correctly_deleted_exercise)
+                    FavExerciseListState.OnSuccessDeletingExercise -> {
+                        showToast(R.string.removed_exercise_from_favorites)
                         viewModel.getExerciseList()
                     }
-
-                    is OwnExerciseListState.OnFilteredExercises -> adapter.updateList(it.filteredList)
-                    OwnExerciseListState.OnSuccessAddToFav -> showToast(R.string.added_to_favorites)
                 }
             }
         }
@@ -132,12 +127,6 @@ class OwnExerciseListFragment : Fragment() {
         viewModel.getExerciseList()
     }
 
-    private fun onItemClick(exercise: ExerciseDto) {
-        val intent = Intent(requireContext(), ExerciseDetailsActivity::class.java)
-        intent.putExtra(Constants.EXERCISE_ID_INTENT, exercise.id)
-        startActivity(intent)
-    }
-
     private fun onExerciseMenuItemSelected(exercise: ExerciseDto, menuItemId: Int) {
         Timber.d("$menuItemId | $exercise")
         when (menuItemId) {
@@ -145,28 +134,19 @@ class OwnExerciseListFragment : Fragment() {
                 Timber.d("Add to training")
             }
 
-            R.id.add_to_fav -> {
-                Timber.d("Add to fav")
-                viewModel.addToFav(exercise)
-            }
-
-            R.id.edit -> {
-                Timber.d("Edit")
-                val intent = Intent(requireContext(), ExerciseFormActivity::class.java)
-                intent.putExtra(Constants.EXERCISE_ID_INTENT, exercise.id)
-                startActivity(intent)
-            }
-
-            R.id.delete -> {
-                Timber.d("Delete")
-                viewModel.deleteExercise(exercise)
-            }
-
-            R.id.share -> {
-                Timber.d("Share")
-                viewModel.shareExercise(exercise)
+            R.id.remove_from_likes -> {
+                Timber.d("Remove from fav")
+                viewModel.removeFromLikes(exercise)
             }
         }
+    }
+
+    private fun onItemClick(exercise: ExerciseDto) {
+        val intent = Intent(requireContext(), ExerciseDetailsActivity::class.java)
+        intent.putExtra(Constants.EXERCISE_ID_INTENT, exercise.id)
+        if (exercise.ownerId != Firebase.auth.currentUser?.uid)
+            intent.putExtra(Constants.IS_COMMUNITY_INTENT, true)
+        startActivity(intent)
     }
 
     private fun showToast(stringId: Int) {

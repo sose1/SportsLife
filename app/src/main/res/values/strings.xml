@@ -67,6 +67,7 @@
     <string name="enter_the_name_of_the_exercise">Enter the name of the exercise…</string>
     <string name="success_save_exercise">Successfully saving the exercise</string>
     <string name="exercise_empty_list_message">A little empty here…"\n"Add your exercises and"\n"complete your activity base!</string>
+    <string name="exercise_fav_empty_list_message">A little empty here…"\n"Like exercise to complete this list!</string>
     <string name="aerobics">Aerobics</string>
     <string name="american_soccer">American soccer</string>
     <string name="basketball">Basketball</string>
@@ -125,4 +126,8 @@
     <string name="video">Video</string>
     <string name="watch_video">Watch video</string>
     <string name="more">More</string>
+    <string name="added_to_favorites">Added to favorites</string>
+    <string name="favorites">Favorites</string>
+    <string name="delete_from_fav">Remove from favorites</string>
+    <string name="removed_exercise_from_favorites">Removed from favorites</string>
 </resources>

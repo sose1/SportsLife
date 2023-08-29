@@ -8,4 +8,7 @@ interface ExerciseRepository {
     suspend fun deleteExercise(id: String): Result<Unit>
     suspend fun getSharedExercises(ownerId: String): Result<List<ExerciseDto>>
     suspend fun getExerciseById(exerciseId: String): Result<ExerciseDto>
+    suspend fun getFavoriteExercises(userId: String): Result<List<ExerciseDto>>
+    suspend fun addFavoriteExercise(userId: String, exerciseId: String): Result<Unit>
+    suspend fun removeFromFav(userId: String, exerciseId: String): Result<Unit>
 }
