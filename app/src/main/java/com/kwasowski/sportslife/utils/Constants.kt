@@ -17,3 +17,9 @@ object LanguageTag {
     const val PL = "pl"
     const val EN = "en"
 }
+
+object UnitsTag {
+    const val MEASURE = "MEASURE"
+    const val WEIGHT = "WEIGHT"
+    const val NONE = "NONE"
+}

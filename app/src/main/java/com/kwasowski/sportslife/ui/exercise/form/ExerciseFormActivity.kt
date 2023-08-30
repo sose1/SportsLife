@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityExerciseFormBinding
 import com.kwasowski.sportslife.utils.Constants
+import com.kwasowski.sportslife.utils.UnitsTag
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,6 +56,7 @@ class ExerciseFormActivity : AppCompatActivity() {
         viewModel.setDefaultState()
         viewModel.getExercise(getExerciseIdFromIntent())
         setOnSharedChangeListener()
+        setOnUnitsChangeListener()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -137,6 +139,13 @@ class ExerciseFormActivity : AppCompatActivity() {
                                     R.id.no
                             )
                         } ?: binding.sharedGroup.check(R.id.no)
+                        viewModel.units.value?.let { unit ->
+                            when (unit) {
+                                UnitsTag.WEIGHT -> binding.unitsGroup.check(R.id.weight_units)
+                                UnitsTag.MEASURE -> binding.unitsGroup.check(R.id.measure_units)
+                                UnitsTag.NONE -> binding.unitsGroup.check(R.id.none_units)
+                            }
+                        }
                     }
                 }
             }
@@ -233,6 +242,16 @@ class ExerciseFormActivity : AppCompatActivity() {
             when (checkedId) {
                 R.id.yes -> viewModel.shared.value = true
                 R.id.no -> viewModel.shared.value = false
+            }
+        }
+    }
+
+    private fun setOnUnitsChangeListener() {
+        binding.unitsGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.weight_units -> viewModel.units.value = UnitsTag.WEIGHT
+                R.id.measure_units -> viewModel.units.value = UnitsTag.MEASURE
+                R.id.none_units -> viewModel.units.value = UnitsTag.NONE
             }
         }
     }

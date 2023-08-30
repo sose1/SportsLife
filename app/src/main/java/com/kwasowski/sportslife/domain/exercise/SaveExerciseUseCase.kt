@@ -7,7 +7,15 @@ import com.kwasowski.sportslife.data.exercise.Exercise
 import com.kwasowski.sportslife.data.exercise.ExerciseRepository
 
 class SaveExerciseUseCase(private val exerciseRepository: ExerciseRepository) {
-    suspend fun execute(id: String?, name: String?, description: String?, category: String?, videoLink: String?, shared: Boolean?): Result<Unit> {
+    suspend fun execute(
+        id: String?,
+        name: String?,
+        description: String?,
+        category: String?,
+        videoLink: String?,
+        shared: Boolean?,
+        units: String?
+    ): Result<Unit> {
         return Firebase.auth.currentUser?.uid?.let {
             exerciseRepository.saveExercise(
                 id = id,
@@ -17,7 +25,8 @@ class SaveExerciseUseCase(private val exerciseRepository: ExerciseRepository) {
                     category = category!!,
                     videoLink = videoLink,
                     shared = shared ?: false,
-                    ownerId = it
+                    ownerId = it,
+                    units = units!!
                 )
             )
         } ?: Result.Failure(Exception())

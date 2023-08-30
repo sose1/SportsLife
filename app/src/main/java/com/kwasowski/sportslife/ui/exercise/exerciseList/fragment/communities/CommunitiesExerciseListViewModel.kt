@@ -63,7 +63,8 @@ class CommunitiesExerciseListViewModel(
                 description = exercise.description,
                 category = exercise.category,
                 videoLink = exercise.videoLink,
-                shared = false
+                shared = false,
+                units = exercise.units
             )) {
                 is Result.Failure -> mutableState.value = CommunitiesExerciseState.OnFailure
                 is Result.Success -> mutableState.value = CommunitiesExerciseState.OnSuccessCopy

@@ -8,6 +8,7 @@ data class ExerciseDto @JvmOverloads constructor(
     val name: String = "",
     val description: String = "",
     val category: String = "",
+    val units: String = "",
     val videoLink: String? = "",
     var shared: Boolean = false,
     var ownerId: String = "",

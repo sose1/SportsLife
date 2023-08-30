@@ -121,4 +121,6 @@
     <string name="favorites">Ulubione</string>
     <string name="delete_from_fav">Usuń z ulubionych</string>
     <string name="removed_exercise_from_favorites">Usunięto z ulubionych</string>
+    <string name="measure">Miara</string>
+    <string name="none">brak</string>
 </resources>

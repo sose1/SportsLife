@@ -101,7 +101,8 @@ class ExerciseDetailsViewModel(
                 description = exerciseDtoMutableLiveData.value?.description,
                 category = exerciseDtoMutableLiveData.value?.category,
                 videoLink = exerciseDtoMutableLiveData.value?.videoLink,
-                shared = false
+                shared = false,
+                units = exerciseDtoMutableLiveData.value?.units
             )) {
                 is Result.Failure -> mutableState.value = ExerciseDetailsState.OnFailure
                 is Result.Success -> mutableState.value = ExerciseDetailsState.OnSuccessCopy
