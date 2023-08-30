@@ -130,4 +130,7 @@
     <string name="favorites">Favorites</string>
     <string name="delete_from_fav">Remove from favorites</string>
     <string name="removed_exercise_from_favorites">Removed from favorites</string>
+    <string name="measure">Measure</string>
+    <string name="none">None</string>
+
 </resources>

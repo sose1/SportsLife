@@ -7,6 +7,7 @@ data class Exercise @JvmOverloads constructor(
     val description: String = "",
     val category: String = "",
     val videoLink: String? = "",
+    val units: String = "",
     var shared: Boolean = false,
     var ownerId: String = "",
     val updateDate: Date = Date()

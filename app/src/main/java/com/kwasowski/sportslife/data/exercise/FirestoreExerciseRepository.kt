@@ -62,14 +62,15 @@ class FirestoreExerciseRepository : ExerciseRepository {
                         if (exercise != null) {
                             exerciseList.add(
                                 ExerciseDto(
-                                    it.id,
-                                    exercise.name,
-                                    exercise.description,
-                                    exercise.category,
-                                    exercise.videoLink,
-                                    exercise.shared,
-                                    exercise.ownerId,
-                                    exercise.updateDate
+                                    id = it.id,
+                                    name = exercise.name,
+                                    description = exercise.description,
+                                    category = exercise.category,
+                                    units = exercise.units,
+                                    videoLink = exercise.videoLink,
+                                    shared = exercise.shared,
+                                    ownerId = exercise.ownerId,
+                                    updateDate = exercise.updateDate
                                 )
                             )
                         }
@@ -95,14 +96,15 @@ class FirestoreExerciseRepository : ExerciseRepository {
                         if (exercise != null) {
                             exerciseList.add(
                                 ExerciseDto(
-                                    it.id,
-                                    exercise.name,
-                                    exercise.description,
-                                    exercise.category,
-                                    exercise.videoLink,
-                                    exercise.shared,
-                                    exercise.ownerId,
-                                    exercise.updateDate
+                                    id = it.id,
+                                    name = exercise.name,
+                                    description = exercise.description,
+                                    category = exercise.category,
+                                    units = exercise.units,
+                                    videoLink = exercise.videoLink,
+                                    shared = exercise.shared,
+                                    ownerId = exercise.ownerId,
+                                    updateDate = exercise.updateDate
                                 )
                             )
                         }
@@ -125,6 +127,7 @@ class FirestoreExerciseRepository : ExerciseRepository {
                             name = it.name,
                             description = it.description,
                             category = it.category,
+                            units = it.units,
                             videoLink = it.videoLink,
                             shared = it.shared,
                             ownerId = it.ownerId,
@@ -168,6 +171,7 @@ class FirestoreExerciseRepository : ExerciseRepository {
                         name = it.name,
                         description = it.description,
                         category = it.category,
+                        units = it.units,
                         videoLink = it.videoLink,
                         shared = it.shared,
                         ownerId = it.ownerId,

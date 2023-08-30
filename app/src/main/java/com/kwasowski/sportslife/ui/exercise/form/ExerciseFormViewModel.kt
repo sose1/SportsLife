@@ -9,6 +9,7 @@ import com.kwasowski.sportslife.data.category.CategorySharedPreferences
 import com.kwasowski.sportslife.data.category.getTranslation
 import com.kwasowski.sportslife.domain.exercise.GetExerciseByIdUseCase
 import com.kwasowski.sportslife.domain.exercise.SaveExerciseUseCase
+import com.kwasowski.sportslife.utils.UnitsTag
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,6 +30,7 @@ class ExerciseFormViewModel(
     val category = MutableLiveData<String>()
     val videoLink = MutableLiveData<String>()
     val shared = MutableLiveData<Boolean>()
+    val units = MutableLiveData<String>()
 
     var categoriesNames = mutableListOf<String>()
     enum class InputLengthLimit(val value: Int) {
@@ -47,6 +49,7 @@ class ExerciseFormViewModel(
     }
 
     fun saveExercise() {
+        Timber.d("UNITS: ${units.value}")
         if (validateInputData()) {
             viewModelScope.launch {
                 val result = saveExerciseUseCase.execute(
@@ -55,7 +58,8 @@ class ExerciseFormViewModel(
                     description = description.value,
                     category = categorySharedPreferences.getCategoriesByTranslation(category.value)?.id,
                     videoLink = videoLink.value,
-                    shared = shared.value
+                    shared = shared.value,
+                    units = units.value ?: UnitsTag.NONE
                 )
                 when (result) {
                     is Result.Failure -> mutableState.value = ExerciseFormState.OnError
@@ -116,6 +120,7 @@ class ExerciseFormViewModel(
                                 .getById(it.data.category)?.getTranslation()
                             videoLink.value = it.data.videoLink ?: ""
                             shared.value = it.data.shared
+                            units.value = it.data.units
                             mutableState.value = ExerciseFormState.OnSuccessGet
                         }
                     }
