@@ -132,5 +132,8 @@
     <string name="removed_exercise_from_favorites">Removed from favorites</string>
     <string name="measure">Measure</string>
     <string name="none">None</string>
+    <string name="exercises">Exercises</string>
+    <string name="add_a_new_training_plan">Add a new training plan</string>
+    <string name="add">Add</string>
 
 </resources>

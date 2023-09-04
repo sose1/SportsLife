@@ -33,6 +33,7 @@ import com.kwasowski.sportslife.ui.login.LoginViewModel
 import com.kwasowski.sportslife.ui.main.MainViewModel
 import com.kwasowski.sportslife.ui.profile.ProfileViewModel
 import com.kwasowski.sportslife.ui.settings.SettingsViewModel
+import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -48,6 +49,7 @@ val appModule = module {
     viewModelOf(::FavExerciseListViewModel)
     viewModelOf(::ExerciseFormViewModel)
     viewModelOf(::ExerciseDetailsViewModel)
+    viewModelOf(::TrainingPlanFormViewModel)
 
     single<ProfileRepository> { FirestoreProfileRepository() }
     single<SettingsRepository> { FirestoreSettingsRepository() }

@@ -123,4 +123,8 @@
     <string name="removed_exercise_from_favorites">Usunięto z ulubionych</string>
     <string name="measure">Miara</string>
     <string name="none">brak</string>
+    <string name="exercises">Ćwiczenia</string>
+    <string name="add_a_new_training_plan">Dodaj nowy plan treningowy</string>
+    <string name="add">Dodaj</string>
+
 </resources>
