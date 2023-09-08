@@ -126,5 +126,6 @@
     <string name="exercises">Ćwiczenia</string>
     <string name="add_a_new_training_plan">Dodaj nowy plan treningowy</string>
     <string name="add">Dodaj</string>
+    <string name="training_plans_empty_list_message">Trochę tutaj pusto…\nDodaj swoje plany treningowe i\nuzupełnij bazę treningów!</string>
 
 </resources>

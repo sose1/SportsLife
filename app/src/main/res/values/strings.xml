@@ -135,5 +135,5 @@
     <string name="exercises">Exercises</string>
     <string name="add_a_new_training_plan">Add a new training plan</string>
     <string name="add">Add</string>
-
+    <string name="training_plans_empty_list_message">A little empty here…"\n"Add your training plans and complete your training base!</string>
 </resources>

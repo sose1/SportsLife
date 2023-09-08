@@ -28,7 +28,7 @@
         </activity>
         <activity android:name=".ui.main.MainActivity" />
         <activity
-            android:name=".ui.trainingPlans.TrainingPlansActivity"
+            android:name=".ui.trainingPlans.list.TrainingPlansActivity"
             android:exported="false" />
         <activity
             android:name=".ui.trainingLog.TrainingLogActivity"
