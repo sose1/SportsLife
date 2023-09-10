@@ -9,6 +9,14 @@
         <variable
             name="viewModel"
             type="com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormViewModel" />
+
+        <variable
+            name="nameInputLimit"
+            type="com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormViewModel.InputLengthLimit" />
+
+        <variable
+            name="descriptionInputLimit"
+            type="com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormViewModel.InputLengthLimit" />
     </data>
 
     <RelativeLayout
@@ -59,16 +67,16 @@
                         android:textSize="16sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/exercise_name_input_layout"
+                        android:id="@+id/training_plan_name_input_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:counterEnabled="true"
+                        app:counterMaxLength="@{nameInputLimit.value}"
                         app:errorEnabled="true"
                         app:hintEnabled="false">
-                        <!--todo dodać lmit znaków-->
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/exercise_name"
+                            android:id="@+id/training_plan_name"
                             android:layout_width="match_parent"
                             android:layout_height="34dp"
                             android:background="@drawable/form_input"
@@ -79,6 +87,7 @@
                             android:paddingEnd="10dp"
                             android:paddingBottom="5dp"
                             android:saveEnabled="true"
+                            android:text="@={viewModel.name}"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,15 +102,16 @@
                         android:textSize="16sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/exercise_description_input_layout"
+                        android:id="@+id/training_plan_description_input_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:counterEnabled="true"
+                        app:counterMaxLength="@{descriptionInputLimit.value}"
                         app:errorEnabled="true"
                         app:hintEnabled="false">
-                        <!--todo dodać lmit znaków-->
+
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/exercise_description"
+                            android:id="@+id/training_plan_description"
                             android:layout_width="match_parent"
                             android:layout_height="84dp"
                             android:background="@drawable/form_input"
@@ -112,6 +122,7 @@
                             android:paddingEnd="10dp"
                             android:paddingBottom="5dp"
                             android:saveEnabled="true"
+                            android:text="@={viewModel.description}"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,7 +137,7 @@
                         android:textSize="16sp" />
 
 
-                    <!--                    todo dodać obśługe przycisku do view modela-->
+                    <!--                    todo dodać obśługe tego rpzcyisku-->
                     <com.google.android.material.button.MaterialButton
                         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                         android:layout_width="wrap_content"
@@ -178,8 +189,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
+                        android:onClick="@{() -> viewModel.saveTrainingPlan()}"
                         android:text="@string/save" />
-                    <!--                    TODO: dodać obśługe przycisków-->
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/cancel_button"
                         style="@style/Widget.Material3.Button.TonalButton"

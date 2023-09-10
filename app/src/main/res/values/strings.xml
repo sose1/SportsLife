@@ -136,4 +136,10 @@
     <string name="add_a_new_training_plan">Add a new training plan</string>
     <string name="add">Add</string>
     <string name="training_plans_empty_list_message">A little empty here…"\n"Add your training plans and complete your training base!</string>
+    <string name="empty_training_plan_description_error_message">The description of the training plan must be completed!</string>
+    <string name="too_long_training_plan_description_error_message">The description of the training plan is too long!</string>
+    <string name="empty_training_plan_name_error_message">The name of the training plan must be completed!</string>
+    <string name="too_long_training_plan_name_error_message">The name of the training plan is too long!</string>
+    <string name="success_save_training_plan">Training plan successfully saved</string>
+
 </resources>

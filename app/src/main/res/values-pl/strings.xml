@@ -127,5 +127,10 @@
     <string name="add_a_new_training_plan">Dodaj nowy plan treningowy</string>
     <string name="add">Dodaj</string>
     <string name="training_plans_empty_list_message">Trochę tutaj pusto…\nDodaj swoje plany treningowe i\nuzupełnij bazę treningów!</string>
+    <string name="empty_training_plan_description_error_message">Opis planu treningowego musi być uzupełniony!</string>
+    <string name="too_long_training_plan_description_error_message">Opis planu treningowego jest za długi!</string>
+    <string name="empty_training_plan_name_error_message">Nazwa planu trenigowego musi być uzupełniona!</string>
+    <string name="too_long_training_plan_name_error_message">Nazwa planu trenigowego jest za długa!</string>
+    <string name="success_save_training_plan">Pomyślnie zapisano plan treningowy</string>
 
 </resources>
