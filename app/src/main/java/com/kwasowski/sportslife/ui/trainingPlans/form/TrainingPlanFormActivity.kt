@@ -16,8 +16,7 @@ import com.kwasowski.sportslife.databinding.ActivityTrainingPlanFormBinding
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-// TODO: 1. Pobranie listy ćwiczeń own i shared (dopsianie adapterów)
+// TODO: 1. Widok szczegółów treningu dla community
 // TODO: 2. Edycja ćwiczenia - pobranie danych ćwieczenia po id
 // TODO: 3. Obsługa wyszikwaiania ćwiczenia i dodawania go do treningu (obsłgua przekazywania id ćwieczenia)
 // todo: 4. Obśługa dodwania/ usuwania serii ćwiczeń

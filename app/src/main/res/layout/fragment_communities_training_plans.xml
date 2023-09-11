@@ -28,7 +28,7 @@
                 android:elevation="2dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/exercise_list"
+                android:id="@+id/training_plans_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"

@@ -17,8 +17,7 @@ class CommunitiesExerciseListViewModel(
     private val getSharedExercisesUseCase: GetSharedExercisesUseCase,
     private val saveExerciseUseCase: SaveExerciseUseCase,
     private val addToFavExerciseUseCase: AddToFavExerciseUseCase,
-
-    ) : ViewModel() {
+) : ViewModel() {
     private val mutableState =
         MutableStateFlow<CommunitiesExerciseState>(CommunitiesExerciseState.Default)
     val uiState: StateFlow<CommunitiesExerciseState> = mutableState.asStateFlow()

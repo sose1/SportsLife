@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanDto
 import com.kwasowski.sportslife.databinding.FragmentCommunitiesTrainingPlansBinding
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,7 +21,7 @@ class CommunitiesTrainingPlansFragment : Fragment() {
     private val viewModel: CommunitiesTrainingPlansViewModel by viewModel()
     private lateinit var binding: FragmentCommunitiesTrainingPlansBinding
 
-    //    private lateinit var adapter: CommunitiesTrainingPlansAdapter  todo
+    private lateinit var adapter: CommunitiesTrainingPlansAdapter
     private var queryText: String = ""
 
     private val onQueryTextListener = object : SearchView.OnQueryTextListener {
@@ -31,7 +32,7 @@ class CommunitiesTrainingPlansFragment : Fragment() {
         override fun onQueryTextChange(newText: String?): Boolean {
             newText?.let {
                 queryText = newText
-//                viewModel.filterTrainingPlans(queryText) todo
+                viewModel.filterTrainingPlans(queryText)
             }
             return false
         }
@@ -51,17 +52,55 @@ class CommunitiesTrainingPlansFragment : Fragment() {
         binding.viewModel = viewModel
         binding.progress.visibility = View.VISIBLE
         onViewStateChanged()
+
+        adapter = CommunitiesTrainingPlansAdapter(
+            onItemClick = { trainingPlan -> onItemClick(trainingPlan) }
+        )
+
+        binding.trainingPlansList.setHasFixedSize(true)
+        binding.trainingPlansList.adapter = adapter
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val searchInput = binding.searchInput
+        searchInput.setOnClickListener {
+            searchInput.isIconified = !searchInput.isIconified
+        }
+        searchInput.setOnQueryTextListener(onQueryTextListener)
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-//            viewModel.uiState.collect{
-//                when(it){
-//                   todo
-//                }
-//            }
+            viewModel.uiState.collect {
+                when (it) {
+                    CommunitiesTrainingPlansState.Default -> Unit
+                    CommunitiesTrainingPlansState.OnFailure -> {
+                        binding.progress.visibility = View.GONE
+                        adapter.updateList(emptyList())
+                        showToast(R.string.network_connection_error_please_try_again_later)
+                    }
+
+                    CommunitiesTrainingPlansState.OnSuccessGetTrainingPlans -> {
+                        binding.progress.visibility = View.GONE
+                        viewModel.filterTrainingPlans(queryText)
+                    }
+
+                    is CommunitiesTrainingPlansState.OnFilteredTrainingPlans -> {
+                        adapter.updateList(it.filteredList)
+                    }
+                }
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getTrainingPlans()
+    }
+    private fun onItemClick(trainingPlan: TrainingPlanDto) {
+        TODO("Not yet implemented")
     }
 
     private fun showToast(stringId: Int) {
