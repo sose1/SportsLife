@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.trainingPlans.list.fragment.own
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanDto
 import com.kwasowski.sportslife.databinding.FragmentOwnTrainingPlansBinding
+import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormActivity
+import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,7 +25,7 @@ class OwnTrainingPlansFragment : Fragment() {
     private val viewModel: OwnTrainingPlansViewModel by viewModel()
     private lateinit var binding: FragmentOwnTrainingPlansBinding
 
-    //    private lateinit var adapter: OwnTrainingPlansAdapter todo
+    private lateinit var adapter: OwnTrainingPlansAdapter
     private var queryText: String = ""
 
     private val onQueryTextListener = object : SearchView.OnQueryTextListener {
@@ -32,7 +36,7 @@ class OwnTrainingPlansFragment : Fragment() {
         override fun onQueryTextChange(newText: String?): Boolean {
             newText?.let {
                 queryText = newText
-//                viewModel.filterTrainingPlans(queryText) todo
+                viewModel.filterTrainingPlans(queryText)
             }
             return false
         }
@@ -40,8 +44,7 @@ class OwnTrainingPlansFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_own_training_plans,
@@ -53,30 +56,83 @@ class OwnTrainingPlansFragment : Fragment() {
         binding.viewModel = viewModel
         binding.progress.visibility = View.VISIBLE
         onViewStateChanged()
+
+        adapter = OwnTrainingPlansAdapter(
+            context = requireContext(),
+            onMenuItemSelected = { trainingPlan, menuItemId ->
+                onTrainingPlanMenuItemSelected(
+                    trainingPlan,
+                    menuItemId
+                )
+            },
+            onItemClick = { trainingPlan ->
+                onItemClick(trainingPlan)
+            }
+        )
+
+        binding.trainingPlansList.setHasFixedSize(true)
+        binding.trainingPlansList.adapter = adapter
+
         return binding.root
     }
 
-    private fun onViewStateChanged() = lifecycleScope.launch {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        val searchInput = binding.searchInput
+        searchInput.setOnClickListener {
+            searchInput.isIconified = !searchInput.isIconified
+        }
+        searchInput.setOnQueryTextListener(onQueryTextListener)
+    }
+
+    private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-//            viewModel.trainingPlans.collect {
-//                when(it) {
-//                    todo
-//                }
-//            }
+            viewModel.uiState.collect {
+                when (it) {
+                    OwnTrainingPlansState.Default -> Unit
+                    OwnTrainingPlansState.OnFailure -> {
+                        binding.emptyListInfo.visibility = View.VISIBLE
+                        binding.progress.visibility = View.GONE
+                        adapter.updateList(emptyList())
+                        showToast(R.string.network_connection_error_please_try_again_later)
+                    }
+
+                    OwnTrainingPlansState.OnSuccessGetEmptyList -> {
+                        binding.emptyListInfo.visibility = View.VISIBLE
+                        binding.progress.visibility = View.GONE
+                        adapter.updateList(emptyList())
+                    }
+
+                    OwnTrainingPlansState.OnSuccessGetTrainingPlans -> {
+                        binding.emptyListInfo.visibility = View.GONE
+                        binding.progress.visibility = View.GONE
+                        viewModel.filterTrainingPlans(queryText)
+                    }
+
+                    is OwnTrainingPlansState.OnFilteredTrainingPlans -> {
+                        adapter.updateList(it.filteredList)
+                    }
+                }
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-//        viewModel.getTrainingPlans() todo
+        viewModel.getTrainingPlans()
     }
 
-//    private fun onItemClick(trainingPlan: TrainingPlanDto) {
-//        val intent = Intent(requireContext(), TrainingPlanFormActivity::class.java)
-//        intent.putExtra(Constants.EXERCISE_ID_INTENT, trainingPlan.id)
-//        startActivity(intent)
-//   todo }
+
+    private fun onTrainingPlanMenuItemSelected(trainingPlan: TrainingPlanDto, menuItemId: Int) {
+        TODO("Not yet implemented")
+    }
+
+    private fun onItemClick(trainingPlan: TrainingPlanDto) {
+        val intent = Intent(requireContext(), TrainingPlanFormActivity::class.java)
+        intent.putExtra(Constants.TRAINING_PLAN_ID_INTENT, trainingPlan.id)
+        startActivity(intent)
+    }
 
     private fun showToast(stringId: Int) {
         Toast.makeText(context, stringId, Toast.LENGTH_LONG).show()

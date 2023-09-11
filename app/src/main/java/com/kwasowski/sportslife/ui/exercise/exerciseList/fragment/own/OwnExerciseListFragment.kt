@@ -82,8 +82,6 @@ class OwnExerciseListFragment : Fragment() {
         searchInput.setOnClickListener {
             searchInput.isIconified = !searchInput.isIconified
         }
-
-
         searchInput.setOnQueryTextListener(onQueryTextListener)
     }
 

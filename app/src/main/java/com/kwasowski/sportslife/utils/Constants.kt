@@ -11,6 +11,7 @@ object Constants {
     const val SETTINGS_LANGUAGE_KEY = "language"
     const val SETTINGS_NOTIFY_TODAY_TRAINING_KEY = "notifyTodayTraining"
     const val SETTINGS_NOTIFY_DAY_SUMMARY_KEY = "notifyDaySummary"
+    const val TRAINING_PLAN_ID_INTENT = "TRAINING_PLAN_ID_INTENT"
 }
 
 object LanguageTag {

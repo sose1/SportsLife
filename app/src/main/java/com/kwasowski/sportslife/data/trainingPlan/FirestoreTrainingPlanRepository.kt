@@ -38,7 +38,7 @@ class FirestoreTrainingPlanRepository : TrainingPlanRepository {
         }
     }
 
-    override suspend fun getTrainingPlanListByOwnerId(ownerId: String): Result<List<TrainingPlanDto>> =
+    override suspend fun getTrainingPlansByOwnerId(ownerId: String): Result<List<TrainingPlanDto>> =
         suspendCoroutine { continuation ->
             collection.whereEqualTo(TrainingPlan::ownerId.name, ownerId)
                 .orderBy(TrainingPlan::updateDate.name, Query.Direction.DESCENDING)
@@ -60,7 +60,7 @@ class FirestoreTrainingPlanRepository : TrainingPlanRepository {
                             )
                         }
                     }
-
+                    continuation.resume(Result.Success(trainingPlanList))
                 }
                 .addOnFailureListener { exception ->
                     continuation.resume(Result.Failure(exception))
@@ -91,6 +91,7 @@ class FirestoreTrainingPlanRepository : TrainingPlanRepository {
                             )
                         }
                     }
+                    continuation.resume(Result.Success(trainingPlanList))
                 }
                 .addOnFailureListener { exception ->
                     continuation.resume(Result.Failure(exception))
