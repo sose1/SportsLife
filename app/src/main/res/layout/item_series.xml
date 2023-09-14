@@ -2,11 +2,18 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<!--todo zmiana z textView na editText-->
+
+    <data>
+
+        <variable
+            name="series"
+            type="com.kwasowski.sportslife.data.trainingPlan.Series" />
+    </data>
+    <!--todo zmiana z textView na editText-->
     <LinearLayout
-        android:layout_margin="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="1dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -25,6 +32,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:textAlignment="textStart"
                 android:textSize="14sp"
+                android:text="1"
                 tools:text="3" />
 
             <TextView
@@ -34,6 +42,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:textAlignment="center"
                 android:textSize="14sp"
+                android:text="200kg"
                 tools:text="200 kg" />
 
             <LinearLayout
@@ -50,6 +59,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:textAlignment="center"
                     android:textSize="14sp"
+                    android:text="10 powt"
                     tools:text="10 powt" />
 
                 <ImageButton

@@ -12,14 +12,3 @@ data class TrainingPlanDto @JvmOverloads constructor(
     val updateDate: Date = Date(),
     val exercisesSeries: List<ExerciseSeries> = emptyList()
 )
-
-data class ExerciseSeriesDto @JvmOverloads constructor(
-    val exerciseName: String = "",
-    val position: Int = 0,
-    val series: List<Series> = emptyList()
-)
-
-data class SeriesDto @JvmOverloads constructor(
-    val value: Int = 0,
-    val repeats: Int = 0
-)

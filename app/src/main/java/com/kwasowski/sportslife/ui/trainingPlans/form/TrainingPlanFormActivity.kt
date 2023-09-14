@@ -12,10 +12,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
+import com.kwasowski.sportslife.data.trainingPlan.Series
 import com.kwasowski.sportslife.databinding.ActivityTrainingPlanFormBinding
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
+import com.kwasowski.sportslife.ui.trainingPlans.form.adapter.ExerciseSeriesAdapter
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 // TODO: 1. Widok szczegółów treningu dla community
 // TODO: 2. Edycja ćwiczenia - pobranie danych ćwieczenia po id
 // TODO: 3. Obsługa wyszikwaiania ćwiczenia i dodawania go do treningu (obsłgua przekazywania id ćwieczenia)
@@ -23,6 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class TrainingPlanFormActivity : AppCompatActivity() {
     private val viewModel: TrainingPlanFormViewModel by viewModel()
     private lateinit var binding: ActivityTrainingPlanFormBinding
+    private lateinit var exerciseSeriesAdapter: ExerciseSeriesAdapter
 
     enum class BundleFormKey {
         NAME, DESCRIPTION
@@ -44,7 +49,33 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         binding.trainingPlanName.addTextChangedListener(nameEditTextWatcher)
         binding.trainingPlanDescription.addTextChangedListener(descriptionEditTextWatcher)
 
+        exerciseSeriesAdapter = ExerciseSeriesAdapter()
+        binding.exercisesSeries.setHasFixedSize(true)
+        binding.exercisesSeries.adapter = exerciseSeriesAdapter
         onViewStateChanged()
+
+        binding.addExerciseSeriesButton.setOnClickListener {
+            exerciseSeriesAdapter.updateList(
+                listOf(
+                    ExerciseSeries(
+                        exerciseName = "xd1",
+                        position = 0,
+                        series = listOf(Series(10, 10))
+                    ),
+                    ExerciseSeries(
+                        exerciseName = "xd2",
+                        position = 1,
+                        series = listOf(Series(100, 100))
+                    ),
+                    ExerciseSeries(
+                        exerciseName = "xd3",
+                        position = 2,
+                        series = listOf(Series(1000, 1000))
+                    )
+                )
+
+            )
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -69,11 +100,27 @@ class TrainingPlanFormActivity : AppCompatActivity() {
             viewModel.uiState.collect {
                 when (it) {
                     TrainingPlanFormState.Default -> Unit
-                    TrainingPlanFormState.OnDescriptionEmptyError -> showInputError(binding.trainingPlanDescriptionInputLayout, R.string.empty_training_plan_description_error_message)
-                    TrainingPlanFormState.OnDescriptionLengthLimitError -> showInputError(binding.trainingPlanDescriptionInputLayout, R.string.too_long_training_plan_description_error_message)
-                    TrainingPlanFormState.OnNameEmptyError -> showInputError(binding.trainingPlanNameInputLayout, R.string.empty_training_plan_name_error_message)
-                    TrainingPlanFormState.OnNameLengthLimitError -> showInputError(binding.trainingPlanNameInputLayout, R.string.too_long_training_plan_name_error_message)
-                    TrainingPlanFormState.OnError ->  showSnackBarInfo(R.string.network_connection_error_please_try_again_later)
+                    TrainingPlanFormState.OnDescriptionEmptyError -> showInputError(
+                        binding.trainingPlanDescriptionInputLayout,
+                        R.string.empty_training_plan_description_error_message
+                    )
+
+                    TrainingPlanFormState.OnDescriptionLengthLimitError -> showInputError(
+                        binding.trainingPlanDescriptionInputLayout,
+                        R.string.too_long_training_plan_description_error_message
+                    )
+
+                    TrainingPlanFormState.OnNameEmptyError -> showInputError(
+                        binding.trainingPlanNameInputLayout,
+                        R.string.empty_training_plan_name_error_message
+                    )
+
+                    TrainingPlanFormState.OnNameLengthLimitError -> showInputError(
+                        binding.trainingPlanNameInputLayout,
+                        R.string.too_long_training_plan_name_error_message
+                    )
+
+                    TrainingPlanFormState.OnError -> showSnackBarInfo(R.string.network_connection_error_please_try_again_later)
                     TrainingPlanFormState.OnSuccessSave -> {
                         showToast(R.string.success_save_training_plan)
                         finish()
