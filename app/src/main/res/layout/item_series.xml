@@ -12,8 +12,7 @@
     <!--todo zmiana z textView na editText-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="1dp"
+        android:layout_height="29dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -71,12 +70,6 @@
                     android:visibility="visible"
                     app:tint="@color/light_error" />
             </LinearLayout>
-
         </LinearLayout>
-
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:dividerThickness="0.75dp" />
     </LinearLayout>
 </layout>

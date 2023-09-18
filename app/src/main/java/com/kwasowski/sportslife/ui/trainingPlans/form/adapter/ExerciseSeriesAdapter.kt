@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
 import com.kwasowski.sportslife.databinding.ItemExerciseSeriesBinding
+import com.kwasowski.sportslife.extensions.dp
 import timber.log.Timber
 
 class ExerciseSeriesAdapter : RecyclerView.Adapter<ViewHolder>() {
@@ -44,11 +45,12 @@ class ExerciseSeriesAdapter : RecyclerView.Adapter<ViewHolder>() {
             this.exerciseSeries = exerciseSeries
             binding.exerciseSeries = this.exerciseSeries
 
-            val seriesAdapter = SeriesAdapter()
-            binding.series.adapter = seriesAdapter
+            val seriesAdapter = SeriesAdapter(binding.root.context)
             seriesAdapter.updateList(exerciseSeries.series)
+            binding.series.adapter = seriesAdapter
+
+            binding.series.layoutParams.height = (exerciseSeries.series.size * 29).dp
             binding.executePendingBindings()
         }
-
     }
 }

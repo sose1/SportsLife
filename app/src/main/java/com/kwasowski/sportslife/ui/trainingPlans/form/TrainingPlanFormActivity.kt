@@ -50,7 +50,6 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         binding.trainingPlanDescription.addTextChangedListener(descriptionEditTextWatcher)
 
         exerciseSeriesAdapter = ExerciseSeriesAdapter()
-        binding.exercisesSeries.setHasFixedSize(true)
         binding.exercisesSeries.adapter = exerciseSeriesAdapter
         onViewStateChanged()
 
@@ -60,20 +59,43 @@ class TrainingPlanFormActivity : AppCompatActivity() {
                     ExerciseSeries(
                         exerciseName = "xd1",
                         position = 0,
-                        series = listOf(Series(10, 10))
+                        series = listOf(
+                            Series(10, 10),
+                            Series(10, 10),
+                            Series(10, 10),
+                            Series(10, 10)
+                        )
                     ),
                     ExerciseSeries(
                         exerciseName = "xd2",
                         position = 1,
-                        series = listOf(Series(100, 100))
+                        series = listOf(Series(10, 10), Series(10, 10))
                     ),
                     ExerciseSeries(
                         exerciseName = "xd3",
                         position = 2,
-                        series = listOf(Series(1000, 1000))
+                        series = listOf(
+                            Series(10, 10),
+                            Series(10, 10),
+                            Series(10, 10),
+                            Series(10, 10),
+                            Series(10, 10),
+                            Series(10, 10)
+                        )
+                    ),
+                    ExerciseSeries(
+                        exerciseName = "xd3",
+                        position = 2,
+                        series = listOf(
+                            Series(10, 10),
+                            Series(10, 10),
+                            Series(10, 10),
+                            Series(10, 10),
+                            Series(10, 10),
+                            Series(10, 10)
+                        )
                     )
                 )
-
             )
         }
     }
