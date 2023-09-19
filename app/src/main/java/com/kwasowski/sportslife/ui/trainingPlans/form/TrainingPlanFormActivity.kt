@@ -13,7 +13,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
-import com.kwasowski.sportslife.data.trainingPlan.Series
 import com.kwasowski.sportslife.databinding.ActivityTrainingPlanFormBinding
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 import com.kwasowski.sportslife.ui.trainingPlans.form.adapter.ExerciseSeriesAdapter
@@ -58,42 +57,19 @@ class TrainingPlanFormActivity : AppCompatActivity() {
                 listOf(
                     ExerciseSeries(
                         exerciseName = "xd1",
-                        position = 0,
-                        series = listOf(
-                            Series(10, 10),
-                            Series(10, 10),
-                            Series(10, 10),
-                            Series(10, 10)
-                        )
+                        position = 0
                     ),
                     ExerciseSeries(
                         exerciseName = "xd2",
                         position = 1,
-                        series = listOf(Series(10, 10), Series(10, 10))
                     ),
                     ExerciseSeries(
                         exerciseName = "xd3",
                         position = 2,
-                        series = listOf(
-                            Series(10, 10),
-                            Series(10, 10),
-                            Series(10, 10),
-                            Series(10, 10),
-                            Series(10, 10),
-                            Series(10, 10)
-                        )
                     ),
                     ExerciseSeries(
                         exerciseName = "xd3",
-                        position = 2,
-                        series = listOf(
-                            Series(10, 10),
-                            Series(10, 10),
-                            Series(10, 10),
-                            Series(10, 10),
-                            Series(10, 10),
-                            Series(10, 10)
-                        )
+                        position = 3,
                     )
                 )
             )
