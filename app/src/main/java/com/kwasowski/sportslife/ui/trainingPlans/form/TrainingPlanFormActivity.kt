@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
+import com.kwasowski.sportslife.data.trainingPlan.Series
 import com.kwasowski.sportslife.databinding.ActivityTrainingPlanFormBinding
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 import com.kwasowski.sportslife.ui.trainingPlans.form.adapter.ExerciseSeriesAdapter
@@ -57,19 +58,19 @@ class TrainingPlanFormActivity : AppCompatActivity() {
                 listOf(
                     ExerciseSeries(
                         exerciseName = "xd1",
-                        position = 0
+                        listOf(Series(50, 10), Series(60, 8), Series(70, 6))
                     ),
                     ExerciseSeries(
                         exerciseName = "xd2",
-                        position = 1,
+                        listOf(Series(30, 10), Series(40, 8), Series(50, 6))
                     ),
                     ExerciseSeries(
                         exerciseName = "xd3",
-                        position = 2,
+                        listOf(Series(70, 10), Series(80, 8), Series(90, 6))
                     ),
                     ExerciseSeries(
                         exerciseName = "xd3",
-                        position = 3,
+                        listOf(Series(150, 10), Series(160, 8), Series(170, 6))
                     )
                 )
             )

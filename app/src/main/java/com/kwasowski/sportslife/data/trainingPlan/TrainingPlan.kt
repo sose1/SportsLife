@@ -14,11 +14,10 @@ data class TrainingPlan @JvmOverloads constructor(
 
 data class ExerciseSeries @JvmOverloads constructor(
     val exerciseName: String = "",
-    val position: Int = 0,
     var series: List<Series> = emptyList()
 )
 
 data class Series @JvmOverloads constructor(
-    val value: Int = 0,
-    val repeats: Int = 0
+    var value: Int = 0,
+    var repeats: Int = 0
 )
