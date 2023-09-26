@@ -12,6 +12,7 @@ object Constants {
     const val SETTINGS_NOTIFY_TODAY_TRAINING_KEY = "notifyTodayTraining"
     const val SETTINGS_NOTIFY_DAY_SUMMARY_KEY = "notifyDaySummary"
     const val TRAINING_PLAN_ID_INTENT = "TRAINING_PLAN_ID_INTENT"
+    const val TRAINING_PLAN_ID_TO_EXERCISE_LIST_INTENT = "TRAINING_PLAN_ID_TO_EXERCISE_LIST_INTENT"
 }
 
 object LanguageTag {

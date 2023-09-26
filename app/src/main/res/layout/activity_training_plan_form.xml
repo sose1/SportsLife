@@ -137,13 +137,13 @@
                         android:textSize="16sp" />
 
 
-                    <!--                    todo dodać obśługe tego rpzcyisku-->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/add_exercise_series_button"
                         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:onClick="@{() -> viewModel.onSearchExerciseButtonClicked()}"
                         android:paddingStart="16dp"
                         android:paddingEnd="24dp"
                         android:text="@string/add"

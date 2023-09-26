@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class TrainingPlanFormViewModel(
-    private val saveTrainingPlanUseCase: SaveTrainingPlanUseCase
+    private val saveTrainingPlanUseCase: SaveTrainingPlanUseCase,
 ) : ViewModel() {
     private val mutableState =
         MutableStateFlow<TrainingPlanFormState>(TrainingPlanFormState.Default)
@@ -72,5 +72,10 @@ class TrainingPlanFormViewModel(
 
     fun setStateToDefault() {
         mutableState.value = TrainingPlanFormState.Default
+    }
+
+    fun onSearchExerciseButtonClicked() {
+        Timber.d("onSearchExerciseButtonClicked")
+        mutableState.value = TrainingPlanFormState.onSearchExerciseButtonClicked
     }
 }

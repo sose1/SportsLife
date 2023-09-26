@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.trainingPlans.form
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,11 +13,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
-import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
-import com.kwasowski.sportslife.data.trainingPlan.Series
 import com.kwasowski.sportslife.databinding.ActivityTrainingPlanFormBinding
+import com.kwasowski.sportslife.ui.exercise.exerciseList.activity.ExercisesListActivity
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 import com.kwasowski.sportslife.ui.trainingPlans.form.adapter.ExerciseSeriesAdapter
+import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -52,29 +53,6 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         exerciseSeriesAdapter = ExerciseSeriesAdapter()
         binding.exercisesSeries.adapter = exerciseSeriesAdapter
         onViewStateChanged()
-
-        binding.addExerciseSeriesButton.setOnClickListener {
-            exerciseSeriesAdapter.updateList(
-                listOf(
-                    ExerciseSeries(
-                        exerciseName = "xd1",
-                        listOf(Series(50, 10), Series(60, 8), Series(70, 6))
-                    ),
-                    ExerciseSeries(
-                        exerciseName = "xd2",
-                        listOf(Series(30, 10), Series(40, 8), Series(50, 6))
-                    ),
-                    ExerciseSeries(
-                        exerciseName = "xd3",
-                        listOf(Series(70, 10), Series(80, 8), Series(90, 6))
-                    ),
-                    ExerciseSeries(
-                        exerciseName = "xd3",
-                        listOf(Series(150, 10), Series(160, 8), Series(170, 6))
-                    )
-                )
-            )
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -93,6 +71,8 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         binding.trainingPlanName.setText(savedInstanceState.getString(ExerciseFormActivity.BundleFormKey.NAME.toString()))
         binding.trainingPlanDescription.setText(savedInstanceState.getString(ExerciseFormActivity.BundleFormKey.DESCRIPTION.toString()))
     }
+
+    private fun getTrainingPlanIdFromIntent() = intent.getIntExtra(Constants.TRAINING_PLAN_ID_INTENT, -1)
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -124,9 +104,18 @@ class TrainingPlanFormActivity : AppCompatActivity() {
                         showToast(R.string.success_save_training_plan)
                         finish()
                     }
+
+                    TrainingPlanFormState.onSearchExerciseButtonClicked -> openExerciseListActivity()
                 }
             }
         }
+    }
+
+    private fun openExerciseListActivity() {
+        viewModel.setStateToDefault()
+        val intent = Intent(this, ExercisesListActivity::class.java)
+        intent.putExtra(Constants.TRAINING_PLAN_ID_TO_EXERCISE_LIST_INTENT, getTrainingPlanIdFromIntent())
+        startActivity(intent)
     }
 
 
