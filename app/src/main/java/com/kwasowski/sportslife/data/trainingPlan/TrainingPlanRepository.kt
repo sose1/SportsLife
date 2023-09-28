@@ -6,4 +6,6 @@ interface TrainingPlanRepository {
     suspend fun saveTrainingPlan(id: String?, trainingPlan: TrainingPlan): Result<Unit>
     suspend fun getTrainingPlansByOwnerId(ownerId: String): Result<List<TrainingPlanDto>>
     suspend fun getSharedTrainingPlans(ownerId: String): Result<List<TrainingPlanDto>>
+    suspend fun getTrainingPlanById(id: String): Result<TrainingPlanDto>
+    suspend fun deleteTrainingPlan(trainingPlanId: String): Result<Unit>
 }

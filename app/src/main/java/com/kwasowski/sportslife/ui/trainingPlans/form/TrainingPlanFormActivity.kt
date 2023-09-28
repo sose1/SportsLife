@@ -55,6 +55,11 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         onViewStateChanged()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.setStateToDefault()
+        viewModel.getTrainingPlanById(getTrainingPlanIdFromIntent())
+    }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(
@@ -72,7 +77,8 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         binding.trainingPlanDescription.setText(savedInstanceState.getString(ExerciseFormActivity.BundleFormKey.DESCRIPTION.toString()))
     }
 
-    private fun getTrainingPlanIdFromIntent() = intent.getIntExtra(Constants.TRAINING_PLAN_ID_INTENT, -1)
+    private fun getTrainingPlanIdFromIntent() =
+        intent.getStringExtra(Constants.TRAINING_PLAN_ID_INTENT)
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -105,16 +111,26 @@ class TrainingPlanFormActivity : AppCompatActivity() {
                         finish()
                     }
 
-                    TrainingPlanFormState.onSearchExerciseButtonClicked -> openExerciseListActivity()
+                    TrainingPlanFormState.OnSearchExerciseButtonClicked -> openExerciseListActivity()
+                    TrainingPlanFormState.OnSuccessGet -> {
+                        onSuccessGet()
+                    }
                 }
             }
         }
     }
 
+    private fun onSuccessGet() {
+        binding.topAppBar.title = getString(R.string.editing)
+    }
+
     private fun openExerciseListActivity() {
         viewModel.setStateToDefault()
         val intent = Intent(this, ExercisesListActivity::class.java)
-        intent.putExtra(Constants.TRAINING_PLAN_ID_TO_EXERCISE_LIST_INTENT, getTrainingPlanIdFromIntent())
+        intent.putExtra(
+            Constants.TRAINING_PLAN_ID_TO_EXERCISE_LIST_INTENT,
+            getTrainingPlanIdFromIntent()
+        )
         startActivity(intent)
     }
 

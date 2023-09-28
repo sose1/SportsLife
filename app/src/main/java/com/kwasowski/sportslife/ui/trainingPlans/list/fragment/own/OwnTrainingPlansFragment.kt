@@ -19,6 +19,7 @@ import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormActivity
 import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 
 class OwnTrainingPlansFragment : Fragment() {
@@ -113,6 +114,11 @@ class OwnTrainingPlansFragment : Fragment() {
                     is OwnTrainingPlansState.OnFilteredTrainingPlans -> {
                         adapter.updateList(it.filteredList)
                     }
+
+                    OwnTrainingPlansState.OnSuccessDeleteTrainingPlan -> {
+                        showToast(R.string.correctly_deleted_training_plan)
+                        viewModel.getTrainingPlans()
+                    }
                 }
             }
         }
@@ -125,7 +131,24 @@ class OwnTrainingPlansFragment : Fragment() {
 
 
     private fun onTrainingPlanMenuItemSelected(trainingPlan: TrainingPlanDto, menuItemId: Int) {
-        TODO("Not yet implemented")
+        Timber.d("$menuItemId | $trainingPlan")
+
+        when (menuItemId) {
+            R.id.edit -> {
+                val intent = Intent(requireContext(), TrainingPlanFormActivity::class.java)
+                intent.putExtra(Constants.TRAINING_PLAN_ID_INTENT, trainingPlan.id)
+                startActivity(intent)
+            }
+            R.id.delete -> {
+                Timber.d("Delete")
+                viewModel.deleteTrainingPlan(trainingPlan)
+            }
+
+            R.id.share -> {
+                Timber.d("Share")
+                viewModel.shareTrainingPlan(trainingPlan)
+            }
+        }
     }
 
     private fun onItemClick(trainingPlan: TrainingPlanDto) {

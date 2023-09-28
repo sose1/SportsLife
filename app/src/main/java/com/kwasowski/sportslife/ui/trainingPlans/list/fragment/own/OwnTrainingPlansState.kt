@@ -7,5 +7,7 @@ sealed class OwnTrainingPlansState {
     object OnFailure : OwnTrainingPlansState()
     object OnSuccessGetEmptyList : OwnTrainingPlansState()
     object OnSuccessGetTrainingPlans : OwnTrainingPlansState()
+    object OnSuccessDeleteTrainingPlan : OwnTrainingPlansState()
+
     class OnFilteredTrainingPlans(val filteredList: List<TrainingPlanDto>) : OwnTrainingPlansState()
 }

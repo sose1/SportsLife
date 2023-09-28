@@ -142,5 +142,6 @@
     <string name="too_long_training_plan_name_error_message">The name of the training plan is too long!</string>
     <string name="success_save_training_plan">Training plan successfully saved</string>
     <string name="x">x</string>
+    <string name="correctly_deleted_training_plan">Correctly deleted training plan.</string>
 
 </resources>

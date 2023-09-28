@@ -97,4 +97,37 @@ class FirestoreTrainingPlanRepository : TrainingPlanRepository {
                     continuation.resume(Result.Failure(exception))
                 }
         }
+
+    override suspend fun getTrainingPlanById(id: String): Result<TrainingPlanDto> =
+        suspendCoroutine { continuation ->
+            collection.document(id)
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    documentSnapshot.toObject<TrainingPlan>()?.let {
+                        val trainingPlanDto = TrainingPlanDto(
+                            id = documentSnapshot.id,
+                            name = it.name,
+                            description = it.description,
+                            updateDate = it.updateDate,
+                            ownerId = it.ownerId,
+                            shared = it.shared,
+                            exercisesSeries = it.exercisesSeries
+                        )
+                        continuation.resume(Result.Success(trainingPlanDto))
+                    } ?: Result.Failure(NullPointerException("Training plan not found"))
+                }
+                .addOnFailureListener {
+                    continuation.resume(Result.Failure(it))
+                }
+        }
+
+    override suspend fun deleteTrainingPlan(trainingPlanId: String): Result<Unit> {
+        val deferred = CompletableDeferred<Result<Unit>>()
+        collection.document(trainingPlanId).delete()
+            .addOnSuccessListener { deferred.complete(Result.Success(Unit)) }
+            .addOnFailureListener { Result.Failure(it) }
+        return withContext(Dispatchers.Main) {
+            deferred.await()
+        }
+    }
 }

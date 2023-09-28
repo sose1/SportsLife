@@ -8,5 +8,6 @@ sealed class TrainingPlanFormState {
     object OnDescriptionLengthLimitError : TrainingPlanFormState()
     object OnError : TrainingPlanFormState()
     object OnSuccessSave : TrainingPlanFormState()
-    object onSearchExerciseButtonClicked : TrainingPlanFormState()
+    object OnSearchExerciseButtonClicked : TrainingPlanFormState()
+    object OnSuccessGet : TrainingPlanFormState()
 }
