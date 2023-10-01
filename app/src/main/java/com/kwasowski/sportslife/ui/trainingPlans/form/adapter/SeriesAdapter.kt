@@ -7,19 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.trainingPlan.Series
 import com.kwasowski.sportslife.databinding.ItemSeriesBinding
 
-class SeriesAdapter(context: Context, private val onSeriesCallback: OnSeriesCallback) :
+class SeriesAdapter(
+    context: Context,
+    private val onSeriesCallback: OnSeriesCallback,
+    private val isDetailsView: Boolean
+) :
     ArrayAdapter<Series>(context, 0) {
 
     override fun add(`object`: Series?) {
         super.add(`object`)
     }
+
     override fun remove(`object`: Series?) {
         `object`?.let {
             it.value = 0
@@ -55,58 +60,84 @@ class SeriesAdapter(context: Context, private val onSeriesCallback: OnSeriesCall
             view = convertView
         }
 
-        if (position != count - 1) {
-            binding.deleteSeries.visibility = View.INVISIBLE
-        } else {
-            binding.deleteSeries.visibility = View.VISIBLE
-        }
-
-        binding.deleteSeries.setOnClickListener {
-            view.post {
-                remove(getItem(position))
-                binding.unbind()
-            }
-        }
-
         val seriesItem = getItem(position)
         binding.indexOfSeries = (position + 1).toString()
-        binding.value.setText(if (seriesItem?.value == 0) "" else seriesItem?.value.toString(), TextView.BufferType.EDITABLE)
-        binding.repeats.setText(if (seriesItem?.repeats == 0) "" else seriesItem?.repeats.toString(), TextView.BufferType.EDITABLE)
+        initializeEditText(binding.value, ForSeriesProperty.VALUE, seriesItem)
+        initializeEditText(binding.repeats, ForSeriesProperty.REPEATS, seriesItem)
 
-
-        binding.value.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Nie jesteśmy zainteresowani tym etapem
+        if (isDetailsView) {
+            binding.deleteSeries.visibility = View.GONE
+            binding.repeats.focusable = View.NOT_FOCUSABLE
+            binding.value.focusable = View.NOT_FOCUSABLE
+        } else {
+            if (position != count - 1) {
+                binding.deleteSeries.visibility = View.INVISIBLE
+            } else {
+                binding.deleteSeries.visibility = View.VISIBLE
             }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Nie jesteśmy zainteresowani tym etapem
+            binding.deleteSeries.setOnClickListener {
+                view.post {
+                    remove(getItem(position))
+                    binding.unbind()
+                }
             }
-
-            override fun afterTextChanged(s: Editable?) {
-                val newValue = s?.toString()?.toIntOrNull() ?: 0
-                seriesItem?.value = newValue
-            }
-        })
-
-        binding.repeats.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Nie jesteśmy zainteresowani tym etapem
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Nie jesteśmy zainteresowani tym etapem
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                val newValue = s?.toString()?.toIntOrNull() ?: 0
-                seriesItem?.repeats = newValue
-            }
-        })
+        }
 
         return view
     }
 
+    enum class ForSeriesProperty {
+        VALUE,
+        REPEATS
+    }
+
+    private fun initializeEditText(
+        editText: EditText,
+        forSeriesProperty: ForSeriesProperty,
+        seriesItem: Series?
+    ) {
+        when (forSeriesProperty) {
+            ForSeriesProperty.VALUE -> {
+                editText.setText(
+                    if (seriesItem?.value == 0) "" else seriesItem?.value.toString(),
+                    TextView.BufferType.EDITABLE
+                )
+                setTextChangeListener(editText, forSeriesProperty, seriesItem)
+            }
+
+            ForSeriesProperty.REPEATS -> {
+                editText.setText(
+                    if (seriesItem?.repeats == 0) "" else seriesItem?.repeats.toString(),
+                    TextView.BufferType.EDITABLE
+                )
+                setTextChangeListener(editText, forSeriesProperty, seriesItem)
+            }
+        }
+    }
+
+    private fun setTextChangeListener(
+        editText: EditText,
+        forSeriesProperty: ForSeriesProperty,
+        seriesItem: Series?
+    ) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Nie jesteśmy zainteresowani tym etapem
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Nie jesteśmy zainteresowani tym etapem
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val newValue = s?.toString()?.toIntOrNull() ?: 0
+                when (forSeriesProperty) {
+                    ForSeriesProperty.VALUE -> seriesItem?.value = newValue
+                    ForSeriesProperty.REPEATS -> seriesItem?.repeats = newValue
+                }
+            }
+        })
+    }
 
     interface OnSeriesCallback {
         fun onDeleteSeries()

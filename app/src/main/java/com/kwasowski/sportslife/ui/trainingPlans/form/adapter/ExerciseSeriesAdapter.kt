@@ -2,6 +2,7 @@ package com.kwasowski.sportslife.ui.trainingPlans.form.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -10,7 +11,8 @@ import com.kwasowski.sportslife.data.trainingPlan.Series
 import com.kwasowski.sportslife.databinding.ItemExerciseSeriesBinding
 import com.kwasowski.sportslife.extensions.dp
 
-class ExerciseSeriesAdapter : RecyclerView.Adapter<ViewHolder>() {
+class ExerciseSeriesAdapter(private val isDetailsView: Boolean) :
+    RecyclerView.Adapter<ViewHolder>() {
 
     private var exerciseSeries = mutableListOf<ExerciseSeries>()
 
@@ -54,25 +56,31 @@ class ExerciseSeriesAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     inner class ExerciseSeriesViewHolder(private val binding: ItemExerciseSeriesBinding) :
         ViewHolder(binding.root), SeriesAdapter.OnSeriesCallback {
-        private val seriesAdapter = SeriesAdapter(binding.root.context, this)
 
+        private lateinit var seriesAdapter: SeriesAdapter
         private lateinit var exerciseSeries: ExerciseSeries
         fun bind(exerciseSeries: ExerciseSeries) {
             this.exerciseSeries = exerciseSeries
             binding.exerciseSeries = this.exerciseSeries
             binding.exerciseName.text = exerciseSeries.exerciseName
 
+            seriesAdapter = SeriesAdapter(binding.root.context, this, isDetailsView)
+
             seriesAdapter.addAll(exerciseSeries.series.toMutableList())
             binding.series.adapter = seriesAdapter
 
-            resizeSeriesListView()
-
-            binding.addSeries.setOnClickListener {
-                seriesAdapter.add(Series())
-                this.exerciseSeries.series = seriesAdapter.getAll()
-                resizeSeriesListView()
+            if (isDetailsView) {
+                binding.addSeries.visibility = View.GONE
+                binding.moreButton.visibility = View.GONE
+            } else {
+                binding.addSeries.setOnClickListener {
+                    seriesAdapter.add(Series())
+                    this.exerciseSeries.series = seriesAdapter.getAll()
+                    resizeSeriesListView()
+                }
             }
 
+            resizeSeriesListView()
             binding.executePendingBindings()
         }
 

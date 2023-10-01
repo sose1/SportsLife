@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.trainingPlans.list.fragment.communities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanDto
 import com.kwasowski.sportslife.databinding.FragmentCommunitiesTrainingPlansBinding
+import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormActivity
+import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -41,7 +44,7 @@ class CommunitiesTrainingPlansFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_communities_training_plans,
@@ -99,8 +102,12 @@ class CommunitiesTrainingPlansFragment : Fragment() {
         super.onResume()
         viewModel.getTrainingPlans()
     }
+
     private fun onItemClick(trainingPlan: TrainingPlanDto) {
-        TODO("Not yet implemented")
+        val intent = Intent(requireContext(), TrainingPlanFormActivity::class.java)
+        intent.putExtra(Constants.TRAINING_PLAN_ID_INTENT, trainingPlan.id)
+        intent.putExtra(Constants.TRAINING_PLAN_IS_DETAILS_VIEW, true)
+        startActivity(intent)
     }
 
     private fun showToast(stringId: Int) {

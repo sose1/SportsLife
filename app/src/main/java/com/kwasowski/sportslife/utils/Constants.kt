@@ -15,6 +15,7 @@ object Constants {
     const val OPEN_MODE = "OPEN_MODE"
     const val CAN_ADD_EXERCISE_TO_TRAINING_PLAN = "CAN_ADD_EXERCISE_TO_TRAINING_PLAN"
     const val EXERCISES_TO_ADD = "EXERCISES_TO_ADD"
+    const val TRAINING_PLAN_IS_DETAILS_VIEW = "TRAINING_PLAN_IS_DETAILS_VIEW"
 }
 
 object LanguageTag {

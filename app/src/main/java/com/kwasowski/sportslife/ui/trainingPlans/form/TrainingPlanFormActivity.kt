@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -28,12 +29,11 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-// TODO: 1. Widok szczegółów treningu dla community
 class TrainingPlanFormActivity : AppCompatActivity() {
     private val viewModel: TrainingPlanFormViewModel by viewModel()
     private lateinit var binding: ActivityTrainingPlanFormBinding
     private lateinit var exerciseSeriesAdapter: ExerciseSeriesAdapter
-    private var refreshData = true;
+    private var refreshData = true
 
     enum class BundleFormKey {
         NAME, DESCRIPTION
@@ -69,8 +69,12 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         binding.trainingPlanName.addTextChangedListener(nameEditTextWatcher)
         binding.trainingPlanDescription.addTextChangedListener(descriptionEditTextWatcher)
 
-        exerciseSeriesAdapter = ExerciseSeriesAdapter()
+        exerciseSeriesAdapter = ExerciseSeriesAdapter(isDetailsView())
         binding.exercisesSeries.adapter = exerciseSeriesAdapter
+
+
+        if (isDetailsView())
+            setDetailsView()
         onViewStateChanged()
     }
 
@@ -108,6 +112,17 @@ class TrainingPlanFormActivity : AppCompatActivity() {
     private fun getTrainingPlanIdFromIntent() =
         intent.getStringExtra(Constants.TRAINING_PLAN_ID_INTENT)
 
+    private fun isDetailsView() =
+        intent.getBooleanExtra(Constants.TRAINING_PLAN_IS_DETAILS_VIEW, false)
+
+    private fun setDetailsView() {
+        binding.topAppBar.title = getString(R.string.details)
+        binding.buttons.visibility = View.GONE
+        binding.addExerciseSeriesButton.visibility = View.GONE
+        binding.trainingPlanName.focusable = View.NOT_FOCUSABLE
+        binding.trainingPlanDescription.focusable = View.NOT_FOCUSABLE
+    }
+
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.uiState.collect {
@@ -141,7 +156,8 @@ class TrainingPlanFormActivity : AppCompatActivity() {
 
                     TrainingPlanFormState.OnSearchExerciseButtonClicked -> openExerciseListActivity()
                     TrainingPlanFormState.OnSuccessGet -> {
-                        binding.topAppBar.title = getString(R.string.editing)
+                        if(!isDetailsView())
+                            binding.topAppBar.title = getString(R.string.editing)
                         exerciseSeriesAdapter.updateList(
                             viewModel.exerciseSeries.value ?: emptyList()
                         )
@@ -198,6 +214,7 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         override fun afterTextChanged(s: Editable?) {
         }
     }
+
 
     private fun showInputError(inputLayout: TextInputLayout, stringId: Int) {
         inputLayout.error = getString(stringId)

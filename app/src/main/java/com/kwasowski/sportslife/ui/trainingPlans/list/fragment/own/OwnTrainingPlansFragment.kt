@@ -154,6 +154,7 @@ class OwnTrainingPlansFragment : Fragment() {
     private fun onItemClick(trainingPlan: TrainingPlanDto) {
         val intent = Intent(requireContext(), TrainingPlanFormActivity::class.java)
         intent.putExtra(Constants.TRAINING_PLAN_ID_INTENT, trainingPlan.id)
+        intent.putExtra(Constants.TRAINING_PLAN_IS_DETAILS_VIEW, true)
         startActivity(intent)
     }
 
