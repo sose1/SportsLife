@@ -10,4 +10,5 @@ sealed class TrainingPlanFormState {
     object OnSuccessSave : TrainingPlanFormState()
     object OnSearchExerciseButtonClicked : TrainingPlanFormState()
     object OnSuccessGet : TrainingPlanFormState()
+    object ReadExerciseSeries : TrainingPlanFormState()
 }

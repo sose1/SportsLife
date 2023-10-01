@@ -13,6 +13,7 @@ data class TrainingPlan @JvmOverloads constructor(
 )
 
 data class ExerciseSeries @JvmOverloads constructor(
+    val originalId: String = "",
     val exerciseName: String = "",
     var series: List<Series> = emptyList()
 )

@@ -1,10 +1,13 @@
 package com.kwasowski.sportslife.ui.trainingPlans.form
 
+import ParcelableMutableList
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -13,26 +16,42 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
 import com.kwasowski.sportslife.databinding.ActivityTrainingPlanFormBinding
+import com.kwasowski.sportslife.extensions.parcelable
 import com.kwasowski.sportslife.ui.exercise.exerciseList.activity.ExercisesListActivity
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 import com.kwasowski.sportslife.ui.trainingPlans.form.adapter.ExerciseSeriesAdapter
+import com.kwasowski.sportslife.utils.ActivityOpenMode
 import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 // TODO: 1. Widok szczegółów treningu dla community
-// TODO: 2. Edycja ćwiczenia - pobranie danych ćwieczenia po id
-// TODO: 3. Obsługa wyszikwaiania ćwiczenia i dodawania go do treningu (obsłgua przekazywania id ćwieczenia)
-// todo: 4. Obśługa dodwania/ usuwania serii ćwiczeń
 class TrainingPlanFormActivity : AppCompatActivity() {
     private val viewModel: TrainingPlanFormViewModel by viewModel()
     private lateinit var binding: ActivityTrainingPlanFormBinding
     private lateinit var exerciseSeriesAdapter: ExerciseSeriesAdapter
+    private var refreshData = true;
 
     enum class BundleFormKey {
         NAME, DESCRIPTION
     }
+
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            refreshData = false
+            Timber.d("ResultCode: ${result.resultCode}")
+            if (result.resultCode == RESULT_OK) {
+                val receivedData =
+                    result?.data?.parcelable<Parcelable>(Constants.EXERCISES_TO_ADD) as ParcelableMutableList<*>
+                val exerciseSeriesList = receivedData.map {
+                    ExerciseSeries(it["id"].toString(), it["name"].toString())
+                }
+                exerciseSeriesAdapter.addAll(exerciseSeriesList)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +76,17 @@ class TrainingPlanFormActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.setStateToDefault()
-        viewModel.getTrainingPlanById(getTrainingPlanIdFromIntent())
+        if (refreshData) {
+            viewModel.setStateToDefault()
+            viewModel.getTrainingPlanById(getTrainingPlanIdFromIntent())
+        }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activityResultLauncher.unregister()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(
@@ -76,6 +103,7 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         binding.trainingPlanName.setText(savedInstanceState.getString(ExerciseFormActivity.BundleFormKey.NAME.toString()))
         binding.trainingPlanDescription.setText(savedInstanceState.getString(ExerciseFormActivity.BundleFormKey.DESCRIPTION.toString()))
     }
+
 
     private fun getTrainingPlanIdFromIntent() =
         intent.getStringExtra(Constants.TRAINING_PLAN_ID_INTENT)
@@ -113,25 +141,31 @@ class TrainingPlanFormActivity : AppCompatActivity() {
 
                     TrainingPlanFormState.OnSearchExerciseButtonClicked -> openExerciseListActivity()
                     TrainingPlanFormState.OnSuccessGet -> {
-                        onSuccessGet()
+                        binding.topAppBar.title = getString(R.string.editing)
+                        exerciseSeriesAdapter.updateList(
+                            viewModel.exerciseSeries.value ?: emptyList()
+                        )
+                        viewModel.setStateToDefault()
+                    }
+
+                    TrainingPlanFormState.ReadExerciseSeries -> {
+                        viewModel.exerciseSeries.value = exerciseSeriesAdapter.getAll()
+                        viewModel.setStateToDefault()
+                        viewModel.saveTrainingPlan()
                     }
                 }
             }
         }
     }
 
-    private fun onSuccessGet() {
-        binding.topAppBar.title = getString(R.string.editing)
-    }
-
     private fun openExerciseListActivity() {
         viewModel.setStateToDefault()
         val intent = Intent(this, ExercisesListActivity::class.java)
         intent.putExtra(
-            Constants.TRAINING_PLAN_ID_TO_EXERCISE_LIST_INTENT,
-            getTrainingPlanIdFromIntent()
+            Constants.OPEN_MODE,
+            ActivityOpenMode.ADD_EXERCISE_TO_TRAINING_PLAN as Parcelable
         )
-        startActivity(intent)
+        activityResultLauncher.launch(intent)
     }
 
 

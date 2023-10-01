@@ -16,6 +16,7 @@ import timber.log.Timber
 
 class OwnExercisesAdapter(
     private val context: Context,
+    private val addToTrainingIsVisible: Boolean,
     private val onMenuItemSelected: (ExerciseDto, Int) -> Unit,
     private val onItemClick: (ExerciseDto) -> Unit
 ) :
@@ -65,6 +66,7 @@ class OwnExercisesAdapter(
             popupMenu.setOnMenuItemClickListener(onMenuItemClickListener)
             popupMenu.menuInflater.inflate(R.menu.own_exercise, popupMenu.menu)
             popupMenu.gravity = Gravity.RIGHT
+            popupMenu.menu.findItem(R.id.add_to_training).isVisible = addToTrainingIsVisible
 
             try {
                 val fieldPopup = PopupMenu::class.java.getDeclaredField("mPopup")

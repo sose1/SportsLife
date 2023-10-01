@@ -136,6 +136,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
         popupMenu.menuInflater.inflate(menuResId, popupMenu.menu)
         popupMenu.gravity = Gravity.RIGHT
 
+        popupMenu.menu.findItem(R.id.add_to_training).isVisible = false
         try {
             val fieldPopup = PopupMenu::class.java.getDeclaredField("mPopup")
             fieldPopup.isAccessible = true
@@ -154,10 +155,6 @@ class ExerciseDetailsActivity : AppCompatActivity() {
     private val onMenuItemClickListener = PopupMenu.OnMenuItemClickListener {
         run {
             when (it.itemId) {
-                R.id.add_to_training -> {
-                    Timber.d("Add to training")
-                }
-
                 R.id.add_to_fav -> {
                     Timber.d("Add to fav")
                     viewModel.addToFav()

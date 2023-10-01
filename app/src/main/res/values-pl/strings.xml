@@ -134,4 +134,5 @@
     <string name="success_save_training_plan">Pomyślnie zapisano plan treningowy</string>
     <string name="x">x</string>
     <string name="correctly_deleted_training_plan">Poprwanie usunięto plan treningowy.</string>
+    <string name="added_to_training">Dodano do planu treningowego.</string>
 </resources>

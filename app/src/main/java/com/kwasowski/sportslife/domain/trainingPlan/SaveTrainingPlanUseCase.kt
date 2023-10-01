@@ -3,6 +3,7 @@ package com.kwasowski.sportslife.domain.trainingPlan
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.data.Result
+import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
 import com.kwasowski.sportslife.data.trainingPlan.TrainingPlan
 import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanRepository
 
@@ -12,6 +13,7 @@ class SaveTrainingPlanUseCase(private val trainingPlanRepository: TrainingPlanRe
         id: String?,
         name: String?,
         description: String?,
+        exerciseSeries: List<ExerciseSeries>
     ): Result<Unit> {
         return Firebase.auth.currentUser?.uid?.let {
             trainingPlanRepository.saveTrainingPlan(
@@ -20,6 +22,7 @@ class SaveTrainingPlanUseCase(private val trainingPlanRepository: TrainingPlanRe
                     name = name!!,
                     description = description!!,
                     ownerId = it,
+                    exercisesSeries = exerciseSeries
                 )
             )
         } ?: Result.Failure(Exception())

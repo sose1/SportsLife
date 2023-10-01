@@ -143,5 +143,6 @@
     <string name="success_save_training_plan">Training plan successfully saved</string>
     <string name="x">x</string>
     <string name="correctly_deleted_training_plan">Correctly deleted training plan.</string>
+    <string name="added_to_training">Added to training plan.</string>
 
 </resources>

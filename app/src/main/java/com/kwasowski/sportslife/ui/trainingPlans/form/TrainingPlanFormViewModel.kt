@@ -54,6 +54,11 @@ class TrainingPlanFormViewModel(
         }
     }
 
+    fun trySaveTrainingPlan() {
+        Timber.d("trySaveTrainingPlan")
+        mutableState.value = TrainingPlanFormState.ReadExerciseSeries
+    }
+
     fun saveTrainingPlan() {
         Timber.d("saveTrainingPlan")
         if (validateInputData()) {
@@ -61,7 +66,8 @@ class TrainingPlanFormViewModel(
                 val result = saveTrainingPlanUseCase.execute(
                     id = id.value,
                     name = name.value,
-                    description = description.value
+                    description = description.value,
+                    exerciseSeries = exerciseSeries.value ?: emptyList()
                 )
 
                 when (result) {

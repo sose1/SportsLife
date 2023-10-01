@@ -16,6 +16,7 @@ import timber.log.Timber
 
 class CommunitiesExercisesAdapter(
     private val context: Context,
+    private val addToTrainingIsVisible: Boolean,
     private val onMenuItemSelected: (ExerciseDto, Int) -> Unit,
     private val onItemClick: (ExerciseDto) -> Unit
 ) : RecyclerView.Adapter<ViewHolder>() {
@@ -64,6 +65,7 @@ class CommunitiesExercisesAdapter(
             popupMenu.setOnMenuItemClickListener(onMenuItemClickListener)
             popupMenu.menuInflater.inflate(R.menu.communities_exercise, popupMenu.menu)
             popupMenu.gravity = Gravity.RIGHT
+            popupMenu.menu.findItem(R.id.add_to_training).isVisible = addToTrainingIsVisible
 
             try {
                 val fieldPopup = PopupMenu::class.java.getDeclaredField("mPopup")
