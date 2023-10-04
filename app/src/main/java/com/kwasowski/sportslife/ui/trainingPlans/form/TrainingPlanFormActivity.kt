@@ -50,6 +50,12 @@ class TrainingPlanFormActivity : AppCompatActivity() {
                     ExerciseSeries(it["id"].toString(), it["name"].toString())
                 }
                 exerciseSeriesAdapter.addAll(exerciseSeriesList)
+                binding.nestedScrollView.post {
+                    binding.nestedScrollView.smoothScrollTo(
+                        0,
+                        binding.nestedScrollView.getChildAt(0).height
+                    )
+                }
             }
         }
 
@@ -156,7 +162,7 @@ class TrainingPlanFormActivity : AppCompatActivity() {
 
                     TrainingPlanFormState.OnSearchExerciseButtonClicked -> openExerciseListActivity()
                     TrainingPlanFormState.OnSuccessGet -> {
-                        if(!isDetailsView())
+                        if (!isDetailsView())
                             binding.topAppBar.title = getString(R.string.editing)
                         exerciseSeriesAdapter.updateList(
                             viewModel.exerciseSeries.value ?: emptyList()
