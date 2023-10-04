@@ -47,18 +47,18 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/more_button"
+                    app:layout_constraintEnd_toStartOf="@id/delete_exercise_series"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Testowa nazwa ćwiczenia Testowa nazwa ćwiczenia Testowa nazwa ćwiczenia" />
 
                 <ImageButton
-                    android:id="@+id/more_button"
+                    android:id="@+id/delete_exercise_series"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:contentDescription="@string/more"
-                    android:src="@drawable/baseline_more_vert_24"
+                    android:contentDescription="@string/delete"
+                    android:src="@drawable/baseline_playlist_remove_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/white" />

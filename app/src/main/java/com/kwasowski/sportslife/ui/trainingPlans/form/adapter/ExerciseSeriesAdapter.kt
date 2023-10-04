@@ -51,8 +51,13 @@ class ExerciseSeriesAdapter(private val isDetailsView: Boolean) :
         notifyDataSetChanged()
     }
 
-    fun getAll(): List<ExerciseSeries> = this.exerciseSeries
+    @SuppressLint("NotifyDataSetChanged")
+    fun removeAt(position: Int) {
+        this.exerciseSeries.removeAt(position)
+        notifyDataSetChanged()
+    }
 
+    fun getAll(): List<ExerciseSeries> = this.exerciseSeries
 
     inner class ExerciseSeriesViewHolder(private val binding: ItemExerciseSeriesBinding) :
         ViewHolder(binding.root), SeriesAdapter.OnSeriesCallback {
@@ -71,12 +76,16 @@ class ExerciseSeriesAdapter(private val isDetailsView: Boolean) :
 
             if (isDetailsView) {
                 binding.addSeries.visibility = View.GONE
-                binding.moreButton.visibility = View.GONE
+                binding.deleteExerciseSeries.visibility = View.GONE
             } else {
                 binding.addSeries.setOnClickListener {
                     seriesAdapter.add(Series())
                     this.exerciseSeries.series = seriesAdapter.getAll()
                     resizeSeriesListView()
+                }
+
+                binding.deleteExerciseSeries.setOnClickListener {
+                    removeAt(layoutPosition)
                 }
             }
 
