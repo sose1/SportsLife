@@ -13,6 +13,7 @@ class SaveTrainingPlanUseCase(private val trainingPlanRepository: TrainingPlanRe
         id: String?,
         name: String?,
         description: String?,
+        shared: Boolean,
         exerciseSeries: List<ExerciseSeries>
     ): Result<Unit> {
         return Firebase.auth.currentUser?.uid?.let {
@@ -22,7 +23,8 @@ class SaveTrainingPlanUseCase(private val trainingPlanRepository: TrainingPlanRe
                     name = name!!,
                     description = description!!,
                     ownerId = it,
-                    exercisesSeries = exerciseSeries
+                    exercisesSeries = exerciseSeries,
+                    shared = shared
                 )
             )
         } ?: Result.Failure(Exception())

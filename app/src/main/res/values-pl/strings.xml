@@ -133,6 +133,7 @@
     <string name="too_long_training_plan_name_error_message">Nazwa planu trenigowego jest za długa!</string>
     <string name="success_save_training_plan">Pomyślnie zapisano plan treningowy</string>
     <string name="x">x</string>
-    <string name="correctly_deleted_training_plan">Poprwanie usunięto plan treningowy.</string>
+    <string name="correctly_deleted_training_plan">Poprawnie usunięto plan treningowy.</string>
     <string name="added_to_training">Dodano do planu treningowego.</string>
+    <string name="training_plan_successfully_shared">Pomyślnie udostępniono plan treningowy.</string>
 </resources>

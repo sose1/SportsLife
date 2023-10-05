@@ -89,6 +89,7 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         if (refreshData) {
             viewModel.setStateToDefault()
             viewModel.getTrainingPlanById(getTrainingPlanIdFromIntent())
+            setOnSharedChangeListener()
         }
     }
 
@@ -125,6 +126,8 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         binding.topAppBar.title = getString(R.string.details)
         binding.buttons.visibility = View.GONE
         binding.addExerciseSeriesButton.visibility = View.GONE
+        binding.sharedGroup.visibility = View.GONE
+        binding.sharedText.visibility = View.GONE
         binding.trainingPlanName.focusable = View.NOT_FOCUSABLE
         binding.trainingPlanDescription.focusable = View.NOT_FOCUSABLE
     }
@@ -164,6 +167,14 @@ class TrainingPlanFormActivity : AppCompatActivity() {
                     TrainingPlanFormState.OnSuccessGet -> {
                         if (!isDetailsView())
                             binding.topAppBar.title = getString(R.string.editing)
+
+                        viewModel.shared.value?.let {shared ->
+                            binding.sharedGroup.check(
+                                if (shared) R.id.yes else R.id.no
+                            )
+                        } ?: binding.sharedGroup.check(R.id.no)
+
+
                         exerciseSeriesAdapter.updateList(
                             viewModel.exerciseSeries.value ?: emptyList()
                         )
@@ -221,7 +232,14 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         }
     }
 
-
+    private fun setOnSharedChangeListener() {
+        binding.sharedGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.yes -> viewModel.shared.value = true
+                R.id.no -> viewModel.shared.value = false
+            }
+        }
+    }
     private fun showInputError(inputLayout: TextInputLayout, stringId: Int) {
         inputLayout.error = getString(stringId)
     }

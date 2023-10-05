@@ -144,5 +144,6 @@
     <string name="x">x</string>
     <string name="correctly_deleted_training_plan">Correctly deleted training plan.</string>
     <string name="added_to_training">Added to training plan.</string>
+    <string name="training_plan_successfully_shared">The training plan was successfully shared.</string>
 
 </resources>

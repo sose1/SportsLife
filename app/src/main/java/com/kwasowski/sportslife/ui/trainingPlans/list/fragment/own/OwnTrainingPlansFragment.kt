@@ -119,6 +119,8 @@ class OwnTrainingPlansFragment : Fragment() {
                         showToast(R.string.correctly_deleted_training_plan)
                         viewModel.getTrainingPlans()
                     }
+
+                    OwnTrainingPlansState.OnSuccessShareTrainingPlan -> showToast(R.string.training_plan_successfully_shared)
                 }
             }
         }
@@ -139,6 +141,7 @@ class OwnTrainingPlansFragment : Fragment() {
                 intent.putExtra(Constants.TRAINING_PLAN_ID_INTENT, trainingPlan.id)
                 startActivity(intent)
             }
+
             R.id.delete -> {
                 Timber.d("Delete")
                 viewModel.deleteTrainingPlan(trainingPlan)

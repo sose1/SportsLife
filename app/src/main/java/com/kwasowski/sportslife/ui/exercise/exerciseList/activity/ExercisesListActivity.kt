@@ -5,6 +5,7 @@ import ParcelableMutableList
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -77,7 +78,14 @@ class ExercisesListActivity : AppCompatActivity(), OwnExerciseListFragment.DataP
         binding.fab.setOnClickListener {
             startActivity(Intent(this, ExerciseFormActivity::class.java))
         }
+
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onActivityFinish()
+            }
+        })
     }
+
 
     private fun getOpenModeFromIntent(): ActivityOpenMode? =
         intent.parcelable(Constants.OPEN_MODE)

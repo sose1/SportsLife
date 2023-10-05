@@ -24,6 +24,7 @@ class TrainingPlanFormViewModel(
     val id = MutableLiveData<String>()
     val name = MutableLiveData<String>()
     val description = MutableLiveData<String>()
+    val shared = MutableLiveData(false)
     val exerciseSeries = MutableLiveData<List<ExerciseSeries>>()
 
     enum class InputLengthLimit(val value: Int) {
@@ -46,6 +47,7 @@ class TrainingPlanFormViewModel(
                         id.value = it.data.id
                         name.value = it.data.name
                         description.value = it.data.description
+                        shared.value = it.data.shared
                         exerciseSeries.value = it.data.exercisesSeries
                         mutableState.value = TrainingPlanFormState.OnSuccessGet
                     }
@@ -67,6 +69,7 @@ class TrainingPlanFormViewModel(
                     id = id.value,
                     name = name.value,
                     description = description.value,
+                    shared = shared.value!!,
                     exerciseSeries = exerciseSeries.value ?: emptyList()
                 )
 

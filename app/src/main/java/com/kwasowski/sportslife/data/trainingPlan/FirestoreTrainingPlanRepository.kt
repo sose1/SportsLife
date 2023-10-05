@@ -55,6 +55,7 @@ class FirestoreTrainingPlanRepository : TrainingPlanRepository {
                                     description = trainingPlan.description,
                                     updateDate = trainingPlan.updateDate,
                                     ownerId = trainingPlan.ownerId,
+                                    shared = trainingPlan.shared,
                                     exercisesSeries = trainingPlan.exercisesSeries
                                 )
                             )
@@ -86,6 +87,7 @@ class FirestoreTrainingPlanRepository : TrainingPlanRepository {
                                     description = trainingPlan.description,
                                     updateDate = trainingPlan.updateDate,
                                     ownerId = trainingPlan.ownerId,
+                                    shared = trainingPlan.shared,
                                     exercisesSeries = trainingPlan.exercisesSeries
                                 )
                             )

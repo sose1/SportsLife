@@ -6,6 +6,7 @@ import com.kwasowski.sportslife.data.Result
 import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanDto
 import com.kwasowski.sportslife.domain.trainingPlan.DeleteOwnTrainingPlanUseCase
 import com.kwasowski.sportslife.domain.trainingPlan.GetTrainingPlansByOwnerIdUseCase
+import com.kwasowski.sportslife.domain.trainingPlan.SaveTrainingPlanUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +15,8 @@ import timber.log.Timber
 
 class OwnTrainingPlansViewModel(
     private val getTrainingPlansByOwnerIdUseCase: GetTrainingPlansByOwnerIdUseCase,
-    private val deleteOwnTrainingPlanUseCase: DeleteOwnTrainingPlanUseCase
+    private val deleteOwnTrainingPlanUseCase: DeleteOwnTrainingPlanUseCase,
+    private val saveTrainingPlanUseCase: SaveTrainingPlanUseCase
 ) :
     ViewModel() {
     private val mutableState =
@@ -65,5 +67,23 @@ class OwnTrainingPlansViewModel(
 
     fun shareTrainingPlan(trainingPlan: TrainingPlanDto) {
         Timber.d("shareTrainingPlan: $trainingPlan")
+        if (trainingPlan.id.isNullOrBlank()) {
+            return
+        }
+
+        viewModelScope.launch {
+            val result = saveTrainingPlanUseCase.execute(
+                id = trainingPlan.id,
+                name = trainingPlan.name,
+                description = trainingPlan.description,
+                exerciseSeries = trainingPlan.exercisesSeries,
+                shared = true
+            )
+
+            when (result) {
+                is Result.Failure -> mutableState.value = OwnTrainingPlansState.OnFailure
+                is Result.Success -> mutableState.value = OwnTrainingPlansState.OnSuccessShareTrainingPlan
+            }
+        }
     }
 }
