@@ -123,4 +123,17 @@
     <string name="removed_exercise_from_favorites">Usunięto z ulubionych</string>
     <string name="measure">Miara</string>
     <string name="none">brak</string>
+    <string name="exercises">Ćwiczenia</string>
+    <string name="add_a_new_training_plan">Dodaj nowy plan treningowy</string>
+    <string name="add">Dodaj</string>
+    <string name="training_plans_empty_list_message">Trochę tutaj pusto…\nDodaj swoje plany treningowe i\nuzupełnij bazę treningów!</string>
+    <string name="empty_training_plan_description_error_message">Opis planu treningowego musi być uzupełniony!</string>
+    <string name="too_long_training_plan_description_error_message">Opis planu treningowego jest za długi!</string>
+    <string name="empty_training_plan_name_error_message">Nazwa planu trenigowego musi być uzupełniona!</string>
+    <string name="too_long_training_plan_name_error_message">Nazwa planu trenigowego jest za długa!</string>
+    <string name="success_save_training_plan">Pomyślnie zapisano plan treningowy</string>
+    <string name="x">x</string>
+    <string name="correctly_deleted_training_plan">Poprawnie usunięto plan treningowy.</string>
+    <string name="added_to_training">Dodano do planu treningowego.</string>
+    <string name="training_plan_successfully_shared">Pomyślnie udostępniono plan treningowy.</string>
 </resources>

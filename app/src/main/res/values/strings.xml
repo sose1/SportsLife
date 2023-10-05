@@ -132,5 +132,18 @@
     <string name="removed_exercise_from_favorites">Removed from favorites</string>
     <string name="measure">Measure</string>
     <string name="none">None</string>
+    <string name="exercises">Exercises</string>
+    <string name="add_a_new_training_plan">Add a new training plan</string>
+    <string name="add">Add</string>
+    <string name="training_plans_empty_list_message">A little empty here…"\n"Add your training plans and complete your training base!</string>
+    <string name="empty_training_plan_description_error_message">The description of the training plan must be completed!</string>
+    <string name="too_long_training_plan_description_error_message">The description of the training plan is too long!</string>
+    <string name="empty_training_plan_name_error_message">The name of the training plan must be completed!</string>
+    <string name="too_long_training_plan_name_error_message">The name of the training plan is too long!</string>
+    <string name="success_save_training_plan">Training plan successfully saved</string>
+    <string name="x">x</string>
+    <string name="correctly_deleted_training_plan">Correctly deleted training plan.</string>
+    <string name="added_to_training">Added to training plan.</string>
+    <string name="training_plan_successfully_shared">The training plan was successfully shared.</string>
 
 </resources>

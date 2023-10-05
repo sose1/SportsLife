@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own
+package com.kwasowski.sportslife.ui.trainingPlans.list.fragment.own
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,27 +6,25 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.PopupMenu.OnMenuItemClickListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kwasowski.sportslife.R
-import com.kwasowski.sportslife.data.exercise.ExerciseDto
-import com.kwasowski.sportslife.databinding.ItemExerciseBinding
+import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanDto
+import com.kwasowski.sportslife.databinding.ItemTrainingPlanBinding
 import timber.log.Timber
 
-class OwnExercisesAdapter(
+class OwnTrainingPlansAdapter(
     private val context: Context,
-    private val addToTrainingIsVisible: Boolean,
-    private val onMenuItemSelected: (ExerciseDto, Int) -> Unit,
-    private val onItemClick: (ExerciseDto) -> Unit
-) :
-    RecyclerView.Adapter<ViewHolder>() {
-    private var exercises = listOf<ExerciseDto>()
+    private val onMenuItemSelected: (TrainingPlanDto, Int) -> Unit,
+    private val onItemClick: (TrainingPlanDto) -> Unit
+) : RecyclerView.Adapter<ViewHolder>() {
+
+    private var trainingPlans = listOf<TrainingPlanDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ExerciseViewHolder(
-            ItemExerciseBinding.inflate(
+        return TrainingPlanViewHolder(
+            ItemTrainingPlanBinding.inflate(
                 inflater,
                 parent,
                 false
@@ -34,25 +32,25 @@ class OwnExercisesAdapter(
         )
     }
 
-    override fun getItemCount(): Int = exercises.size
+    override fun getItemCount(): Int = trainingPlans.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        (holder as ExerciseViewHolder).bind(exercises[position])
+        (holder as TrainingPlanViewHolder).bind(trainingPlans[position])
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateList(exercises: List<ExerciseDto>) {
-        this.exercises = exercises
+    fun updateList(trainingPlans: List<TrainingPlanDto>) {
+        this.trainingPlans = trainingPlans
         notifyDataSetChanged()
     }
 
-    inner class ExerciseViewHolder(private val binding: ItemExerciseBinding) :
+    inner class TrainingPlanViewHolder(private val binding: ItemTrainingPlanBinding) :
         ViewHolder(binding.root) {
-        private lateinit var exercise: ExerciseDto
-        fun bind(exercise: ExerciseDto) {
-            this.exercise = exercise
-            binding.exercise = exercise
+        private lateinit var trainingPlan: TrainingPlanDto
+        fun bind(trainingPlan: TrainingPlanDto) {
+            this.trainingPlan = trainingPlan
+            binding.trainingPlan = trainingPlan
             binding.root.setOnClickListener {
-                onItemClick(exercise)
+                onItemClick(trainingPlan)
             }
             binding.moreButton.setOnClickListener {
                 createPopupMenu()
@@ -64,9 +62,8 @@ class OwnExercisesAdapter(
         private fun createPopupMenu() {
             val popupMenu = PopupMenu(context, binding.moreButton)
             popupMenu.setOnMenuItemClickListener(onMenuItemClickListener)
-            popupMenu.menuInflater.inflate(R.menu.own_exercise, popupMenu.menu)
+            popupMenu.menuInflater.inflate(R.menu.own_training_plan, popupMenu.menu)
             popupMenu.gravity = Gravity.RIGHT
-            popupMenu.menu.findItem(R.id.add_to_training).isVisible = addToTrainingIsVisible
 
             try {
                 val fieldPopup = PopupMenu::class.java.getDeclaredField("mPopup")
@@ -83,9 +80,9 @@ class OwnExercisesAdapter(
             popupMenu.show()
         }
 
-        private val onMenuItemClickListener = OnMenuItemClickListener {
+        private val onMenuItemClickListener = PopupMenu.OnMenuItemClickListener {
             run {
-                onMenuItemSelected(this.exercise, it.itemId)
+                onMenuItemSelected(this.trainingPlan, it.itemId)
                 true
             }
         }

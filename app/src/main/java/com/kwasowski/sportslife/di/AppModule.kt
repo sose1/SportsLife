@@ -10,6 +10,8 @@ import com.kwasowski.sportslife.data.profile.ProfileRepository
 import com.kwasowski.sportslife.data.settings.FirestoreSettingsRepository
 import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.settings.SettingsRepository
+import com.kwasowski.sportslife.data.trainingPlan.FirestoreTrainingPlanRepository
+import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanRepository
 import com.kwasowski.sportslife.domain.category.GetCategoriesUseCase
 import com.kwasowski.sportslife.domain.exercise.AddToFavExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
@@ -24,6 +26,11 @@ import com.kwasowski.sportslife.domain.profile.GetProfileUseCase
 import com.kwasowski.sportslife.domain.profile.SaveProfileUseCase
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
 import com.kwasowski.sportslife.domain.settings.SaveSettingsUseCase
+import com.kwasowski.sportslife.domain.trainingPlan.DeleteOwnTrainingPlanUseCase
+import com.kwasowski.sportslife.domain.trainingPlan.GetSharedTrainingPlansUseCase
+import com.kwasowski.sportslife.domain.trainingPlan.GetTrainingPlanUseCase
+import com.kwasowski.sportslife.domain.trainingPlan.GetTrainingPlansByOwnerIdUseCase
+import com.kwasowski.sportslife.domain.trainingPlan.SaveTrainingPlanUseCase
 import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsViewModel
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities.CommunitiesExerciseListViewModel
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.fav.FavExerciseListViewModel
@@ -33,6 +40,9 @@ import com.kwasowski.sportslife.ui.login.LoginViewModel
 import com.kwasowski.sportslife.ui.main.MainViewModel
 import com.kwasowski.sportslife.ui.profile.ProfileViewModel
 import com.kwasowski.sportslife.ui.settings.SettingsViewModel
+import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormViewModel
+import com.kwasowski.sportslife.ui.trainingPlans.list.fragment.communities.CommunitiesTrainingPlansViewModel
+import com.kwasowski.sportslife.ui.trainingPlans.list.fragment.own.OwnTrainingPlansViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -48,11 +58,15 @@ val appModule = module {
     viewModelOf(::FavExerciseListViewModel)
     viewModelOf(::ExerciseFormViewModel)
     viewModelOf(::ExerciseDetailsViewModel)
+    viewModelOf(::TrainingPlanFormViewModel)
+    viewModelOf(::CommunitiesTrainingPlansViewModel)
+    viewModelOf(::OwnTrainingPlansViewModel)
 
     single<ProfileRepository> { FirestoreProfileRepository() }
     single<SettingsRepository> { FirestoreSettingsRepository() }
     single<ExerciseRepository> { FirestoreExerciseRepository() }
     single<CategoryRepository> { FirestoreCategoryRepository() }
+    single<TrainingPlanRepository> { FirestoreTrainingPlanRepository() }
     singleOf(::SettingsManager)
     singleOf(::CategorySharedPreferences)
 
@@ -70,4 +84,9 @@ val appModule = module {
     factoryOf(::AddToFavExerciseUseCase)
     factoryOf(::GetFavExercisesUseCase)
     factoryOf(::RemoveFromFavExerciseUseCase)
+    factoryOf(::SaveTrainingPlanUseCase)
+    factoryOf(::GetTrainingPlansByOwnerIdUseCase)
+    factoryOf(::GetSharedTrainingPlansUseCase)
+    factoryOf(::GetTrainingPlanUseCase)
+    factoryOf(::DeleteOwnTrainingPlanUseCase)
 }

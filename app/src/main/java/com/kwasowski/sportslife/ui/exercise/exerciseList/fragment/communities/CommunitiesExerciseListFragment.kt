@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,6 +29,8 @@ class CommunitiesExerciseListFragment : Fragment() {
     private lateinit var adapter: CommunitiesExercisesAdapter
     private var queryText: String = ""
 
+    private var dataPassListener: DataPassListener? = null
+
     private val onQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return false
@@ -39,6 +42,15 @@ class CommunitiesExerciseListFragment : Fragment() {
                 viewModel.filterExercises(queryText)
             }
             return false
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DataPassListener) {
+            dataPassListener = context
+        } else {
+            throw ClassCastException("$context must implement SendDataToActivity")
         }
     }
 
@@ -59,6 +71,7 @@ class CommunitiesExerciseListFragment : Fragment() {
 
         adapter = CommunitiesExercisesAdapter(
             context = requireContext(),
+            addToTrainingIsVisible = canAddExerciseToTrainingPlan(),
             onMenuItemSelected = { exercise, menuItemId ->
                 onExerciseMenuItemSelected(exercise, menuItemId)
             },
@@ -86,6 +99,8 @@ class CommunitiesExerciseListFragment : Fragment() {
         super.onResume()
         viewModel.getExerciseList()
     }
+
+    private fun canAddExerciseToTrainingPlan() = arguments?.getBoolean(Constants.CAN_ADD_EXERCISE_TO_TRAINING_PLAN) ?: false
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -124,6 +139,11 @@ class CommunitiesExerciseListFragment : Fragment() {
         when (menuItemId) {
             R.id.add_to_training -> {
                 Timber.d("Add to training")
+                showToast(R.string.added_to_training)
+                dataPassListener?.onAddedExerciseToTraining(
+                    exerciseId = exercise.id,
+                    exerciseName = exercise.name
+                )
             }
 
             R.id.add_to_fav -> {
@@ -139,5 +159,9 @@ class CommunitiesExerciseListFragment : Fragment() {
 
     private fun showToast(stringId: Int) {
         Toast.makeText(context, stringId, Toast.LENGTH_LONG).show()
+    }
+
+    interface DataPassListener {
+        fun onAddedExerciseToTraining(exerciseId: String, exerciseName: String)
     }
 }

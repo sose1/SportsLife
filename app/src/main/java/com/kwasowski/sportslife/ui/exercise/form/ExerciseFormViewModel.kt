@@ -19,7 +19,8 @@ import timber.log.Timber
 class ExerciseFormViewModel(
     private val saveExerciseUseCase: SaveExerciseUseCase,
     private val getExerciseByIdUseCase: GetExerciseByIdUseCase,
-    private val categorySharedPreferences: CategorySharedPreferences) : ViewModel() {
+    private val categorySharedPreferences: CategorySharedPreferences
+) : ViewModel() {
 
     private val mutableState = MutableStateFlow<ExerciseFormState>(ExerciseFormState.Default)
     val uiState: StateFlow<ExerciseFormState> = mutableState.asStateFlow()
@@ -33,6 +34,7 @@ class ExerciseFormViewModel(
     val units = MutableLiveData<String>()
 
     var categoriesNames = mutableListOf<String>()
+
     enum class InputLengthLimit(val value: Int) {
         NAME(50),
         DESCRIPTION(250)
@@ -40,7 +42,8 @@ class ExerciseFormViewModel(
 
     init {
         categoriesNames.clear()
-        categorySharedPreferences.getCategories().forEach { categoriesNames.add(it.getTranslation()) }
+        categorySharedPreferences.getCategories()
+            .forEach { categoriesNames.add(it.getTranslation()) }
         categoriesNames.sort()
     }
 
@@ -49,7 +52,6 @@ class ExerciseFormViewModel(
     }
 
     fun saveExercise() {
-        Timber.d("UNITS: ${units.value}")
         if (validateInputData()) {
             viewModelScope.launch {
                 val result = saveExerciseUseCase.execute(
@@ -70,34 +72,35 @@ class ExerciseFormViewModel(
     }
 
     private fun validateInputData(): Boolean {
-        var isValid = true
         if (name.value.isNullOrBlank()) {
-            isValid = false
             mutableState.value = ExerciseFormState.OnNameEmptyError
-        } else if (name.value!!.length > InputLengthLimit.NAME.value) {
-            isValid = false
+            return false
+        }
+        if (name.value!!.length > InputLengthLimit.NAME.value) {
             mutableState.value = ExerciseFormState.OnNameLengthLimitError
+            return false
         }
 
         if (description.value.isNullOrBlank()) {
-            isValid = false
             mutableState.value = ExerciseFormState.OnDescriptionEmptyError
-        } else if (description.value!!.length > InputLengthLimit.DESCRIPTION.value) {
-            isValid = false
+            return false
+        }
+        if (description.value!!.length > InputLengthLimit.DESCRIPTION.value) {
             mutableState.value = ExerciseFormState.OnDescriptionLengthLimitError
+            return false
         }
 
         if (category.value.isNullOrBlank()) {
-            isValid = false
             mutableState.value = ExerciseFormState.OnCategoryEmptyError
+            return false
         }
 
         if (!URLUtil.isValidUrl(videoLink.value) && !videoLink.value.isNullOrBlank()) {
-            isValid = false
             mutableState.value = ExerciseFormState.OnVideoLinkInvalidUrlError
+            return false
         }
 
-        return isValid
+        return true
     }
 
     fun setDefaultState() {

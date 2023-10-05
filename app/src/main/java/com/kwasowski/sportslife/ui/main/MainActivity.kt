@@ -25,7 +25,7 @@ import com.kwasowski.sportslife.ui.main.appBarDays.DaysAdapter
 import com.kwasowski.sportslife.ui.profile.ProfileActivity
 import com.kwasowski.sportslife.ui.settings.SettingsActivity
 import com.kwasowski.sportslife.ui.trainingLog.TrainingLogActivity
-import com.kwasowski.sportslife.ui.trainingPlans.TrainingPlansActivity
+import com.kwasowski.sportslife.ui.trainingPlans.list.TrainingPlansActivity
 import com.kwasowski.sportslife.utils.Constants
 import com.kwasowski.sportslife.utils.LanguageTag
 import kotlinx.coroutines.launch
