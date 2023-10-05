@@ -1,5 +1,5 @@
-
 <resources>
+
     <style name="Theme.SportsLife" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/light_primary</item>
         <item name="colorOnPrimary">@color/light_onPrimary</item>
@@ -9,7 +9,7 @@
         <item name="colorOnSecondary">@color/light_onSecondary</item>
         <item name="colorSecondaryContainer">@color/light_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/light_onSecondaryContainer</item>
-        <item name="colorTertiary">@color/light_tertiary</item>
+        <item name="colorTertiary">@color/dark_tertiary</item>
         <item name="colorOnTertiary">@color/light_onTertiary</item>
         <item name="colorTertiaryContainer">@color/light_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/light_onTertiaryContainer</item>
@@ -27,5 +27,17 @@
         <item name="colorSurfaceInverse">@color/light_inverseSurface</item>
         <item name="colorOnSurfaceInverse">@color/light_inverseOnSurface</item>
         <item name="colorPrimaryInverse">@color/light_inversePrimary</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:statusBarColor">@color/light_primary</item>
+        <item name="actionBarStyle">@style/ActionBar</item>
+    </style>
+
+    <style name="ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:background">@color/light_primary</item>
+    </style>
+  <!-- Base application theme. -->
+    <style name="Base.Theme.SportsLife" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/add_to_training"
+        android:icon="@drawable/baseline_add_to_photos_24"
+        android:iconTint="?attr/colorSurfaceInverse"
+        android:title="@string/add_to_training"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/add_to_fav"
+        android:icon="@drawable/favorite"
+        android:iconTint="?attr/colorSurfaceInverse"
+        android:title="@string/add_to_favorites"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/edit"
+        android:icon="@drawable/baseline_edit_24"
+        android:iconTint="?attr/colorSurfaceInverse"
+        android:title="@string/edit"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/baseline_ios_share_24"
+        android:iconTint="?attr/colorSurfaceInverse"
+        android:title="@string/share"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/baseline_delete_24"
+        android:iconTint="?attr/colorSurfaceInverse"
+        android:title="@string/delete"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SportsLife</string>
+    <string name="plan_and_track_your_training">Zaplanuj i śledź swój trening!</string>
+    <string name="by_logging_in_you_accept_the_application_s_privacy_policy">Logując się, akceptujesz <u>politykę prywatności</u> aplikacji.</string>
+    <string name="sign_in_method_problem_please_try_again_later">Problem z metodą logowania, spróbuj ponownie później.</string>
+    <string name="network_connection_error_please_try_again_later">Błąd połączenia sieciowego, spróbuj ponownie później.</string>
+    <string name="not_found_google_accounts_on_device">Nie znaleziono kont Google na urządzeniu.</string>
+    <string name="privacy_policy_title">Polityka prywatności</string>
+    <string name="privacy_policy_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ipsum dolor sit amet consectetur adipiscing elit ut. Ipsum faucibus vitae aliquet nec ullamcorper. Varius morbi enim nunc faucibus. Egestas fringilla phasellus faucibus scelerisque. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi. Ultricies leo integer malesuada nunc vel risus commodo. Netus et malesuada fames ac turpis. Aliquam faucibus purus in massa tempor nec. Cras ornare arcu dui vivamus arcu felis bibendum. Nunc faucibus a pellentesque sit amet porttitor eget dolor. Aliquam faucibus purus in massa. Blandit volutpat maecenas volutpat blandit aliquam etiam. Ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel.  Odio ut sem nulla pharetra. A arcu cursus vitae congue mauris rhoncus. Eget nunc scelerisque viverra mauris in aliquam sem fringilla. Placerat orci nulla pellentesque dignissim enim sit amet venenatis. Amet tellus cras adipiscing enim eu turpis egestas. Imperdiet massa tincidunt nunc pulvinar sapien et ligula. Ut tristique et egestas quis ipsum. Consectetur lorem donec massa sapien faucibus et molestie ac. Netus et malesuada fames ac turpis egestas integer eget. Ac tincidunt vitae semper quis lectus nulla at volutpat diam. Convallis a cras semper auctor neque vitae. Ut placerat orci nulla pellentesque dignissim enim sit amet venenatis. Dictum at tempor commodo ullamcorper a lacus vestibulum. Scelerisque viverra mauris in aliquam sem fringilla ut morbi. Tincidunt vitae semper quis lectus nulla at volutpat diam ut. Duis ut diam quam nulla. Sit amet nisl suscipit adipiscing bibendum est. Mollis aliquam ut porttitor leo a diam sollicitudin tempor id.  Tellus at urna condimentum mattis pellentesque id. A cras semper auctor neque. Orci nulla pellentesque dignissim enim sit. Non consectetur a erat nam at. Vitae nunc sed velit dignissim sodales ut eu. Cras pulvinar mattis nunc sed blandit libero volutpat sed cras. Pellentesque massa placerat duis ultricies lacus. Lobortis feugiat vivamus at augue eget arcu dictum varius duis. Aliquet sagittis id consectetur purus ut faucibus. Egestas congue quisque egestas diam in arcu cursus. Eu scelerisque felis imperdiet proin. Nec feugiat nisl pretium fusce id velit. Magna etiam tempor orci eu.</string>
+    <string name="select_date">Wybierz datę</string>
+    <string name="you_cannot_select_this_date_please_try_another_one">Nie możesz wybrać tej daty, spróbuj innej.</string>
+    <string name="training">Trening</string>
+    <string name="calendar">Kalendarz</string>
+    <string name="training_log">Dziennik treningowy</string>
+    <string name="training_plans">Plany treningowe</string>
+    <string name="favorite_exercises">Ulubione ćwiczenia</string>
+    <string name="personalization">Personalizacja</string>
+    <string name="profile">Profil</string>
+    <string name="settings">Ustawienia</string>
+    <string name="logout">Wyloguj się</string>
+    <string name="exercise_list">Lista ćwiczeń</string>
+    <string name="gender">Płeć</string>
+    <string name="woman">Kobieta</string>
+    <string name="man">Mężczyzna</string>
+    <string name="height">Wzrost</string>
+    <string name="weight">Waga</string>
+    <string name="your_bmi">Twoje BMI</string>
+    <string name="unable_to_download_profile">Nie można pobrać profilu.</string>
+    <string name="units">Jednostki</string>
+    <string name="language">Język</string>
+    <string name="notifications">Powiadomienia</string>
+    <string name="notifications_about_today_s_trainings">Powiadomienia o dzisiejszych treningach</string>
+    <string name="notifications_of_the_day_s_summary">Powiadomienia o podsumowaniu dnia</string>
+    <string name="unable_to_download_settings">Nie można pobrać ustawień</string>
+    <string name="unknown">Nieznany</string>
+    <string name="list_of_exercises">Lista ćwiczeń</string>
+    <string name="own">Własne</string>
+    <string name="communities">Społeczności</string>
+    <string name="add_a_new_exercise">Dodaj nowe ćwiczenie</string>
+    <string name="save">Zapisz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="name">Nazwa</string>
+    <string name="description">Opis</string>
+    <string name="category">Kategoria</string>
+    <string name="video_link">Adres filmu</string>
+    <string name="empty_name_error_message">Nazwa ćwiczenia musi być uzupełniona!</string>
+    <string name="empty_description_error_message">Opis ćwiczenia musi być uzupełniony!</string>
+    <string name="empty_category_error_message">Kategoria ćwiczenia musi być wybrana!</string>
+    <string name="invalid_video_link_error_message">Adres filmu jest błędny! Poprawna forma to https://example.com.</string>
+    <string name="name_length_error_message">Nazwa ćwiczenia jest za długa!</string>
+    <string name="description_length_error_message">Opis ćwiczenia jest za długi!</string>
+    <string name="provide_a_website_link_to_the_exercise_video">Podaj link strony do filmu ćwiczenia</string>
+    <string name="select_a_category">Wybierz kategorię</string>
+    <string name="describe_your_exercise">Opisz swoje ćwiczenię…</string>
+    <string name="enter_the_name_of_the_exercise">Podaj nazwę ćwiczenia…</string>
+
+
+    <string name="aerobics">Aerobik</string>
+    <string name="american_soccer">Futbol amerykański</string>
+    <string name="basketball">Koszykówka</string>
+    <string name="boxing">Boks</string>
+    <string name="calisthenics">Kalistenika</string>
+    <string name="cycling">Jazda na rowerze</string>
+    <string name="football">Piłka nożna</string>
+    <string name="gymnastics">Gimnastyka</string>
+    <string name="handball">Piłka ręczna</string>
+    <string name="ice_hokey">Hokej na lodzie</string>
+    <string name="mma">MMA</string>
+    <string name="running">Bieganie</string>
+    <string name="rugby">Rugby</string>
+    <string name="squash">Squash</string>
+    <string name="table_tennis">Tenis stołowy</string>
+    <string name="tennis">Tennis</string>
+    <string name="volleyball">Siatkówka</string>
+    <string name="weight_training">Trening siłowy</string>
+    <string name="yoga">Joga</string>
+    <string-array name="exercise_category">
+        <item>@string/aerobics </item>
+        <item>@string/american_soccer</item>
+        <item>@string/basketball</item>
+        <item>@string/boxing</item>
+        <item>@string/calisthenics</item>
+        <item>@string/cycling</item>
+        <item>@string/football</item>
+        <item>@string/gymnastics</item>
+        <item>@string/handball</item>
+        <item>@string/ice_hokey</item>
+        <item>@string/mma</item>
+        <item>@string/running</item>
+        <item>@string/rugby</item>
+        <item>@string/squash</item>
+        <item>@string/table_tennis</item>
+        <item>@string/tennis</item>
+        <item>@string/volleyball</item>
+        <item>@string/weight_training</item>
+        <item>@string/yoga</item>
+    </string-array>
+    <string name="success_save_exercise">Pomyślnie zapisano ćwiczenie</string>
+    <string name="exercise_empty_list_message">Trochę tutaj pusto…\nDodaj swoje ćwiczenia i\nuzupełnij bazę aktywności!</string>
+    <string name="exercise_fav_empty_list_message">Trochę tutaj pusto…\nPolub ćwiczenia, żeby uzupełnić tę listę!</string>
+    <string name="exercise_was_successfully_shared">Pomyślnie udostępniono ćwiczenie.</string>
+    <string name="correctly_deleted_exercise">Poprawnie usunięto ćwiczenie.</string>
+    <string name="add_to_training">Dodaj do treningu</string>
+    <string name="add_to_favorites">Dodaj do ulubionych</string>
+    <string name="edit">Edytuj</string>
+    <string name="delete">Usuń</string>
+    <string name="share">Udostępnij</string>
+    <string name="editing">Edycja</string>
+    <string name="shared">Udostępniono</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="copy_to_own">Kopiuj do własnych</string>
+    <string name="success_copy_to_own">Pomyślne skopiowanie ćwiczenia do własnej bazy.</string>
+    <string name="account">Konto</string>
+    <string name="details">Szczegóły</string>
+    <string name="video">Film</string>
+    <string name="watch_video">Obejrzyj film</string>
+    <string name="more">Więcej</string>
+    <string name="added_to_favorites">Dodano do ulubionych</string>
+    <string name="favorites">Ulubione</string>
+    <string name="delete_from_fav">Usuń z ulubionych</string>
+    <string name="removed_exercise_from_favorites">Usunięto z ulubionych</string>
+    <string name="measure">Miara</string>
+    <string name="none">brak</string>
+    <string name="exercises">Ćwiczenia</string>
+    <string name="add_a_new_training_plan">Dodaj nowy plan treningowy</string>
+    <string name="add">Dodaj</string>
+    <string name="training_plans_empty_list_message">Trochę tutaj pusto…\nDodaj swoje plany treningowe i\nuzupełnij bazę treningów!</string>
+    <string name="empty_training_plan_description_error_message">Opis planu treningowego musi być uzupełniony!</string>
+    <string name="too_long_training_plan_description_error_message">Opis planu treningowego jest za długi!</string>
+    <string name="empty_training_plan_name_error_message">Nazwa planu trenigowego musi być uzupełniona!</string>
+    <string name="too_long_training_plan_name_error_message">Nazwa planu trenigowego jest za długa!</string>
+    <string name="success_save_training_plan">Pomyślnie zapisano plan treningowy</string>
+    <string name="x">x</string>
+    <string name="correctly_deleted_training_plan">Poprawnie usunięto plan treningowy.</string>
+    <string name="added_to_training">Dodano do planu treningowego.</string>
+    <string name="training_plan_successfully_shared">Pomyślnie udostępniono plan treningowy.</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/add_to_training"
+        android:icon="@drawable/baseline_add_to_photos_24"
+        android:iconTint="?attr/colorSurfaceInverse"
+        android:title="@string/add_to_training"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/remove_from_likes"
+        android:icon="@drawable/heart_dislike_svgrepo_com"
+        android:iconTint="?attr/colorSurfaceInverse"
+        android:title="@string/delete_from_fav"
+        app:showAsAction="ifRoom" />
+
+
+</menu>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/training"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/calendar_item"
+            android:checkable="true"
+            android:icon="@drawable/calendar_menu"
+            android:title="@string/calendar" />
+        <item
+            android:id="@+id/training_log_item"
+            android:checkable="true"
+            android:icon="@drawable/history"
+            android:title="@string/training_log" />
+        <item
+            android:id="@+id/training_plans_item"
+            android:checkable="true"
+            android:icon="@drawable/plans"
+            android:title="@string/training_plans" />
+        <item
+            android:id="@+id/exercises_list"
+            android:checkable="true"
+            android:icon="@drawable/baseline_list_24"
+            android:title="@string/exercise_list"/>
+    </group>
+    <group
+        android:id="@+id/personalization"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/profile_item"
+            android:checkable="true"
+            android:icon="@drawable/profile"
+            android:title="@string/profile" />
+        <item
+            android:id="@+id/settings_item"
+            android:checkable="true"
+            android:icon="@drawable/settings"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/logout_item"
+            android:checkable="true"
+            android:icon="@drawable/logout"
+            android:title="@string/logout" />
+    </group>
+</menu>

@@ -1,5 +1,6 @@
-
 <resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="seed">#002362</color>
     <color name="light_primary">#3C5BA9</color>
     <color name="light_onPrimary">#FFFFFF</color>
@@ -99,4 +100,5 @@
     <color name="dark_surfaceContainerLowest">#0D0E11</color>
     <color name="dark_surfaceBright">#39393C</color>
     <color name="dark_surfaceDim">#131316</color>
+    <color name="green">#78A55A</color>"
 </resources>

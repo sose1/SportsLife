@@ -1,3 +1,149 @@
 <resources>
+    <!-- XML IMAGES DESCRIPTIONS -->
+    <string name="background_image" translatable="false">background_image</string>
+    <string name="background_gradient" translatable="false">background_gradient</string>
+    <string name="app_logo" translatable="false">app_logo</string>
+
     <string name="app_name">SportsLife</string>
+    <string name="plan_and_track_your_training">Plan and track your training!</string>
+    <string name="by_logging_in_you_accept_the_application_s_privacy_policy">By logging in, you accept the application\'s <u>privacy policy</u>.</string>
+    <string name="sign_in_method_problem_please_try_again_later">Sign in method problem, please try again later.</string>
+    <string name="network_connection_error_please_try_again_later">Network connection error, please try again later.</string>
+    <string name="not_found_google_accounts_on_device">Not found Google accounts on device.</string>
+    <string name="privacy_policy_title">Privacy Policy</string>
+    <string name="privacy_policy_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ipsum dolor sit amet consectetur adipiscing elit ut. Ipsum faucibus vitae aliquet nec ullamcorper. Varius morbi enim nunc faucibus. Egestas fringilla phasellus faucibus scelerisque. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi. Ultricies leo integer malesuada nunc vel risus commodo. Netus et malesuada fames ac turpis. Aliquam faucibus purus in massa tempor nec. Cras ornare arcu dui vivamus arcu felis bibendum. Nunc faucibus a pellentesque sit amet porttitor eget dolor. Aliquam faucibus purus in massa. Blandit volutpat maecenas volutpat blandit aliquam etiam. Ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel.  Odio ut sem nulla pharetra. A arcu cursus vitae congue mauris rhoncus. Eget nunc scelerisque viverra mauris in aliquam sem fringilla. Placerat orci nulla pellentesque dignissim enim sit amet venenatis. Amet tellus cras adipiscing enim eu turpis egestas. Imperdiet massa tincidunt nunc pulvinar sapien et ligula. Ut tristique et egestas quis ipsum. Consectetur lorem donec massa sapien faucibus et molestie ac. Netus et malesuada fames ac turpis egestas integer eget. Ac tincidunt vitae semper quis lectus nulla at volutpat diam. Convallis a cras semper auctor neque vitae. Ut placerat orci nulla pellentesque dignissim enim sit amet venenatis. Dictum at tempor commodo ullamcorper a lacus vestibulum. Scelerisque viverra mauris in aliquam sem fringilla ut morbi. Tincidunt vitae semper quis lectus nulla at volutpat diam ut. Duis ut diam quam nulla. Sit amet nisl suscipit adipiscing bibendum est. Mollis aliquam ut porttitor leo a diam sollicitudin tempor id.  Tellus at urna condimentum mattis pellentesque id. A cras semper auctor neque. Orci nulla pellentesque dignissim enim sit. Non consectetur a erat nam at. Vitae nunc sed velit dignissim sodales ut eu. Cras pulvinar mattis nunc sed blandit libero volutpat sed cras. Pellentesque massa placerat duis ultricies lacus. Lobortis feugiat vivamus at augue eget arcu dictum varius duis. Aliquet sagittis id consectetur purus ut faucibus. Egestas congue quisque egestas diam in arcu cursus. Eu scelerisque felis imperdiet proin. Nec feugiat nisl pretium fusce id velit. Magna etiam tempor orci eu.</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="select_date">Select date</string>
+    <string name="you_cannot_select_this_date_please_try_another_one">You cannot select this date, please try another one.</string>
+    <string name="training">Training</string>
+    <string name="calendar">Calendar</string>
+    <string name="training_log">Training log</string>
+    <string name="training_plans">Training plans</string>
+    <string name="favorite_exercises">Favorite exercises</string>
+    <string name="personalization">Personalization</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="exercise_list">Exercises list</string>
+    <string name="gender">Gender</string>
+    <string name="woman">Woman</string>
+    <string name="man">Man</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="your_bmi">Your BMI</string>
+    <string name="unable_to_download_profile">Unable to download profile.</string>
+    <string name="units">Units</string>
+    <string name="kg_m" translatable="false">kg, m</string>
+    <string name="lbs_mi" translatable="false">lbs, mi</string>
+    <string name="language">Language</string>
+    <string name="notifications">Notifications</string>
+    <string name="notifications_about_today_s_trainings">Notifications about today\'s trainings</string>
+    <string name="notifications_of_the_day_s_summary">Notifications of the day\'s summary</string>
+    <string name="polish" translatable="false">Polski</string>
+    <string name="english" translatable="false">English</string>
+    <string name="unable_to_download_settings">Unable to download settings.</string>
+    <string name="select_language_icon" translatable="false">select_language_icon</string>
+    <string name="unknown">Unknown</string>
+    <string name="list_of_exercises">List of exercises</string>
+    <string name="own">Own</string>
+    <string name="communities">Communities</string>
+    <string name="add_exercise_fab" translatable="false">add_exercise_fab</string>
+    <string name="add_a_new_exercise">Add a new exercise</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="video_link">Video link</string>
+    <string name="empty_name_error_message">The name of the exercise must be completed!</string>
+    <string name="empty_description_error_message">The description of the exercise must be completed!</string>
+    <string name="empty_category_error_message">The category of the exercise must be selected!</string>
+    <string name="invalid_video_link_error_message">The address of the video is wrong! The correct form is https://example.com.</string>
+    <string name="name_length_error_message">The name of the exercise is too long!</string>
+    <string name="description_length_error_message">The description of the exercise is too long!</string>
+    <string name="provide_a_website_link_to_the_exercise_video">Provide a website link to the exercise video</string>
+    <string name="select_a_category">Select a category</string>
+    <string name="describe_your_exercise">Describe your exercise…</string>
+    <string name="enter_the_name_of_the_exercise">Enter the name of the exercise…</string>
+    <string name="success_save_exercise">Successfully saving the exercise</string>
+    <string name="exercise_empty_list_message">A little empty here…"\n"Add your exercises and"\n"complete your activity base!</string>
+    <string name="exercise_fav_empty_list_message">A little empty here…"\n"Like exercise to complete this list!</string>
+    <string name="aerobics">Aerobics</string>
+    <string name="american_soccer">American soccer</string>
+    <string name="basketball">Basketball</string>
+    <string name="boxing">Boxing</string>
+    <string name="calisthenics">Calisthenics</string>
+    <string name="cycling">Cycling</string>
+    <string name="football">Football</string>
+    <string name="gymnastics">Gymnastics</string>
+    <string name="handball">Handball</string>
+    <string name="ice_hokey">Ice hokey</string>
+    <string name="mma">MMA</string>
+    <string name="running">Running</string>
+    <string name="rugby">Rugby</string>
+    <string name="squash">Squash</string>
+    <string name="table_tennis">Table tennis</string>
+    <string name="tennis">Tennis</string>
+    <string name="volleyball">Volleyball</string>
+    <string name="weight_training">Weight training</string>
+    <string name="yoga">Yoga</string>
+    <string-array name="exercise_category">
+        <item>@string/aerobics </item>
+        <item>@string/american_soccer</item>
+        <item>@string/basketball</item>
+        <item>@string/boxing</item>
+        <item>@string/calisthenics</item>
+        <item>@string/cycling</item>
+        <item>@string/football</item>
+        <item>@string/gymnastics</item>
+        <item>@string/handball</item>
+        <item>@string/ice_hokey</item>
+        <item>@string/mma</item>
+        <item>@string/running</item>
+        <item>@string/rugby</item>
+        <item>@string/squash</item>
+        <item>@string/table_tennis</item>
+        <item>@string/tennis</item>
+        <item>@string/volleyball</item>
+        <item>@string/weight_training</item>
+        <item>@string/yoga</item>
+    </string-array>
+    <string name="exercise_was_successfully_shared">The exercise was successfully shared.</string>
+    <string name="correctly_deleted_exercise">Correctly deleted exercise.</string>
+    <string name="add_to_training">Add to training</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="editing">Editing</string>
+    <string name="shared">Shared</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="copy_to_own">Copy to own</string>
+    <string name="success_copy_to_own">Successfully copy the exercise to your own base.</string>
+    <string name="account">Account</string>
+    <string name="details">Details</string>
+    <string name="video">Video</string>
+    <string name="watch_video">Watch video</string>
+    <string name="more">More</string>
+    <string name="added_to_favorites">Added to favorites</string>
+    <string name="favorites">Favorites</string>
+    <string name="delete_from_fav">Remove from favorites</string>
+    <string name="removed_exercise_from_favorites">Removed from favorites</string>
+    <string name="measure">Measure</string>
+    <string name="none">None</string>
+    <string name="exercises">Exercises</string>
+    <string name="add_a_new_training_plan">Add a new training plan</string>
+    <string name="add">Add</string>
+    <string name="training_plans_empty_list_message">A little empty here…"\n"Add your training plans and complete your training base!</string>
+    <string name="empty_training_plan_description_error_message">The description of the training plan must be completed!</string>
+    <string name="too_long_training_plan_description_error_message">The description of the training plan is too long!</string>
+    <string name="empty_training_plan_name_error_message">The name of the training plan must be completed!</string>
+    <string name="too_long_training_plan_name_error_message">The name of the training plan is too long!</string>
+    <string name="success_save_training_plan">Training plan successfully saved</string>
+    <string name="x">x</string>
+    <string name="correctly_deleted_training_plan">Correctly deleted training plan.</string>
+    <string name="added_to_training">Added to training plan.</string>
+    <string name="training_plan_successfully_shared">The training plan was successfully shared.</string>
+
 </resources>
