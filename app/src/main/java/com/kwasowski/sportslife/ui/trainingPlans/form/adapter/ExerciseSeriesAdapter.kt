@@ -11,7 +11,10 @@ import com.kwasowski.sportslife.data.trainingPlan.Series
 import com.kwasowski.sportslife.databinding.ItemExerciseSeriesBinding
 import com.kwasowski.sportslife.extensions.dp
 
-class ExerciseSeriesAdapter(private val isDetailsView: Boolean) :
+class ExerciseSeriesAdapter(
+    private val isDetailsView: Boolean,
+    private val onExerciseTitleClick: (ExerciseSeries) -> Unit
+) :
     RecyclerView.Adapter<ViewHolder>() {
 
     private var exerciseSeries = mutableListOf<ExerciseSeries>()
@@ -74,6 +77,14 @@ class ExerciseSeriesAdapter(private val isDetailsView: Boolean) :
             seriesAdapter.addAll(exerciseSeries.series.toMutableList())
             binding.series.adapter = seriesAdapter
 
+            binding.exerciseName.setOnClickListener {
+                onExerciseTitleClick(exerciseSeries)
+            }
+
+            binding.exerciseSeriesBar.setOnClickListener {
+                onExerciseTitleClick(exerciseSeries)
+            }
+
             if (isDetailsView) {
                 binding.addSeries.visibility = View.GONE
                 binding.deleteExerciseSeries.visibility = View.GONE
@@ -97,7 +108,6 @@ class ExerciseSeriesAdapter(private val isDetailsView: Boolean) :
             exerciseSeries.series = seriesAdapter.getAll()
             resizeSeriesListView()
         }
-
 
         private fun resizeSeriesListView() {
             if (seriesAdapter.count >= 20)

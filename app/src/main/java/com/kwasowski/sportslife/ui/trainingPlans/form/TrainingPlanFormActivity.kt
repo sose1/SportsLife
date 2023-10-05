@@ -20,6 +20,7 @@ import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
 import com.kwasowski.sportslife.databinding.ActivityTrainingPlanFormBinding
 import com.kwasowski.sportslife.extensions.parcelable
+import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsActivity
 import com.kwasowski.sportslife.ui.exercise.exerciseList.activity.ExercisesListActivity
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormActivity
 import com.kwasowski.sportslife.ui.trainingPlans.form.adapter.ExerciseSeriesAdapter
@@ -75,7 +76,10 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         binding.trainingPlanName.addTextChangedListener(nameEditTextWatcher)
         binding.trainingPlanDescription.addTextChangedListener(descriptionEditTextWatcher)
 
-        exerciseSeriesAdapter = ExerciseSeriesAdapter(isDetailsView())
+        exerciseSeriesAdapter = ExerciseSeriesAdapter(
+            isDetailsView(), onExerciseTitleClick = {
+                onExerciseTitleClick(it.originalId)
+            })
         binding.exercisesSeries.adapter = exerciseSeriesAdapter
 
 
@@ -168,7 +172,7 @@ class TrainingPlanFormActivity : AppCompatActivity() {
                         if (!isDetailsView())
                             binding.topAppBar.title = getString(R.string.editing)
 
-                        viewModel.shared.value?.let {shared ->
+                        viewModel.shared.value?.let { shared ->
                             binding.sharedGroup.check(
                                 if (shared) R.id.yes else R.id.no
                             )
@@ -201,6 +205,12 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         activityResultLauncher.launch(intent)
     }
 
+    private fun onExerciseTitleClick(exerciseId: String) {
+        val intent = Intent(this, ExerciseDetailsActivity::class.java)
+        intent.putExtra(Constants.EXERCISE_ID_INTENT, exerciseId)
+        intent.putExtra(Constants.TRAINING_PLAN_IS_DETAILS_VIEW, true)
+        startActivity(intent)
+    }
 
     private val nameEditTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -240,6 +250,7 @@ class TrainingPlanFormActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun showInputError(inputLayout: TextInputLayout, stringId: Int) {
         inputLayout.error = getString(stringId)
     }
