@@ -30,7 +30,7 @@ class MainViewModel(
     private val getSettingsUseCase: GetSettingsUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val settingsManager: SettingsManager,
-    private val categorySharedPreferences: CategorySharedPreferences
+    private val categorySharedPreferences: CategorySharedPreferences,
 ) : ViewModel() {
     private val auth = Firebase.auth
     private val mutableState = MutableStateFlow<MainViewState>(MainViewState.Default)
@@ -67,16 +67,16 @@ class MainViewModel(
                     is Result.Failure -> Unit
                     is Result.Success -> {
                         currentSettings = it.data
-                        onGetSettings(currentSettings)
+                        onGetSettings()
                     }
                 }
             }
         }
     }
 
-    private fun onGetSettings(settings: Settings) {
-        settingsManager.saveSettings(settings)
-        mutableState.value = MainViewState.OnGetSettings(settings.language)
+    private fun onGetSettings() {
+        settingsManager.saveSettings(currentSettings)
+        mutableState.value = MainViewState.OnGetSettings(currentSettings.language)
     }
 
     fun initializeDays() {
@@ -126,6 +126,7 @@ class MainViewModel(
         try {
             daysList.findByCalendarDate(day.number, day.month, day.year).apply {
                 this.type = DayType.ACTIVE
+                //todo Zapytanie o aktualny dzien do firestore
             }
         } catch (e: IndexOutOfBoundsException) {
             mutableState.value = MainViewState.OnIndexOutOfBoundsException

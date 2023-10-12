@@ -56,7 +56,7 @@ class CommunitiesExerciseListFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
@@ -100,7 +100,8 @@ class CommunitiesExerciseListFragment : Fragment() {
         viewModel.getExerciseList()
     }
 
-    private fun canAddExerciseToTrainingPlan() = arguments?.getBoolean(Constants.CAN_ADD_EXERCISE_TO_TRAINING_PLAN) ?: false
+    private fun canAddExerciseToTrainingPlan() =
+        arguments?.getBoolean(Constants.CAN_ADD_EXERCISE_TO_TRAINING_PLAN) ?: false
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -142,7 +143,8 @@ class CommunitiesExerciseListFragment : Fragment() {
                 showToast(R.string.added_to_training)
                 dataPassListener?.onAddedExerciseToTraining(
                     exerciseId = exercise.id,
-                    exerciseName = exercise.name
+                    exerciseName = exercise.name,
+                    exerciseUnit = exercise.units
                 )
             }
 
@@ -162,6 +164,10 @@ class CommunitiesExerciseListFragment : Fragment() {
     }
 
     interface DataPassListener {
-        fun onAddedExerciseToTraining(exerciseId: String, exerciseName: String)
+        fun onAddedExerciseToTraining(
+            exerciseId: String,
+            exerciseName: String,
+            exerciseUnit: String,
+        )
     }
 }

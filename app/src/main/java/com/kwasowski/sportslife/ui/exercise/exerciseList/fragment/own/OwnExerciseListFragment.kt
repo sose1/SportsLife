@@ -57,7 +57,7 @@ class OwnExerciseListFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
@@ -160,7 +160,8 @@ class OwnExerciseListFragment : Fragment() {
                 showToast(R.string.added_to_training)
                 dataPassListener?.onAddedExerciseToTraining(
                     exerciseId = exercise.id,
-                    exerciseName = exercise.name
+                    exerciseName = exercise.name,
+                    exerciseUnit = exercise.units
                 )
             }
 
@@ -193,6 +194,10 @@ class OwnExerciseListFragment : Fragment() {
     }
 
     interface DataPassListener {
-        fun onAddedExerciseToTraining(exerciseId: String, exerciseName: String)
+        fun onAddedExerciseToTraining(
+            exerciseId: String,
+            exerciseName: String,
+            exerciseUnit: String,
+        )
     }
 }

@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.main.appBarDays
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -70,6 +71,7 @@ class DaysAdapter(private val onSelect: (Day) -> Unit) : RecyclerView.Adapter<Vi
         return daysList[position].type.value
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateList(daysList: List<Day>) {
         this.daysList = daysList
         notifyDataSetChanged()

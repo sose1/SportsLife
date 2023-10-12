@@ -58,7 +58,7 @@ class FavExerciseListFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
@@ -140,7 +140,8 @@ class FavExerciseListFragment : Fragment() {
         viewModel.getExerciseList()
     }
 
-    private fun canAddExerciseToTrainingPlan() = arguments?.getBoolean(Constants.CAN_ADD_EXERCISE_TO_TRAINING_PLAN) ?: false
+    private fun canAddExerciseToTrainingPlan() =
+        arguments?.getBoolean(Constants.CAN_ADD_EXERCISE_TO_TRAINING_PLAN) ?: false
 
     private fun onExerciseMenuItemSelected(exercise: ExerciseDto, menuItemId: Int) {
         Timber.d("$menuItemId | $exercise")
@@ -150,7 +151,8 @@ class FavExerciseListFragment : Fragment() {
                 showToast(R.string.added_to_training)
                 dataPassListener?.onAddedExerciseToTraining(
                     exerciseId = exercise.id,
-                    exerciseName = exercise.name
+                    exerciseName = exercise.name,
+                    exerciseUnit = exercise.units
                 )
             }
 
@@ -174,6 +176,10 @@ class FavExerciseListFragment : Fragment() {
     }
 
     interface DataPassListener {
-        fun onAddedExerciseToTraining(exerciseId: String, exerciseName: String)
+        fun onAddedExerciseToTraining(
+            exerciseId: String,
+            exerciseName: String,
+            exerciseUnit: String,
+        )
     }
 }
