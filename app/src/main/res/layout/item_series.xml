@@ -9,6 +9,7 @@
             type="java.lang.String" />
 
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="29dp"
@@ -33,33 +34,16 @@
                 android:textAlignment="textStart"
                 android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:background="@null"
-                android:fontFamily="@font/roboto_medium"
-                android:hint="00"
-                android:inputType="number|numberDecimal"
-                android:outlineProvider="none"
-                android:textAlignment="center"
-                android:textSize="14sp" />
-
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:weightSum="3"
-                android:gravity="end|center_vertical"
-                android:orientation="horizontal">
+                android:gravity="center">
 
                 <EditText
-                    android:id="@+id/repeats"
-                    android:layout_width="0dp"
+                    android:id="@+id/value"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
                     android:background="@null"
                     android:fontFamily="@font/roboto_medium"
                     android:hint="00"
@@ -68,11 +52,51 @@
                     android:textAlignment="center"
                     android:textSize="14sp" />
 
+                <TextView
+                    android:id="@+id/exercise_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kg" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="end|center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/repeats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:fontFamily="@font/roboto_medium"
+                        android:hint="00"
+                        android:inputType="number|numberDecimal"
+                        android:outlineProvider="none"
+                        android:textAlignment="center"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="x" />
+                </LinearLayout>
+
+
                 <ImageButton
-                    android:layout_weight="1"
                     android:id="@+id/delete_series"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/delete"
                     android:src="@drawable/baseline_delete_24"

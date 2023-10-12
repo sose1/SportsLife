@@ -6,17 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.kwasowski.sportslife.data.settings.Units
 import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
 import com.kwasowski.sportslife.data.trainingPlan.Series
 import com.kwasowski.sportslife.databinding.ItemExerciseSeriesBinding
 import com.kwasowski.sportslife.extensions.dp
+import com.kwasowski.sportslife.utils.UnitsTag
 
 class ExerciseSeriesAdapter(
     private val isDetailsView: Boolean,
-    private val onExerciseTitleClick: (ExerciseSeries) -> Unit
+    private val unitSettings: Units,
+    private val onExerciseTitleClick: (ExerciseSeries) -> Unit,
 ) :
     RecyclerView.Adapter<ViewHolder>() {
-
     private var exerciseSeries = mutableListOf<ExerciseSeries>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -83,6 +85,20 @@ class ExerciseSeriesAdapter(
 
             binding.exerciseSeriesBar.setOnClickListener {
                 onExerciseTitleClick(exerciseSeries)
+            }
+
+            when (exerciseSeries.units) {
+                UnitsTag.MEASURE -> when (unitSettings) {
+                    Units.KG_M -> seriesAdapter.units = " m"
+                    Units.LBS_MI -> seriesAdapter.units = " mi"
+                }
+
+                UnitsTag.WEIGHT -> when (unitSettings) {
+                    Units.KG_M -> seriesAdapter.units = " kg"
+                    Units.LBS_MI -> seriesAdapter.units = " lbs"
+                }
+
+                UnitsTag.NONE -> Unit
             }
 
             if (isDetailsView) {

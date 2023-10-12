@@ -17,6 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
 import com.kwasowski.sportslife.databinding.ActivityTrainingPlanFormBinding
 import com.kwasowski.sportslife.extensions.parcelable
@@ -27,10 +28,12 @@ import com.kwasowski.sportslife.ui.trainingPlans.form.adapter.ExerciseSeriesAdap
 import com.kwasowski.sportslife.utils.ActivityOpenMode
 import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class TrainingPlanFormActivity : AppCompatActivity() {
+    private val settingsManager: SettingsManager by inject()
     private val viewModel: TrainingPlanFormViewModel by viewModel()
     private lateinit var binding: ActivityTrainingPlanFormBinding
     private lateinit var exerciseSeriesAdapter: ExerciseSeriesAdapter
@@ -48,7 +51,7 @@ class TrainingPlanFormActivity : AppCompatActivity() {
                 val receivedData =
                     result?.data?.parcelable<Parcelable>(Constants.EXERCISES_TO_ADD) as ParcelableMutableList<*>
                 val exerciseSeriesList = receivedData.map {
-                    ExerciseSeries(it["id"].toString(), it["name"].toString())
+                    ExerciseSeries(it["id"].toString(), it["name"].toString(), it["units"].toString())
                 }
                 exerciseSeriesAdapter.addAll(exerciseSeriesList)
                 binding.nestedScrollView.post {
@@ -77,7 +80,9 @@ class TrainingPlanFormActivity : AppCompatActivity() {
         binding.trainingPlanDescription.addTextChangedListener(descriptionEditTextWatcher)
 
         exerciseSeriesAdapter = ExerciseSeriesAdapter(
-            isDetailsView(), onExerciseTitleClick = {
+            isDetailsView(),
+            unitSettings = settingsManager.loadSettings().units,
+            onExerciseTitleClick = {
                 onExerciseTitleClick(it.originalId)
             })
         binding.exercisesSeries.adapter = exerciseSeriesAdapter

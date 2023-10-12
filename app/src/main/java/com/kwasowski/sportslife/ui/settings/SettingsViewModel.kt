@@ -73,6 +73,7 @@ class SettingsViewModel(
     private fun updateSettings() {
         if (isAfterInitSettings) {
             viewModelScope.launch {
+                settingsManager.saveSettings(currentSettings)
                 saveSettingsUseCase.execute(currentSettings)
             }
         } else {

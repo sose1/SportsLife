@@ -103,11 +103,16 @@ class ExercisesListActivity : AppCompatActivity(), OwnExerciseListFragment.DataP
         finish()
     }
 
-    override fun onAddedExerciseToTraining(exerciseId: String, exerciseName: String) {
-        Timber.d("Add: $exerciseId | $exerciseName")
+    override fun onAddedExerciseToTraining(
+        exerciseId: String,
+        exerciseName: String,
+        exerciseUnit: String,
+    ) {
+        Timber.d("Add: $exerciseId | $exerciseName | $exerciseUnit")
         val exercise = ParcelableLinkedHashMap<String, String>().apply {
             this["id"] = exerciseId
             this["name"] = exerciseName
+            this["units"] = exerciseUnit
         }
         exercisesToAdd.add(exercise)
     }

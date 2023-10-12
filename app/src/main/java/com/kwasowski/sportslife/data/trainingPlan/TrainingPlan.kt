@@ -15,6 +15,7 @@ data class TrainingPlan @JvmOverloads constructor(
 data class ExerciseSeries @JvmOverloads constructor(
     val originalId: String = "",
     val exerciseName: String = "",
+    val units: String = "",
     var series: List<Series> = emptyList()
 )
 

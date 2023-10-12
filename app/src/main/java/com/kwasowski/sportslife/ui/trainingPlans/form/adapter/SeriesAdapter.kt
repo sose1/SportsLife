@@ -17,9 +17,11 @@ import com.kwasowski.sportslife.databinding.ItemSeriesBinding
 class SeriesAdapter(
     context: Context,
     private val onSeriesCallback: OnSeriesCallback,
-    private val isDetailsView: Boolean
+    private val isDetailsView: Boolean,
 ) :
     ArrayAdapter<Series>(context, 0) {
+
+    var units = ""
 
     override fun add(`object`: Series?) {
         super.add(`object`)
@@ -62,6 +64,7 @@ class SeriesAdapter(
 
         val seriesItem = getItem(position)
         binding.indexOfSeries = (position + 1).toString()
+        binding.exerciseUnit.text = units
         initializeEditText(binding.value, ForSeriesProperty.VALUE, seriesItem)
         initializeEditText(binding.repeats, ForSeriesProperty.REPEATS, seriesItem)
 
@@ -94,7 +97,7 @@ class SeriesAdapter(
     private fun initializeEditText(
         editText: EditText,
         forSeriesProperty: ForSeriesProperty,
-        seriesItem: Series?
+        seriesItem: Series?,
     ) {
         when (forSeriesProperty) {
             ForSeriesProperty.VALUE -> {
@@ -118,7 +121,7 @@ class SeriesAdapter(
     private fun setTextChangeListener(
         editText: EditText,
         forSeriesProperty: ForSeriesProperty,
-        seriesItem: Series?
+        seriesItem: Series?,
     ) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
