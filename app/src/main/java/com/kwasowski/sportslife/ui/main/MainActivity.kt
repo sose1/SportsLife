@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        viewModel.initializeDays()
+//        viewModel.initializeDays()
 
         window.statusBarColor = Color.TRANSPARENT
 
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onInitDays(days: List<Day>, todayIndex: Int) {
         daysAdapter.updateList(days)
-        onDayItemClick(days[todayIndex], todayIndex)
+        viewModel.onDayItemClick(days[todayIndex])
     }
 
     private fun onDaysListUpdate(days: List<Day>) {

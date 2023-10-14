@@ -8,9 +8,12 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.data.Result
+import com.kwasowski.sportslife.data.calendar.Calendar
+import com.kwasowski.sportslife.data.calendar.findByCalendarDate
 import com.kwasowski.sportslife.data.category.CategorySharedPreferences
 import com.kwasowski.sportslife.data.settings.Settings
 import com.kwasowski.sportslife.data.settings.SettingsManager
+import com.kwasowski.sportslife.domain.calendar.GetCalendarByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.category.GetCategoriesUseCase
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
 import com.kwasowski.sportslife.extensions.addDays
@@ -23,14 +26,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.Calendar
 import java.util.Date
+import java.util.Calendar as JavaCalendar
 
 class MainViewModel(
     private val getSettingsUseCase: GetSettingsUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val settingsManager: SettingsManager,
     private val categorySharedPreferences: CategorySharedPreferences,
+    private val getCalendarByOwnerIdUseCase: GetCalendarByOwnerIdUseCase,
 ) : ViewModel() {
     private val auth = Firebase.auth
     private val mutableState = MutableStateFlow<MainViewState>(MainViewState.Default)
@@ -39,12 +43,36 @@ class MainViewModel(
 
     private val daysList = mutableListOf<Day>()
     private val numberOfDays = 3652
-
     private var currentSettings = Settings()
+    private lateinit var calendarFirestore: Calendar
 
     init {
+        Timber.d("Init main view model")
+        getCalendar()
         getSetting()
         getCategories()
+    }
+
+    private fun getCalendar() {
+        viewModelScope.launch {
+            when (val result = getCalendarByOwnerIdUseCase.execute()) {
+                is Result.Failure -> {
+                    Timber.d("Result is failure")
+                    Timber.d("${result.exception}")
+                    // TODO: Pokazać error pobrania danych kalendarza
+                    // TODO: W trakcie pobvierania danych pokazajc jakies ladowanie
+                    initializeDays()
+                }
+
+                is Result.Success -> {
+                    Timber.d("Result is success")
+                    Timber.d("${result.data}")
+                    calendarFirestore = result.data
+                    initializeDays()
+                    // TODO: W trakcie pobvierania danych pokazajc jakies ladowanie
+                }
+            }
+        }
     }
 
     private fun getCategories() {
@@ -79,9 +107,9 @@ class MainViewModel(
         mutableState.value = MainViewState.OnGetSettings(currentSettings.language)
     }
 
-    fun initializeDays() {
+    private fun initializeDays() {
         val currentDate = Date()
-        val calendar = Calendar.getInstance()
+        val calendar = JavaCalendar.getInstance()
         var todayIndex = 0
 
         for (i in -numberOfDays..numberOfDays) {
@@ -90,9 +118,9 @@ class MainViewModel(
 
             val dayModel = Day(
                 name = calendar.getNarrowName().uppercase(),
-                number = calendar.get(Calendar.DAY_OF_MONTH).toString(),
-                month = calendar.get(Calendar.MONTH),
-                year = calendar.get(Calendar.YEAR),
+                number = calendar.get(JavaCalendar.DAY_OF_MONTH),
+                month = calendar.get(JavaCalendar.MONTH),
+                year = calendar.get(JavaCalendar.YEAR),
                 type = DayType.DEFAULT,
                 date = day
             )
@@ -112,6 +140,11 @@ class MainViewModel(
 
     fun onDayItemClick(day: Day) {
         Timber.d("onClick | Day: $day")
+        // TODO: zapytanie o ten jeden konkretny dzień?? żeby mieć aktualne dane 
+        val daysFirestore = calendarFirestore.days.toMutableList()
+        val today = daysFirestore.findByCalendarDate(day.number, day.month, day.year)
+        Timber.d("Załaduj mi ten dzień: $today")
+
         //change today to current
         daysList.find { it.isToday }.apply {
             this?.type = DayType.CURRENT
@@ -137,6 +170,9 @@ class MainViewModel(
     }
 
     fun onDataPickerOpen() {
+        Timber.d("onDataPickerOpen")
+
+
         val startFrom = Date().addDays(-numberOfDays).time
         val endTo = Date().addDays(numberOfDays).time
         val constraints = CalendarConstraints.Builder()
@@ -146,16 +182,17 @@ class MainViewModel(
         mutableState.value = MainViewState.OnDataPickerOpen(constraints)
     }
 
+
     fun onDatePickerClose() {
         mutableState.value = MainViewState.Default
     }
 
     fun onSelectedDateInDatePicker(timestamp: Long?) {
-        val calendar = Calendar.getInstance()
+        val calendar = JavaCalendar.getInstance()
         calendar.time = Date(timestamp!!)
-        val number = calendar.get(Calendar.DAY_OF_MONTH).toString()
-        val month = calendar.get(Calendar.MONTH)
-        val year = calendar.get(Calendar.YEAR)
+        val number = calendar.get(JavaCalendar.DAY_OF_MONTH)
+        val month = calendar.get(JavaCalendar.MONTH)
+        val year = calendar.get(JavaCalendar.YEAR)
 
         try {
             onDayItemClick(

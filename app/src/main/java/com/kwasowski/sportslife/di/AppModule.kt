@@ -1,5 +1,7 @@
 package com.kwasowski.sportslife.di
 
+import com.kwasowski.sportslife.data.calendar.CalendarRepository
+import com.kwasowski.sportslife.data.calendar.FirestoreCalendarRepository
 import com.kwasowski.sportslife.data.category.CategoryRepository
 import com.kwasowski.sportslife.data.category.CategorySharedPreferences
 import com.kwasowski.sportslife.data.category.FirestoreCategoryRepository
@@ -12,6 +14,7 @@ import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.settings.SettingsRepository
 import com.kwasowski.sportslife.data.trainingPlan.FirestoreTrainingPlanRepository
 import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanRepository
+import com.kwasowski.sportslife.domain.calendar.GetCalendarByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.category.GetCategoriesUseCase
 import com.kwasowski.sportslife.domain.exercise.AddToFavExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
@@ -67,6 +70,7 @@ val appModule = module {
     single<ExerciseRepository> { FirestoreExerciseRepository() }
     single<CategoryRepository> { FirestoreCategoryRepository() }
     single<TrainingPlanRepository> { FirestoreTrainingPlanRepository() }
+    single<CalendarRepository> { FirestoreCalendarRepository() }
     singleOf(::SettingsManager)
     singleOf(::CategorySharedPreferences)
 
@@ -89,4 +93,5 @@ val appModule = module {
     factoryOf(::GetSharedTrainingPlansUseCase)
     factoryOf(::GetTrainingPlanUseCase)
     factoryOf(::DeleteOwnTrainingPlanUseCase)
+    factoryOf(::GetCalendarByOwnerIdUseCase)
 }
