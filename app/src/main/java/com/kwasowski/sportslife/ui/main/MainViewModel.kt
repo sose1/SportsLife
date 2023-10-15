@@ -20,6 +20,7 @@ import com.kwasowski.sportslife.extensions.addDays
 import com.kwasowski.sportslife.extensions.getNarrowName
 import com.kwasowski.sportslife.ui.main.appBarDays.Day
 import com.kwasowski.sportslife.ui.main.appBarDays.DayType
+import com.kwasowski.sportslife.ui.main.appBarDays.compareToActualTime
 import com.kwasowski.sportslife.ui.main.appBarDays.findByCalendarDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,38 +42,19 @@ class MainViewModel(
 
     val uiState: StateFlow<MainViewState> = mutableState.asStateFlow()
 
-    private val daysList = mutableListOf<Day>()
+    val daysList = mutableListOf<Day>()
     private val numberOfDays = 3652
     private var currentSettings = Settings()
     private lateinit var calendarFirestore: Calendar
+
+    private var _calendarIsReady: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val calendarIsReady: StateFlow<Boolean> = _calendarIsReady.asStateFlow()
 
     init {
         Timber.d("Init main view model")
         getCalendar()
         getSetting()
         getCategories()
-    }
-
-    private fun getCalendar() {
-        viewModelScope.launch {
-            when (val result = getCalendarByOwnerIdUseCase.execute()) {
-                is Result.Failure -> {
-                    Timber.d("Result is failure")
-                    Timber.d("${result.exception}")
-                    // TODO: Pokazać error pobrania danych kalendarza
-                    // TODO: W trakcie pobvierania danych pokazajc jakies ladowanie
-                    initializeDays()
-                }
-
-                is Result.Success -> {
-                    Timber.d("Result is success")
-                    Timber.d("${result.data}")
-                    calendarFirestore = result.data
-                    initializeDays()
-                    // TODO: W trakcie pobvierania danych pokazajc jakies ladowanie
-                }
-            }
-        }
     }
 
     private fun getCategories() {
@@ -95,19 +77,34 @@ class MainViewModel(
                     is Result.Failure -> Unit
                     is Result.Success -> {
                         currentSettings = it.data
-                        onGetSettings()
+                        settingsManager.saveSettings(currentSettings)
+                        mutableState.value = MainViewState.OnGetSettings(currentSettings.language)
                     }
                 }
             }
         }
     }
 
-    private fun onGetSettings() {
-        settingsManager.saveSettings(currentSettings)
-        mutableState.value = MainViewState.OnGetSettings(currentSettings.language)
+    private fun getCalendar() {
+        mutableState.value = MainViewState.Loading
+        viewModelScope.launch {
+            when (val result = getCalendarByOwnerIdUseCase.execute()) {
+                is Result.Failure -> {
+                    Timber.d("Result is failure")
+                    Timber.d("${result.exception}")
+                    _calendarIsReady.value = true
+                    mutableState.value = MainViewState.OnCalendarError
+                }
+
+                is Result.Success -> {
+                    calendarFirestore = result.data
+                    _calendarIsReady.value = true
+                }
+            }
+        }
     }
 
-    private fun initializeDays() {
+    fun initializeDays() {
         val currentDate = Date()
         val calendar = JavaCalendar.getInstance()
         var todayIndex = 0
@@ -122,9 +119,8 @@ class MainViewModel(
                 month = calendar.get(JavaCalendar.MONTH),
                 year = calendar.get(JavaCalendar.YEAR),
                 type = DayType.DEFAULT,
-                date = day
+                date = day,
             )
-
             if (DateUtils.isToday(day.time)) {
                 dayModel.type = DayType.ACTIVE
                 dayModel.isToday = true
@@ -139,34 +135,42 @@ class MainViewModel(
     }
 
     fun onDayItemClick(day: Day) {
+        mutableState.value = MainViewState.Loading
         Timber.d("onClick | Day: $day")
-        // TODO: zapytanie o ten jeden konkretny dzień?? żeby mieć aktualne dane 
         val daysFirestore = calendarFirestore.days.toMutableList()
-        val today = daysFirestore.findByCalendarDate(day.number, day.month, day.year)
-        Timber.d("Załaduj mi ten dzień: $today")
+        val dayFromCalendar = daysFirestore.findByCalendarDate(day.number, day.month, day.year)
 
-        //change today to current
+        changeTodayToCurrent()
+        changeActiveToDefault()
+        changeClickedItemToActive(day)
+        mutableState.value = MainViewState.OnDaysListUpdate(daysList)
+        mutableState.value = MainViewState.OnDayItemClick(
+            daysList.indexOf(day),
+            dayFromCalendar?.id ?: "",
+            day.compareToActualTime()
+        )
+    }
+
+    private fun changeTodayToCurrent() {
         daysList.find { it.isToday }.apply {
             this?.type = DayType.CURRENT
         }
+    }
 
-        //change active to default
+    private fun changeActiveToDefault() {
         daysList.find { it.type == DayType.ACTIVE }.apply {
             this?.type = DayType.DEFAULT
         }
+    }
 
-        //change clicked item to active
+    private fun changeClickedItemToActive(day: Day) {
         try {
             daysList.findByCalendarDate(day.number, day.month, day.year).apply {
                 this.type = DayType.ACTIVE
-                //todo Zapytanie o aktualny dzien do firestore
             }
         } catch (e: IndexOutOfBoundsException) {
             mutableState.value = MainViewState.OnIndexOutOfBoundsException
         }
-
-        mutableState.value = MainViewState.OnDaysListUpdate(daysList)
-        mutableState.value = MainViewState.OnDayItemClick(day, daysList.indexOf(day))
     }
 
     fun onDataPickerOpen() {
@@ -181,7 +185,6 @@ class MainViewModel(
             .build()
         mutableState.value = MainViewState.OnDataPickerOpen(constraints)
     }
-
 
     fun onDatePickerClose() {
         mutableState.value = MainViewState.Default

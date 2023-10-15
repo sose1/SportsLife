@@ -41,6 +41,7 @@ import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own.OwnExercis
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormViewModel
 import com.kwasowski.sportslife.ui.login.LoginViewModel
 import com.kwasowski.sportslife.ui.main.MainViewModel
+import com.kwasowski.sportslife.ui.main.calendarDay.CalendarDayViewModel
 import com.kwasowski.sportslife.ui.profile.ProfileViewModel
 import com.kwasowski.sportslife.ui.settings.SettingsViewModel
 import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormViewModel
@@ -64,6 +65,7 @@ val appModule = module {
     viewModelOf(::TrainingPlanFormViewModel)
     viewModelOf(::CommunitiesTrainingPlansViewModel)
     viewModelOf(::OwnTrainingPlansViewModel)
+    viewModelOf(::CalendarDayViewModel)
 
     single<ProfileRepository> { FirestoreProfileRepository() }
     single<SettingsRepository> { FirestoreSettingsRepository() }

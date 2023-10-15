@@ -28,3 +28,9 @@ object UnitsTag {
     const val WEIGHT = "WEIGHT"
     const val NONE = "NONE"
 }
+
+object TimeLocationTag {
+    const val BEFORE = "BEFORE"
+    const val AFTER = "AFTER"
+    const val ACTUAL = "ACTUAL"
+}

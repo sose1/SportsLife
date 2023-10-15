@@ -4,10 +4,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,6 +25,7 @@ import com.kwasowski.sportslife.ui.exercise.exerciseList.activity.ExercisesListA
 import com.kwasowski.sportslife.ui.login.LoginActivity
 import com.kwasowski.sportslife.ui.main.appBarDays.Day
 import com.kwasowski.sportslife.ui.main.appBarDays.DaysAdapter
+import com.kwasowski.sportslife.ui.main.calendarDay.CalendarDayFragment
 import com.kwasowski.sportslife.ui.profile.ProfileActivity
 import com.kwasowski.sportslife.ui.settings.SettingsActivity
 import com.kwasowski.sportslife.ui.trainingLog.TrainingLogActivity
@@ -34,9 +38,14 @@ import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModel()
+    private val fragmentList = mutableListOf<Fragment>()
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var layoutManager: LinearLayoutManager
+
+    private var dayIndex = 0
+    private var dayId = ""
+    private var timeLocation = ""
 
     private val daysAdapter = DaysAdapter {
         viewModel.onDayItemClick(it)
@@ -47,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             super.onScrollStateChanged(recyclerView, newState)
             if (newState == RecyclerView.SCROLL_STATE_IDLE)
                 binding.topAppBar.setTitle(R.string.app_name)
-
         }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -64,8 +72,6 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-//        viewModel.initializeDays()
-
         window.statusBarColor = Color.TRANSPARENT
 
         binding.navigationView.setCheckedItem(R.id.calendar_item)
@@ -83,25 +89,101 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         binding.navigationView.setCheckedItem(R.id.calendar_item)
+        if (dayIndex != 0) {
+            onDaysListUpdate(viewModel.daysList)
+            onDayItemClick(dayIndex, dayId, timeLocation)
+        } else {
+            viewModel.initializeDays()
+        }
+    }
 
+    override fun onPause() {
+        super.onPause()
+        val transaction = supportFragmentManager.beginTransaction()
+        fragmentList.forEach { oldFragment ->
+            transaction.remove(oldFragment)
+            fragmentList.remove(oldFragment)
+        }
+        transaction.commit()
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.uiState.collect {
+                Timber.d("STATE: ${it}")
                 when (it) {
                     MainViewState.Default -> Unit
                     is MainViewState.OnInitDays -> onInitDays(it.days, it.todayIndex)
                     is MainViewState.OnDaysListUpdate -> onDaysListUpdate(it.days)
-                    is MainViewState.OnDayItemClick -> onDayItemClick(it.day, it.indexOf)
+                    is MainViewState.OnDayItemClick -> onDayItemClick(
+                        it.indexOf,
+                        it.dayId,
+                        it.timeLocation
+                    )
+
                     is MainViewState.OnDataPickerOpen -> onDatePickerOpen(it.constraints)
                     is MainViewState.OnIndexOutOfBoundsException -> showSnackBarInfo(R.string.you_cannot_select_this_date_please_try_another_one)
                     is MainViewState.OnTitleChange -> onTitleChange(it.month, it.year)
                     MainViewState.OnLogout -> openActivity(LoginActivity::class.java)
                     is MainViewState.OnGetSettings -> onGetSettings(it.language)
+                    MainViewState.Loading -> onLoading()
+                    MainViewState.OnCalendarError -> showToast(R.string.cannot_download_calendar_data)
                 }
             }
         }
+    }
+
+    private fun initDaysAdapter() {
+        binding.daysList.setHasFixedSize(true)
+        binding.daysList.adapter = daysAdapter
+        layoutManager = binding.daysList.layoutManager as LinearLayoutManager
+        binding.daysList.addOnScrollListener(onRecyclerViewScrollListener)
+    }
+
+    private fun onInitDays(days: List<Day>, todayIndex: Int) {
+        daysAdapter.updateList(days)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.calendarIsReady.collect { isReady ->
+                    if (isReady) {
+                        viewModel.onDayItemClick(days[todayIndex])
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onDaysListUpdate(days: List<Day>) {
+        daysAdapter.updateList(days)
+    }
+
+    private fun onDayItemClick(indexOf: Int, dayId: String, timeLocation: String) {
+        this.dayIndex = indexOf
+        this.dayId = dayId
+        this.timeLocation = timeLocation
+        binding.daysList.scrollToPosition(indexOf)
+
+        val transaction = supportFragmentManager.beginTransaction()
+        fragmentList.forEach { oldFragment ->
+            transaction.remove(oldFragment)
+            fragmentList.remove(oldFragment)
+        }
+
+        // Tworzenie nowego fragmentu
+        val fragment = CalendarDayFragment.newInstance(dayId = dayId, timeLocation = timeLocation)
+        fragmentList.add(fragment)
+
+        // Rozpocznij transakcję fragmentu
+        transaction.add(R.id.day_fragment_container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+
+        binding.progress.visibility = View.GONE
+    }
+
+    private fun onLoading() {
+        binding.progress.visibility = View.VISIBLE
     }
 
     private fun onNavigationItemSelected(it: MenuItem): Boolean {
@@ -144,27 +226,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initDaysAdapter() {
-        binding.daysList.setHasFixedSize(true)
-        binding.daysList.adapter = daysAdapter
-        layoutManager = binding.daysList.layoutManager as LinearLayoutManager
-        binding.daysList.addOnScrollListener(onRecyclerViewScrollListener)
-    }
-
-    private fun onInitDays(days: List<Day>, todayIndex: Int) {
-        daysAdapter.updateList(days)
-        viewModel.onDayItemClick(days[todayIndex])
-    }
-
-    private fun onDaysListUpdate(days: List<Day>) {
-        daysAdapter.updateList(days)
-    }
-
-    private fun onDayItemClick(day: Day, indexOf: Int) {
-        binding.text.text = "$day"
-        binding.daysList.scrollToPosition(indexOf)
-    }
-
     private fun onTitleChange(month: CharSequence, year: Int) {
         binding.topAppBar.title = "${month.toString().replaceFirstChar { it.uppercase() }} $year"
     }
@@ -193,6 +254,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSnackBarInfo(stringId: Int) {
         Snackbar.make(binding.root, stringId, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showToast(stringId: Int) {
+        Toast.makeText(this, stringId, Toast.LENGTH_LONG).show()
     }
 
     private fun openActivity(activity: Class<out AppCompatActivity>) {
