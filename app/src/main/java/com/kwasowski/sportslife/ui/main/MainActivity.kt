@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     private var dayIndex = 0
     private var dayId = ""
     private var timeLocation = ""
+    private var todayIndex = 0
 
     private val daysAdapter = DaysAdapter {
         viewModel.onDayItemClick(it)
@@ -88,8 +89,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        Timber.d("onResume: dayIndex: $dayIndex")
         binding.navigationView.setCheckedItem(R.id.calendar_item)
-        if (dayIndex != 0) {
+        if (dayIndex != 0 && todayIndex != 0) {
             onDaysListUpdate(viewModel.daysList)
             onDayItemClick(dayIndex, dayId, timeLocation)
         } else {
@@ -147,6 +149,8 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.calendarIsReady.collect { isReady ->
                     if (isReady) {
+                        Timber.d("Calendar is ready")
+                        this@MainActivity.todayIndex = todayIndex
                         viewModel.onDayItemClick(days[todayIndex])
                     }
                 }
@@ -159,6 +163,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onDayItemClick(indexOf: Int, dayId: String, timeLocation: String) {
+        Timber.d("onDayItemClick: indexOf: $indexOf")
         this.dayIndex = indexOf
         this.dayId = dayId
         this.timeLocation = timeLocation
@@ -180,6 +185,7 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
 
         binding.progress.visibility = View.GONE
+        viewModel.setDefaultState()
     }
 
     private fun onLoading() {
@@ -285,5 +291,6 @@ class MainActivity : AppCompatActivity() {
     ) {
         val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(language)
         AppCompatDelegate.setApplicationLocales(appLocale)
+        viewModel.initializeDays()
     }
 }

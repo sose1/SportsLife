@@ -109,6 +109,11 @@ class MainViewModel(
         val calendar = JavaCalendar.getInstance()
         var todayIndex = 0
 
+        if (daysList.isNotEmpty()) {
+            daysList.clear()
+            getCalendar()
+        }
+
         for (i in -numberOfDays..numberOfDays) {
             val day = currentDate.addDays(i)
             calendar.time = day
@@ -135,6 +140,7 @@ class MainViewModel(
     }
 
     fun onDayItemClick(day: Day) {
+        _calendarIsReady.value = false
         mutableState.value = MainViewState.Loading
         Timber.d("onClick | Day: $day")
         val daysFirestore = calendarFirestore.days.toMutableList()
@@ -215,5 +221,9 @@ class MainViewModel(
     fun onLogoutClick() {
         auth.signOut()
         mutableState.value = MainViewState.OnLogout
+    }
+
+    fun setDefaultState() {
+        mutableState.value = MainViewState.Default
     }
 }

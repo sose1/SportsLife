@@ -33,14 +33,20 @@ class CalendarDayFragment : Fragment() {
         binding.viewModel = viewModel
         binding.noDataBefore.visibility = View.GONE
         binding.noDataAfter.visibility = View.GONE
+        if (dayID().isNotEmpty()) {
+            viewModel.getDay(dayID())
+        } else {
+            if (timeLocation().equals(TimeLocationTag.BEFORE)) {
+                binding.noDataBefore.visibility = View.VISIBLE
+            }
+            if (timeLocation() == TimeLocationTag.AFTER || timeLocation() == TimeLocationTag.ACTUAL
+            ) {
+                binding.noDataAfter.visibility = View.VISIBLE
+            }
+        }
 
-        if (dayID().isNullOrEmpty() && timeLocation().equals(TimeLocationTag.BEFORE)) {
-            binding.noDataBefore.visibility = View.VISIBLE
-        }
-        if (dayID().isNullOrEmpty() && timeLocation() == TimeLocationTag.AFTER || timeLocation() == TimeLocationTag.ACTUAL
-        ) {
-            binding.noDataAfter.visibility = View.VISIBLE
-        }
+
+
 
         // TODO: jesli jest id to pobierz dane przez viewmodel
         // TODO: pokazuj sekcje w zaleznosci od danych: jesli jest 0 SCHEDULED to sekcji nie pokazujemy - to samo z COMPLETED
@@ -54,7 +60,7 @@ class CalendarDayFragment : Fragment() {
         super.onResume()
     }
 
-    private fun dayID(): String? = arguments?.getString(DAY_ID)
+    private fun dayID(): String = arguments?.getString(DAY_ID) ?: ""
     private fun timeLocation(): String? = arguments?.getString(TIME_LOCATION)
 
     companion object {
