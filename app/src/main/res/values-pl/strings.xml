@@ -143,4 +143,6 @@
     <string name="scheduled_training">Zaplanowane treningi</string>
     <string name="free_how_about">Wolne? A może by tak…</string>
     <string name="schedule_your_training">zaplanować swój trening?</string>
+    <string name="completed_trainings">Ukończone treningi</string>
+    <string name="number_of_exercises">"Liczba ćwiczeń: "</string>
 </resources>

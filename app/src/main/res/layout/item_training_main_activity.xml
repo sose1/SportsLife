@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="training"
+            type="com.kwasowski.sportslife.data.calendar.Training" />
+    </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -44,12 +49,13 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/roboto_bold"
                     android:maxLines="1"
-                    android:text="Name"
+                    android:text="@{training.name}"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     tools:text="Name" />
 
                 <TextView
+                    android:gravity="center_vertical"
                     android:id="@+id/exercise_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,7 +63,7 @@
                     android:fontFamily="@font/roboto_regular"
                     android:maxLines="1"
                     android:textColor="@color/black"
-                    android:text="Liczba ćwiczeń: 12"
+                    android:text="@{@string/number_of_exercises + training.numberOfExercises}"
                     android:textSize="14sp"
                     tools:text="Liczba ćwiczeń: 12" />
             </LinearLayout>
