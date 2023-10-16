@@ -34,4 +34,8 @@ class CalendarDayViewModel(private val getSingleDayUseCase: GetSingleDayUseCase)
 
         mutableState.value = CalendarDayState.OnSuccessGetDay(scheduledTrainings, completedTrainings)
     }
+
+    fun setStateToDefault() {
+        mutableState.value = CalendarDayState.Default
+    }
 }

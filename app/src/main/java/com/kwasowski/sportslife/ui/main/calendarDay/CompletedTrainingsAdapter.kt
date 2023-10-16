@@ -2,6 +2,7 @@ package com.kwasowski.sportslife.ui.main.calendarDay
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -38,6 +39,8 @@ class CompletedTrainingsAdapter : RecyclerView.Adapter<ViewHolder>() {
 
             fun bind(training: Training) {
                 binding.training = training
+                binding.moreButton.visibility = View.GONE
+
                 binding.executePendingBindings()
             }
     }
