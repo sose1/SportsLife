@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -39,7 +38,6 @@ import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModel()
-    private val fragmentList = mutableListOf<Fragment>()
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var layoutManager: LinearLayoutManager
@@ -48,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     private var dayId = ""
     private var timeLocation = ""
     private var todayIndex = 0
-    private var shouldRemoveFragment = false
 
     private val daysAdapter = DaysAdapter {
         viewModel.onDayItemClick(it)
@@ -91,21 +88,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        Timber.d("onResume: dayIndex: $dayIndex")
         binding.navigationView.setCheckedItem(R.id.calendar_item)
         if (dayIndex != 0 && todayIndex != 0) {
             onDaysListUpdate(viewModel.daysList)
             onDayItemClick(dayIndex, dayId, timeLocation)
         } else {
-            viewModel.initializeDays()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Timber.d("shouldRemoveFragment: $shouldRemoveFragment")
-        if (shouldRemoveFragment) {
             clearFragments()
+            viewModel.initializeDays()
         }
     }
 
@@ -120,7 +109,6 @@ class MainActivity : AppCompatActivity() {
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.uiState.collect {
-                Timber.d("STATE: ${it}")
                 when (it) {
                     MainViewState.Default -> Unit
                     is MainViewState.OnInitDays -> onInitDays(it.days, it.todayIndex)
@@ -171,21 +159,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onDayItemClick(indexOf: Int, dayId: String, timeLocation: String) {
-        Timber.d("onDayItemClick: indexOf: $indexOf")
         this.dayIndex = indexOf
         this.dayId = dayId
         this.timeLocation = timeLocation
         binding.daysList.scrollToPosition(indexOf)
 
         val transaction = supportFragmentManager.beginTransaction()
-        fragmentList.forEach { oldFragment ->
-            transaction.remove(oldFragment)
-            fragmentList.remove(oldFragment)
+        supportFragmentManager.fragments.forEach {
+            transaction.remove(it)
         }
 
         // Tworzenie nowego fragmentu
         val fragment = CalendarDayFragment.newInstance(dayId = dayId, timeLocation = timeLocation)
-        fragmentList.add(fragment)
 
         // Rozpocznij transakcję fragmentu
         transaction.add(R.id.day_fragment_container, fragment)
@@ -198,12 +183,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun clearFragments() {
         val transaction = supportFragmentManager.beginTransaction()
-        fragmentList.forEach { oldFragment ->
-            transaction.remove(oldFragment)
-            fragmentList.remove(oldFragment)
+        supportFragmentManager.fragments.forEach {
+            transaction.remove(it)
         }
         transaction.commit()
     }
+
     private fun onLoading() {
         binding.progress.visibility = View.VISIBLE
     }
