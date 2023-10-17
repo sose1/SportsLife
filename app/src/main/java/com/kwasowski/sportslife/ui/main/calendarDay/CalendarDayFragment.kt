@@ -168,7 +168,7 @@ class CalendarDayFragment : Fragment() {
         // TODO: Dodać w TrainingPlansActivity zamykanie activity takie jak przy ExercisesListActivity
         // TODO: Dodać obsługe przycisków planowania w ItemTrainingPLan (te same flow)
         // TODO: Po powrocie z TrainingPlansActivity wykonać zapytanie zapisujące w Firestore
-
+       // todo https://chat.openai.com/share/e3b44c8e-7d4d-48e7-a9af-d161e891ae91
         /**
          * FLOW z TrainingPlansActivity:
          */

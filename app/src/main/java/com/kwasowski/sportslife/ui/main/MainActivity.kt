@@ -1,6 +1,7 @@
 package com.kwasowski.sportslife.ui.main
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
     private var dayId = ""
     private var timeLocation = ""
     private var todayIndex = 0
+    private var shouldRemoveFragment = false
 
     private val daysAdapter = DaysAdapter {
         viewModel.onDayItemClick(it)
@@ -101,12 +103,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        val transaction = supportFragmentManager.beginTransaction()
-        fragmentList.forEach { oldFragment ->
-            transaction.remove(oldFragment)
-            fragmentList.remove(oldFragment)
+        Timber.d("shouldRemoveFragment: $shouldRemoveFragment")
+        if (shouldRemoveFragment) {
+            clearFragments()
         }
-        transaction.commit()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        Timber.d("OnConfigurationChanged")
+        clearFragments()
+        onDayItemClick(dayIndex, dayId, timeLocation)
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
@@ -188,6 +196,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.setDefaultState()
     }
 
+    private fun clearFragments() {
+        val transaction = supportFragmentManager.beginTransaction()
+        fragmentList.forEach { oldFragment ->
+            transaction.remove(oldFragment)
+            fragmentList.remove(oldFragment)
+        }
+        transaction.commit()
+    }
     private fun onLoading() {
         binding.progress.visibility = View.VISIBLE
     }
@@ -291,6 +307,5 @@ class MainActivity : AppCompatActivity() {
     ) {
         val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(language)
         AppCompatDelegate.setApplicationLocales(appLocale)
-        viewModel.initializeDays()
     }
 }
