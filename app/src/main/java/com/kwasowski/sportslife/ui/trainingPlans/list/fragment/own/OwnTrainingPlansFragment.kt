@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.trainingPlans.list.fragment.own
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,6 +30,8 @@ class OwnTrainingPlansFragment : Fragment() {
     private lateinit var adapter: OwnTrainingPlansAdapter
     private var queryText: String = ""
 
+    private var dataPassListener: DataPassListener? = null
+
     private val onQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return false
@@ -41,6 +44,16 @@ class OwnTrainingPlansFragment : Fragment() {
             }
             return false
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DataPassListener) {
+            dataPassListener = context
+        } else {
+            throw ClassCastException("$context must implement SendDataToActivity")
+        }
+
     }
 
     override fun onCreateView(
@@ -150,6 +163,12 @@ class OwnTrainingPlansFragment : Fragment() {
             R.id.share -> {
                 Timber.d("Share")
                 viewModel.shareTrainingPlan(trainingPlan)
+                // TODO: AKCJE PONIZEJ PODPIAC DO ODPOWIEDNIEGO PRZYCISKU!!!!!!!!!!!!
+                dataPassListener?.onAddedTrainingToCalendarDay(
+                    trainingPlanId = trainingPlan.id,
+                    trainingPlanName = trainingPlan.name,
+                    numberOfExercises = trainingPlan.exercisesSeries.size
+                )
             }
         }
     }
@@ -163,5 +182,13 @@ class OwnTrainingPlansFragment : Fragment() {
 
     private fun showToast(stringId: Int) {
         Toast.makeText(context, stringId, Toast.LENGTH_LONG).show()
+    }
+
+    interface DataPassListener {
+        fun onAddedTrainingToCalendarDay(
+            trainingPlanId: String,
+            trainingPlanName: String,
+            numberOfExercises: Int
+        )
     }
 }

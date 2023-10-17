@@ -20,6 +20,7 @@ import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+// TODO: DataPassListener 
 class CommunitiesTrainingPlansFragment : Fragment() {
     private val viewModel: CommunitiesTrainingPlansViewModel by viewModel()
     private lateinit var binding: FragmentCommunitiesTrainingPlansBinding

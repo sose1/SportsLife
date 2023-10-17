@@ -1,15 +1,18 @@
 package com.kwasowski.sportslife.data.calendar
 
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.data.Result
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class FirestoreCalendarRepository : CalendarRepository {
     private val path = "calendars"
-    private val collection = Firebase.firestore.collection(path)
 
     override suspend fun getCalendarByOwnerId(ownerId: String): Result<Calendar> =
         suspendCoroutine { continuation ->
@@ -52,4 +55,30 @@ class FirestoreCalendarRepository : CalendarRepository {
                     } ?: continuation.resume(Result.Failure(NullPointerException("Day not found")))
                 }.addOnFailureListener { continuation.resume(Result.Failure(it)) }
         }
+
+    override suspend fun saveSingleDay(
+        dayId: String?,
+        ownerId: String,
+        day: Day,
+    ): Result<Unit> {
+        val deferred = CompletableDeferred<Result<Unit>>()
+        val collection = Firebase.firestore.collection("$path/$ownerId/days")
+        val documentReference = if (dayId.isNullOrBlank()) {
+            collection.document()
+        } else {
+            collection.document(dayId)
+        }
+
+        documentReference.set(day, SetOptions.merge())
+            .addOnSuccessListener {
+                deferred.complete(Result.Success(Unit))
+            }
+            .addOnFailureListener { exception ->
+                deferred.complete(Result.Failure(exception))
+            }
+
+        return withContext(Dispatchers.Main) {
+            deferred.await()
+        }
+    }
 }

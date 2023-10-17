@@ -1,5 +1,7 @@
 package com.kwasowski.sportslife.ui.main.calendarDay
 
+import ParcelableMutableList
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
@@ -15,7 +17,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.calendar.Training
+import com.kwasowski.sportslife.data.calendar.TrainingState
 import com.kwasowski.sportslife.databinding.FragmentCalendarDayBinding
+import com.kwasowski.sportslife.extensions.parcelable
 import com.kwasowski.sportslife.ui.trainingPlans.list.TrainingPlansActivity
 import com.kwasowski.sportslife.utils.ActivityOpenMode
 import com.kwasowski.sportslife.utils.Constants
@@ -27,7 +31,7 @@ import timber.log.Timber
 class CalendarDayFragment : Fragment() {
     private val viewModel: CalendarDayViewModel by viewModel()
     private lateinit var binding: FragmentCalendarDayBinding
-
+    private lateinit var scheduledTrainingsAdapter: ScheduledTrainingsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -110,7 +114,7 @@ class CalendarDayFragment : Fragment() {
     }
 
     private fun showScheduledTrainings(scheduledTrainings: List<Training>) {
-        val scheduledTrainingsAdapter = ScheduledTrainingsAdapter()
+        scheduledTrainingsAdapter = ScheduledTrainingsAdapter()
         binding.scheduledTrainingsList.setHasFixedSize(true)
         binding.scheduledTrainingsList.adapter = scheduledTrainingsAdapter
         scheduledTrainingsAdapter.updateList(scheduledTrainings)
@@ -150,6 +154,21 @@ class CalendarDayFragment : Fragment() {
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             Timber.d("ResultCode: ${result.resultCode}")
+            if (result.resultCode == RESULT_OK) {
+                val receivedData = result?.data?.parcelable<Parcelable>(Constants.TRAININGS_TO_ADD) as ParcelableMutableList<*>
+                val trainingList = receivedData.map {
+                    Training(
+                        trainingPlanId = it["trainingPlanId"].toString(),
+                        name = it["trainingPlanName"].toString(),
+                        numberOfExercises = it["numberOfExercises"]?.toIntOrNull() ?: 0,
+                        state = TrainingState.SCHEDULED,
+                    )
+                }
+                Timber.d("Return from traingnplans.")
+                Timber.d("TrainingList: $trainingList")
+                scheduledTrainingsAdapter.updateList(trainingList)
+                viewModel.saveDay(dayID(), trainingList)
+            }
         }
 
     private fun openTrainingPlanListActivity() {
@@ -165,10 +184,7 @@ class CalendarDayFragment : Fragment() {
         /**
          * FLOW z MainActivity:
          */
-        // TODO: Dodać w TrainingPlansActivity zamykanie activity takie jak przy ExercisesListActivity
         // TODO: Dodać obsługe przycisków planowania w ItemTrainingPLan (te same flow)
-        // TODO: Po powrocie z TrainingPlansActivity wykonać zapytanie zapisujące w Firestore
-       // todo https://chat.openai.com/share/e3b44c8e-7d4d-48e7-a9af-d161e891ae91
         /**
          * FLOW z TrainingPlansActivity:
          */
