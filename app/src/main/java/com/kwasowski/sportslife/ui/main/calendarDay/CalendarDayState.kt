@@ -6,4 +6,6 @@ sealed class CalendarDayState {
     class OnSuccessGetDay(val scheduledTrainings: List<Training>, val completedTrainings: List<Training>) : CalendarDayState()
 
     object Default : CalendarDayState()
+    object OnEmptyDay : CalendarDayState()
+    object OnSuccessSave : CalendarDayState()
 }

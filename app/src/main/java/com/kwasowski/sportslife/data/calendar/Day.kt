@@ -6,7 +6,7 @@ data class Day @JvmOverloads constructor(
     val number: Int = 0,
     val month: Int = 0,
     val year: Int = 0,
-    val trainingList: List<Training> = emptyList(),
+    var trainingList: List<Training> = emptyList(),
 )
 
 data class DayDto @JvmOverloads constructor(

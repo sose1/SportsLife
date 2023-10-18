@@ -24,7 +24,8 @@ import com.kwasowski.sportslife.utils.ActivityOpenMode
 import com.kwasowski.sportslife.utils.Constants
 import timber.log.Timber
 
-class TrainingPlansActivity : AppCompatActivity(), OwnTrainingPlansFragment.DataPassListener {
+class TrainingPlansActivity : AppCompatActivity(), OwnTrainingPlansFragment.DataPassListener,
+    CommunitiesTrainingPlansFragment.DataPassListener {
     private lateinit var binding: ActivityTrainingPlansBinding
     private lateinit var pageAdapter: FragmentStateAdapter
 
@@ -100,7 +101,7 @@ class TrainingPlansActivity : AppCompatActivity(), OwnTrainingPlansFragment.Data
     override fun onAddedTrainingToCalendarDay(
         trainingPlanId: String,
         trainingPlanName: String,
-        numberOfExercises: Int
+        numberOfExercises: Int,
     ) {
         Timber.d("Add: $trainingPlanId | $trainingPlanName | $numberOfExercises")
         val exercise = ParcelableLinkedHashMap<String, String>().apply {

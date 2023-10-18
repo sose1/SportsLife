@@ -31,7 +31,7 @@ import timber.log.Timber
 class CalendarDayFragment : Fragment() {
     private val viewModel: CalendarDayViewModel by viewModel()
     private lateinit var binding: FragmentCalendarDayBinding
-    private lateinit var scheduledTrainingsAdapter: ScheduledTrainingsAdapter
+    private var scheduledTrainingsAdapter: ScheduledTrainingsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,25 +46,9 @@ class CalendarDayFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         onViewStateChanged()
-
-        binding.noDataBefore.visibility = View.GONE
-        binding.noDataAfter.visibility = View.GONE
-
-        if (dayID().isNotEmpty()) {
-            viewModel.getDay(dayID())
-        } else {
-            when (timeLocation()) {
-                TimeLocationTag.BEFORE -> showNoDataBefore()
-                TimeLocationTag.AFTER -> showNoDataAfter()
-                TimeLocationTag.ACTUAL -> showNoDataAfter()
-            }
-        }
-
+        initView()
         // TODO: Sekcja Podsumowania
-
-
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,7 +73,29 @@ class CalendarDayFragment : Fragment() {
                         it.scheduledTrainings,
                         it.completedTrainings
                     )
+
+                    CalendarDayState.OnEmptyDay -> {
+                        initView(true)
+                    }
+
+                    CalendarDayState.OnSuccessSave -> Unit
                 }
+            }
+        }
+    }
+
+    private fun initView(afterInitialization: Boolean = false) {
+        binding.progress.visibility = View.GONE
+        binding.noDataBefore.visibility = View.GONE
+        binding.noDataAfter.visibility = View.GONE
+
+        if (!dayID().isNullOrEmpty() && !afterInitialization) {
+            viewModel.getDay(dayID())
+        } else {
+            when (timeLocation()) {
+                TimeLocationTag.BEFORE -> showNoDataBefore()
+                TimeLocationTag.AFTER -> showNoDataAfter()
+                TimeLocationTag.ACTUAL -> showNoDataAfter()
             }
         }
     }
@@ -99,6 +105,8 @@ class CalendarDayFragment : Fragment() {
         completedTrainings: List<Training>,
     ) {
         binding.progress.visibility = View.GONE
+        binding.noDataBefore.visibility = View.GONE
+        binding.noDataAfter.visibility = View.GONE
 
         if (scheduledTrainings.isEmpty()) {
             disableScheduledTrainings()
@@ -111,13 +119,23 @@ class CalendarDayFragment : Fragment() {
         } else {
             showCompletedTrainings(completedTrainings)
         }
+
+        if (scheduledTrainings.isEmpty() && completedTrainings.isEmpty()) {
+            when (timeLocation()) {
+                TimeLocationTag.BEFORE -> showNoDataBefore()
+                TimeLocationTag.AFTER -> showNoDataAfter()
+                TimeLocationTag.ACTUAL -> showNoDataAfter()
+            }
+        }
     }
 
     private fun showScheduledTrainings(scheduledTrainings: List<Training>) {
-        scheduledTrainingsAdapter = ScheduledTrainingsAdapter()
+        if (scheduledTrainingsAdapter == null) {
+            scheduledTrainingsAdapter = ScheduledTrainingsAdapter()
+        }
         binding.scheduledTrainingsList.setHasFixedSize(true)
         binding.scheduledTrainingsList.adapter = scheduledTrainingsAdapter
-        scheduledTrainingsAdapter.updateList(scheduledTrainings)
+        scheduledTrainingsAdapter?.updateList(scheduledTrainings)
         binding.scheduledTrainings.visibility = View.VISIBLE
 
         binding.scheduleTrainingButton.setOnClickListener { openTrainingPlanListActivity() }
@@ -155,7 +173,8 @@ class CalendarDayFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             Timber.d("ResultCode: ${result.resultCode}")
             if (result.resultCode == RESULT_OK) {
-                val receivedData = result?.data?.parcelable<Parcelable>(Constants.TRAININGS_TO_ADD) as ParcelableMutableList<*>
+                val receivedData =
+                    result?.data?.parcelable<Parcelable>(Constants.TRAININGS_TO_ADD) as ParcelableMutableList<*>
                 val trainingList = receivedData.map {
                     Training(
                         trainingPlanId = it["trainingPlanId"].toString(),
@@ -164,10 +183,7 @@ class CalendarDayFragment : Fragment() {
                         state = TrainingState.SCHEDULED,
                     )
                 }
-                Timber.d("Return from traingnplans.")
-                Timber.d("TrainingList: $trainingList")
-                scheduledTrainingsAdapter.updateList(trainingList)
-                viewModel.saveDay(dayID(), trainingList)
+                viewModel.saveDay(dayID(), trainingList, number(), month(), year())
             }
         }
 
@@ -182,10 +198,6 @@ class CalendarDayFragment : Fragment() {
         activityResultLauncher.launch(intent)
 
         /**
-         * FLOW z MainActivity:
-         */
-        // TODO: Dodać obsługe przycisków planowania w ItemTrainingPLan (te same flow)
-        /**
          * FLOW z TrainingPlansActivity:
          */
         // TODO: Zaplanowanie ćwiczenia prosto z TrainingPlansActivity:
@@ -194,19 +206,34 @@ class CalendarDayFragment : Fragment() {
 
     }
 
-    private fun dayID(): String = arguments?.getString(DAY_ID) ?: ""
+    private fun dayID(): String? = arguments?.getString(DAY_ID)
     private fun timeLocation(): String? = arguments?.getString(TIME_LOCATION)
+    private fun number(): Int = arguments?.getInt(NUMBER) ?: 0
+    private fun month(): Int = arguments?.getInt(MONTH) ?: 0
+    private fun year(): Int = arguments?.getInt(YEAR) ?: 0
 
     companion object {
         const val DAY_ID = "DAY_ID"
         const val TIME_LOCATION = "TIME_LOCATION"
+        const val NUMBER = "NUMBER"
+        const val MONTH = "MONTH"
+        const val YEAR = "YEAR"
 
         @JvmStatic
-        fun newInstance(dayId: String, timeLocation: String): CalendarDayFragment {
+        fun newInstance(
+            dayId: String,
+            timeLocation: String,
+            number: Int,
+            month: Int,
+            year: Int,
+        ): CalendarDayFragment {
             val fragment = CalendarDayFragment()
             val args = Bundle()
             args.putString(DAY_ID, dayId)
             args.putString(TIME_LOCATION, timeLocation)
+            args.putInt(NUMBER, number)
+            args.putInt(MONTH, month)
+            args.putInt(YEAR, year)
             fragment.arguments = args
             return fragment
         }

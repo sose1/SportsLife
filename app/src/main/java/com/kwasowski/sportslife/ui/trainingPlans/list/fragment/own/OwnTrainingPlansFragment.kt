@@ -53,11 +53,10 @@ class OwnTrainingPlansFragment : Fragment() {
         } else {
             throw ClassCastException("$context must implement SendDataToActivity")
         }
-
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
@@ -81,6 +80,14 @@ class OwnTrainingPlansFragment : Fragment() {
             },
             onItemClick = { trainingPlan ->
                 onItemClick(trainingPlan)
+            },
+            onScheduleButtonClicked = { trainingPlan ->
+                dataPassListener?.onAddedTrainingToCalendarDay(
+                    trainingPlanId = trainingPlan.id,
+                    trainingPlanName = trainingPlan.name,
+                    numberOfExercises = trainingPlan.exercisesSeries.size
+                )
+                showToast(R.string.scheduled_on_the_calendar)
             }
         )
 
@@ -144,7 +151,6 @@ class OwnTrainingPlansFragment : Fragment() {
         viewModel.getTrainingPlans()
     }
 
-
     private fun onTrainingPlanMenuItemSelected(trainingPlan: TrainingPlanDto, menuItemId: Int) {
         Timber.d("$menuItemId | $trainingPlan")
 
@@ -163,12 +169,6 @@ class OwnTrainingPlansFragment : Fragment() {
             R.id.share -> {
                 Timber.d("Share")
                 viewModel.shareTrainingPlan(trainingPlan)
-                // TODO: AKCJE PONIZEJ PODPIAC DO ODPOWIEDNIEGO PRZYCISKU!!!!!!!!!!!!
-                dataPassListener?.onAddedTrainingToCalendarDay(
-                    trainingPlanId = trainingPlan.id,
-                    trainingPlanName = trainingPlan.name,
-                    numberOfExercises = trainingPlan.exercisesSeries.size
-                )
             }
         }
     }
@@ -188,7 +188,7 @@ class OwnTrainingPlansFragment : Fragment() {
         fun onAddedTrainingToCalendarDay(
             trainingPlanId: String,
             trainingPlanName: String,
-            numberOfExercises: Int
+            numberOfExercises: Int,
         )
     }
 }

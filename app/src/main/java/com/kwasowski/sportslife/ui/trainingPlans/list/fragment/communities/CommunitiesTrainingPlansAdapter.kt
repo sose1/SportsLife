@@ -10,7 +10,8 @@ import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanDto
 import com.kwasowski.sportslife.databinding.ItemTrainingPlanBinding
 
 class CommunitiesTrainingPlansAdapter(
-    private val onItemClick: (TrainingPlanDto) -> Unit
+    private val onItemClick: (TrainingPlanDto) -> Unit,
+    private val onScheduleButtonClicked: (TrainingPlanDto) -> Unit
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     private var trainingPlans = listOf<TrainingPlanDto>()
@@ -45,6 +46,9 @@ class CommunitiesTrainingPlansAdapter(
             binding.trainingPlan = trainingPlan
             binding.root.setOnClickListener {
                 onItemClick(trainingPlan)
+            }
+            binding.scheduleButton.setOnClickListener {
+                onScheduleButtonClicked(trainingPlan)
             }
             binding.moreButton.visibility = View.GONE
             binding.executePendingBindings()

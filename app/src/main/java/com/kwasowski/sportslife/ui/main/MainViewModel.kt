@@ -52,7 +52,7 @@ class MainViewModel(
 
     init {
         Timber.d("Init main view model")
-        getCalendar()
+        getCalendar(true)
         getSetting()
         getCategories()
     }
@@ -85,7 +85,7 @@ class MainViewModel(
         }
     }
 
-    private fun getCalendar() {
+    private fun getCalendar(isInit: Boolean = false, afterRefresh: Boolean = false) {
         mutableState.value = MainViewState.Loading
         viewModelScope.launch {
             when (val result = getCalendarByOwnerIdUseCase.execute()) {
@@ -97,11 +97,26 @@ class MainViewModel(
                 }
 
                 is Result.Success -> {
+                    Timber.d("CALENDAR: ${result.data.days}")
+                    if (afterRefresh) {
+                        val newDays = result.data.days - calendarFirestore.days
+                        if (newDays.isNotEmpty()) {
+                            val singleNewDay = newDays.first()
+                            mutableState.value = MainViewState.ClickSelectedDay(singleNewDay.id)
+                        }
+                    }
+                    if (isInit) {
+                        _calendarIsReady.value = true
+                    }
+
                     calendarFirestore = result.data
-                    _calendarIsReady.value = true
                 }
             }
         }
+    }
+
+    fun refreshCalendar() {
+        getCalendar(afterRefresh = true)
     }
 
     fun initializeDays() {
@@ -153,7 +168,10 @@ class MainViewModel(
         mutableState.value = MainViewState.OnDayItemClick(
             daysList.indexOf(day),
             dayFromCalendar?.id ?: "",
-            day.compareToActualTime()
+            day.compareToActualTime(),
+            day.number,
+            day.month,
+            day.year
         )
     }
 

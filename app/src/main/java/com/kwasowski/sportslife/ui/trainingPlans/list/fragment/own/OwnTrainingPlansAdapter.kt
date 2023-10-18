@@ -16,7 +16,8 @@ import timber.log.Timber
 class OwnTrainingPlansAdapter(
     private val context: Context,
     private val onMenuItemSelected: (TrainingPlanDto, Int) -> Unit,
-    private val onItemClick: (TrainingPlanDto) -> Unit
+    private val onItemClick: (TrainingPlanDto) -> Unit,
+    private val onScheduleButtonClicked: (TrainingPlanDto) -> Unit
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     private var trainingPlans = listOf<TrainingPlanDto>()
@@ -51,6 +52,9 @@ class OwnTrainingPlansAdapter(
             binding.trainingPlan = trainingPlan
             binding.root.setOnClickListener {
                 onItemClick(trainingPlan)
+            }
+            binding.scheduleButton.setOnClickListener {
+                onScheduleButtonClicked(trainingPlan)
             }
             binding.moreButton.setOnClickListener {
                 createPopupMenu()

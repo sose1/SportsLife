@@ -60,8 +60,8 @@ class FirestoreCalendarRepository : CalendarRepository {
         dayId: String?,
         ownerId: String,
         day: Day,
-    ): Result<Unit> {
-        val deferred = CompletableDeferred<Result<Unit>>()
+    ): Result<String> {
+        val deferred = CompletableDeferred<Result<String>>()
         val collection = Firebase.firestore.collection("$path/$ownerId/days")
         val documentReference = if (dayId.isNullOrBlank()) {
             collection.document()
@@ -71,7 +71,7 @@ class FirestoreCalendarRepository : CalendarRepository {
 
         documentReference.set(day, SetOptions.merge())
             .addOnSuccessListener {
-                deferred.complete(Result.Success(Unit))
+                deferred.complete(Result.Success(documentReference.id))
             }
             .addOnFailureListener { exception ->
                 deferred.complete(Result.Failure(exception))

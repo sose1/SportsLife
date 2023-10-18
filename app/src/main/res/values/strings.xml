@@ -154,5 +154,6 @@
     <string name="schedule_your_training">schedule your training?</string>
     <string name="completed_trainings">Completed trainings</string>
     <string name="number_of_exercises">"Number of exercises: "</string>
+    <string name="scheduled_on_the_calendar">Scheduled on the calendar</string>
 
 </resources>

@@ -36,15 +36,18 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
     private val viewModel: MainViewModel by viewModel()
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var layoutManager: LinearLayoutManager
 
     private var dayIndex = 0
-    private var dayId = ""
+    private var dayId: String = ""
     private var timeLocation = ""
+    private var number = 0
+    private var month = 0
+    private var year = 0
     private var todayIndex = 0
 
     private val daysAdapter = DaysAdapter {
@@ -90,8 +93,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         binding.navigationView.setCheckedItem(R.id.calendar_item)
         if (dayIndex != 0 && todayIndex != 0) {
-            onDaysListUpdate(viewModel.daysList)
-            onDayItemClick(dayIndex, dayId, timeLocation)
+            viewModel.refreshCalendar()
         } else {
             clearFragments()
             viewModel.initializeDays()
@@ -100,15 +102,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-
-        Timber.d("OnConfigurationChanged")
         clearFragments()
-        onDayItemClick(dayIndex, dayId, timeLocation)
+        viewModel.refreshCalendar()
+        onDayItemClick(dayIndex, dayId, timeLocation, number, month, year)
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.uiState.collect {
+                Timber.d("MainActivity STATE: $it")
                 when (it) {
                     MainViewState.Default -> Unit
                     is MainViewState.OnInitDays -> onInitDays(it.days, it.todayIndex)
@@ -116,7 +118,10 @@ class MainActivity : AppCompatActivity() {
                     is MainViewState.OnDayItemClick -> onDayItemClick(
                         it.indexOf,
                         it.dayId,
-                        it.timeLocation
+                        it.timeLocation,
+                        it.number,
+                        it.month,
+                        it.year
                     )
 
                     is MainViewState.OnDataPickerOpen -> onDatePickerOpen(it.constraints)
@@ -126,6 +131,10 @@ class MainActivity : AppCompatActivity() {
                     is MainViewState.OnGetSettings -> onGetSettings(it.language)
                     MainViewState.Loading -> onLoading()
                     MainViewState.OnCalendarError -> showToast(R.string.cannot_download_calendar_data)
+                    is MainViewState.ClickSelectedDay -> {
+                        onDaysListUpdate(viewModel.daysList)
+                        onDayItemClick(dayIndex, it.id, timeLocation, number, month, year)
+                    }
                 }
             }
         }
@@ -145,7 +154,6 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.calendarIsReady.collect { isReady ->
                     if (isReady) {
-                        Timber.d("Calendar is ready")
                         this@MainActivity.todayIndex = todayIndex
                         viewModel.onDayItemClick(days[todayIndex])
                     }
@@ -158,10 +166,20 @@ class MainActivity : AppCompatActivity() {
         daysAdapter.updateList(days)
     }
 
-    private fun onDayItemClick(indexOf: Int, dayId: String, timeLocation: String) {
+    private fun onDayItemClick(
+        indexOf: Int,
+        dayId: String,
+        timeLocation: String,
+        number: Int,
+        month: Int,
+        year: Int,
+    ) {
         this.dayIndex = indexOf
         this.dayId = dayId
         this.timeLocation = timeLocation
+        this.number = number
+        this.month = month
+        this.year = year
         binding.daysList.scrollToPosition(indexOf)
 
         val transaction = supportFragmentManager.beginTransaction()
@@ -170,7 +188,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Tworzenie nowego fragmentu
-        val fragment = CalendarDayFragment.newInstance(dayId = dayId, timeLocation = timeLocation)
+        val fragment = CalendarDayFragment.newInstance(
+            dayId = dayId,
+            timeLocation = timeLocation,
+            number = number,
+            month = month,
+            year = year
+        )
 
         // Rozpocznij transakcję fragmentu
         transaction.add(R.id.day_fragment_container, fragment)
@@ -247,7 +271,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onDatePickerOpen(constraints: CalendarConstraints) {
-        Timber.d("onDataPickerOpen")
         val datePicker = MaterialDatePicker.Builder.datePicker()
             .setCalendarConstraints(constraints)
             .setTitleText(R.string.select_date)
