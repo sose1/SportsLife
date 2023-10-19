@@ -20,6 +20,7 @@ import com.kwasowski.sportslife.data.calendar.Training
 import com.kwasowski.sportslife.data.calendar.TrainingState
 import com.kwasowski.sportslife.databinding.FragmentCalendarDayBinding
 import com.kwasowski.sportslife.extensions.parcelable
+import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormActivity
 import com.kwasowski.sportslife.ui.trainingPlans.list.TrainingPlansActivity
 import com.kwasowski.sportslife.utils.ActivityOpenMode
 import com.kwasowski.sportslife.utils.Constants
@@ -131,7 +132,16 @@ class CalendarDayFragment : Fragment() {
 
     private fun showScheduledTrainings(scheduledTrainings: List<Training>) {
         if (scheduledTrainingsAdapter == null) {
-            scheduledTrainingsAdapter = ScheduledTrainingsAdapter()
+            scheduledTrainingsAdapter = ScheduledTrainingsAdapter(
+                context = requireContext(),
+                onItemClick = { trainingPlan -> onScheduledTrainingClick(trainingPlan) },
+                onMenuItemSelected = { trainingPlan, menuItemId ->
+                    onScheduledTrainingMenuItemSelected(
+                        trainingPlan,
+                        menuItemId
+                    )
+                },
+            )
         }
         binding.scheduledTrainingsList.setHasFixedSize(true)
         binding.scheduledTrainingsList.adapter = scheduledTrainingsAdapter
@@ -196,15 +206,28 @@ class CalendarDayFragment : Fragment() {
             ActivityOpenMode.ADD_TRAINING_PLAN_TO_CALENDAR_DAY as Parcelable
         )
         activityResultLauncher.launch(intent)
-
-        /**
-         * FLOW z TrainingPlansActivity:
-         */
-        // TODO: Zaplanowanie ćwiczenia prosto z TrainingPlansActivity:
-        // TODO: 1. jesli open mode nie pochodzi z tego fragmentu to otwórz DatePicker i pobierz dane calendar.
-        // TODO: 2. Po potwierdzeniu daty w DatePicker wykonać zapytanie zapisujące do danego dnia zmapować po dacie
-
     }
+
+    private fun onScheduledTrainingClick(training: Training) {
+        Timber.d("Click: $training")
+        val intent = Intent(requireContext(), TrainingPlanFormActivity::class.java)
+        intent.putExtra(Constants.TRAINING_PLAN_ID_INTENT, training.trainingPlanId)
+        intent.putExtra(Constants.TRAINING_PLAN_IS_DETAILS_VIEW, true)
+        startActivity(intent)
+    }
+
+    private fun onScheduledTrainingMenuItemSelected(trainingPlan: Training, menuItemId: Int) {
+        when (menuItemId) {
+            R.id.start -> {
+                Timber.d("START TRAINING")
+            }
+
+            R.id.delete -> {
+                viewModel.deleteTrainingPlan(dayID(), trainingPlan)
+            }
+        }
+    }
+
 
     private fun dayID(): String? = arguments?.getString(DAY_ID)
     private fun timeLocation(): String? = arguments?.getString(TIME_LOCATION)

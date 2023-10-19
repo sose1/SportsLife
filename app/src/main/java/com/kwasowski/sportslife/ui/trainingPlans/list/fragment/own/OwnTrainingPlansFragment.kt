@@ -54,6 +54,8 @@ class OwnTrainingPlansFragment : Fragment() {
             throw ClassCastException("$context must implement SendDataToActivity")
         }
     }
+    private fun canAddTrainingToCalendarDay() =
+        arguments?.getBoolean(Constants.CAN_ADD_TRAINING_TO_CALENDAR_DAY) ?: false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
@@ -72,6 +74,7 @@ class OwnTrainingPlansFragment : Fragment() {
 
         adapter = OwnTrainingPlansAdapter(
             context = requireContext(),
+            canAddTrainingToCalendarDay = canAddTrainingToCalendarDay(),
             onMenuItemSelected = { trainingPlan, menuItemId ->
                 onTrainingPlanMenuItemSelected(
                     trainingPlan,

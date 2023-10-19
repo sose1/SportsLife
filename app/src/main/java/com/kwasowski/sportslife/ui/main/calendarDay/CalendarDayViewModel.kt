@@ -78,4 +78,20 @@ class CalendarDayViewModel(
             }
         }
     }
+
+    fun deleteTrainingPlan(
+        dayID: String?,
+        trainingPlan: Training,
+    ) {
+        day.trainingList = (day.trainingList) - listOf(trainingPlan).toSet()
+        viewModelScope.launch {
+            when (val result = saveSingleDayUseCase.execute(dayID, day)) {
+                is Result.Failure -> Timber.d("${result.exception}")
+                is Result.Success -> {
+                    getDay(dayID)
+                    mutableState.value = CalendarDayState.OnSuccessSave
+                }
+            }
+        }
+    }
 }

@@ -52,6 +52,8 @@ class CommunitiesTrainingPlansFragment : Fragment() {
             throw ClassCastException("$context must implement SendDataToActivity")
         }
     }
+    private fun canAddTrainingToCalendarDay() =
+        arguments?.getBoolean(Constants.CAN_ADD_TRAINING_TO_CALENDAR_DAY) ?: false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +72,7 @@ class CommunitiesTrainingPlansFragment : Fragment() {
 
         adapter = CommunitiesTrainingPlansAdapter(
             onItemClick = { trainingPlan -> onItemClick(trainingPlan) },
+            canAddTrainingToCalendarDay = canAddTrainingToCalendarDay(),
             onScheduleButtonClicked = { trainingPlan ->
                 dataPassListener?.onAddedTrainingToCalendarDay(
                     trainingPlanId = trainingPlan.id,

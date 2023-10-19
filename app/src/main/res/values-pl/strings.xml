@@ -146,4 +146,5 @@
     <string name="completed_trainings">Ukończone treningi</string>
     <string name="number_of_exercises">"Liczba ćwiczeń: "</string>
     <string name="scheduled_on_the_calendar">Zaplanowano na kalendarzu</string>
+    <string name="start">Rozpocznij</string>
 </resources>

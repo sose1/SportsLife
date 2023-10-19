@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -15,9 +16,10 @@ import timber.log.Timber
 
 class OwnTrainingPlansAdapter(
     private val context: Context,
+    private val canAddTrainingToCalendarDay: Boolean,
     private val onMenuItemSelected: (TrainingPlanDto, Int) -> Unit,
     private val onItemClick: (TrainingPlanDto) -> Unit,
-    private val onScheduleButtonClicked: (TrainingPlanDto) -> Unit
+    private val onScheduleButtonClicked: (TrainingPlanDto) -> Unit,
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     private var trainingPlans = listOf<TrainingPlanDto>()
@@ -53,9 +55,15 @@ class OwnTrainingPlansAdapter(
             binding.root.setOnClickListener {
                 onItemClick(trainingPlan)
             }
-            binding.scheduleButton.setOnClickListener {
-                onScheduleButtonClicked(trainingPlan)
+            if (canAddTrainingToCalendarDay) {
+                binding.startButton.visibility = View.GONE
+                binding.scheduleButton.setOnClickListener {
+                    onScheduleButtonClicked(trainingPlan)
+                }
+            } else {
+                binding.scheduleButton.visibility = View.GONE
             }
+
             binding.moreButton.setOnClickListener {
                 createPopupMenu()
             }
