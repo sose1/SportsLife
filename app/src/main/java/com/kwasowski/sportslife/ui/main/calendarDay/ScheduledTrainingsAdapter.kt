@@ -1,33 +1,29 @@
-package com.kwasowski.sportslife.ui.trainingPlans.list.fragment.own
+package com.kwasowski.sportslife.ui.main.calendarDay
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kwasowski.sportslife.R
-import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanDto
-import com.kwasowski.sportslife.databinding.ItemTrainingPlanBinding
+import com.kwasowski.sportslife.data.calendar.Training
+import com.kwasowski.sportslife.databinding.ItemTrainingMainActivityBinding
 import timber.log.Timber
 
-class OwnTrainingPlansAdapter(
+class ScheduledTrainingsAdapter(
     private val context: Context,
-    private val canAddTrainingToCalendarDay: Boolean,
-    private val onMenuItemSelected: (TrainingPlanDto, Int) -> Unit,
-    private val onItemClick: (TrainingPlanDto) -> Unit,
-    private val onScheduleButtonClicked: (TrainingPlanDto) -> Unit,
+    private val onMenuItemSelected: (Training, Int) -> Unit,
+    private val onItemClick: (Training) -> Unit,
 ) : RecyclerView.Adapter<ViewHolder>() {
-
-    private var trainingPlans = listOf<TrainingPlanDto>()
+    private var trainings = listOf<Training>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return TrainingPlanViewHolder(
-            ItemTrainingPlanBinding.inflate(
+        return ScheduledTrainingViewHolder(
+            ItemTrainingMainActivityBinding.inflate(
                 inflater,
                 parent,
                 false
@@ -35,35 +31,27 @@ class OwnTrainingPlansAdapter(
         )
     }
 
-    override fun getItemCount(): Int = trainingPlans.size
+    override fun getItemCount(): Int = trainings.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        (holder as TrainingPlanViewHolder).bind(trainingPlans[position])
+        (holder as ScheduledTrainingViewHolder).bind(trainings[position])
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateList(trainingPlans: List<TrainingPlanDto>) {
-        this.trainingPlans = trainingPlans
+    fun updateList(trainings: List<Training>) {
+        this.trainings = trainings
         notifyDataSetChanged()
     }
 
-    inner class TrainingPlanViewHolder(private val binding: ItemTrainingPlanBinding) :
+    inner class ScheduledTrainingViewHolder(private val binding: ItemTrainingMainActivityBinding) :
         ViewHolder(binding.root) {
-        private lateinit var trainingPlan: TrainingPlanDto
-        fun bind(trainingPlan: TrainingPlanDto) {
-            this.trainingPlan = trainingPlan
-            binding.trainingPlan = trainingPlan
-            binding.root.setOnClickListener {
-                onItemClick(trainingPlan)
-            }
-            if (canAddTrainingToCalendarDay) {
-                binding.startButton.visibility = View.GONE
-                binding.scheduleButton.setOnClickListener {
-                    onScheduleButtonClicked(trainingPlan)
-                }
-            } else {
-                binding.scheduleButton.visibility = View.GONE
-            }
+        private lateinit var training: Training
 
+        fun bind(training: Training) {
+            binding.training = training
+            this.training = training
+            binding.root.setOnClickListener {
+                onItemClick(training)
+            }
             binding.moreButton.setOnClickListener {
                 createPopupMenu()
             }
@@ -74,7 +62,7 @@ class OwnTrainingPlansAdapter(
         private fun createPopupMenu() {
             val popupMenu = PopupMenu(context, binding.moreButton)
             popupMenu.setOnMenuItemClickListener(onMenuItemClickListener)
-            popupMenu.menuInflater.inflate(R.menu.own_training_plan, popupMenu.menu)
+            popupMenu.menuInflater.inflate(R.menu.scheduled_training_menu, popupMenu.menu)
             popupMenu.gravity = Gravity.RIGHT
 
             try {
@@ -94,9 +82,11 @@ class OwnTrainingPlansAdapter(
 
         private val onMenuItemClickListener = PopupMenu.OnMenuItemClickListener {
             run {
-                onMenuItemSelected(this.trainingPlan, it.itemId)
+                onMenuItemSelected(this.training, it.itemId)
                 true
             }
         }
     }
 }
+
+

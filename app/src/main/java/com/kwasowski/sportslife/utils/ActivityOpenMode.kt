@@ -5,7 +5,8 @@ import android.os.Parcelable
 
 enum class ActivityOpenMode : Parcelable {
     DEFAULT,
-    ADD_EXERCISE_TO_TRAINING_PLAN;
+    ADD_EXERCISE_TO_TRAINING_PLAN,
+    ADD_TRAINING_PLAN_TO_CALENDAR_DAY;
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(ordinal)

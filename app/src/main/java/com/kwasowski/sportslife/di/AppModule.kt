@@ -1,5 +1,7 @@
 package com.kwasowski.sportslife.di
 
+import com.kwasowski.sportslife.data.calendar.CalendarRepository
+import com.kwasowski.sportslife.data.calendar.FirestoreCalendarRepository
 import com.kwasowski.sportslife.data.category.CategoryRepository
 import com.kwasowski.sportslife.data.category.CategorySharedPreferences
 import com.kwasowski.sportslife.data.category.FirestoreCategoryRepository
@@ -12,6 +14,9 @@ import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.settings.SettingsRepository
 import com.kwasowski.sportslife.data.trainingPlan.FirestoreTrainingPlanRepository
 import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanRepository
+import com.kwasowski.sportslife.domain.calendar.GetCalendarByOwnerIdUseCase
+import com.kwasowski.sportslife.domain.calendar.GetSingleDayUseCase
+import com.kwasowski.sportslife.domain.calendar.SaveSingleDayUseCase
 import com.kwasowski.sportslife.domain.category.GetCategoriesUseCase
 import com.kwasowski.sportslife.domain.exercise.AddToFavExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
@@ -38,6 +43,7 @@ import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.own.OwnExercis
 import com.kwasowski.sportslife.ui.exercise.form.ExerciseFormViewModel
 import com.kwasowski.sportslife.ui.login.LoginViewModel
 import com.kwasowski.sportslife.ui.main.MainViewModel
+import com.kwasowski.sportslife.ui.main.calendarDay.CalendarDayViewModel
 import com.kwasowski.sportslife.ui.profile.ProfileViewModel
 import com.kwasowski.sportslife.ui.settings.SettingsViewModel
 import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormViewModel
@@ -61,12 +67,14 @@ val appModule = module {
     viewModelOf(::TrainingPlanFormViewModel)
     viewModelOf(::CommunitiesTrainingPlansViewModel)
     viewModelOf(::OwnTrainingPlansViewModel)
+    viewModelOf(::CalendarDayViewModel)
 
     single<ProfileRepository> { FirestoreProfileRepository() }
     single<SettingsRepository> { FirestoreSettingsRepository() }
     single<ExerciseRepository> { FirestoreExerciseRepository() }
     single<CategoryRepository> { FirestoreCategoryRepository() }
     single<TrainingPlanRepository> { FirestoreTrainingPlanRepository() }
+    single<CalendarRepository> { FirestoreCalendarRepository() }
     singleOf(::SettingsManager)
     singleOf(::CategorySharedPreferences)
 
@@ -89,4 +97,7 @@ val appModule = module {
     factoryOf(::GetSharedTrainingPlansUseCase)
     factoryOf(::GetTrainingPlanUseCase)
     factoryOf(::DeleteOwnTrainingPlanUseCase)
+    factoryOf(::GetCalendarByOwnerIdUseCase)
+    factoryOf(::GetSingleDayUseCase)
+    factoryOf(::SaveSingleDayUseCase)
 }

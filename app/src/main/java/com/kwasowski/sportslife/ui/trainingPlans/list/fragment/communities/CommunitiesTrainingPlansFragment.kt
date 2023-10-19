@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.trainingPlans.list.fragment.communities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,6 +28,8 @@ class CommunitiesTrainingPlansFragment : Fragment() {
     private lateinit var adapter: CommunitiesTrainingPlansAdapter
     private var queryText: String = ""
 
+    private var dataPassListener: DataPassListener? = null
+
     private val onQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return false
@@ -41,9 +44,20 @@ class CommunitiesTrainingPlansFragment : Fragment() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DataPassListener) {
+            dataPassListener = context
+        } else {
+            throw ClassCastException("$context must implement SendDataToActivity")
+        }
+    }
+    private fun canAddTrainingToCalendarDay() =
+        arguments?.getBoolean(Constants.CAN_ADD_TRAINING_TO_CALENDAR_DAY) ?: false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
@@ -57,7 +71,16 @@ class CommunitiesTrainingPlansFragment : Fragment() {
         onViewStateChanged()
 
         adapter = CommunitiesTrainingPlansAdapter(
-            onItemClick = { trainingPlan -> onItemClick(trainingPlan) }
+            onItemClick = { trainingPlan -> onItemClick(trainingPlan) },
+            canAddTrainingToCalendarDay = canAddTrainingToCalendarDay(),
+            onScheduleButtonClicked = { trainingPlan ->
+                dataPassListener?.onAddedTrainingToCalendarDay(
+                    trainingPlanId = trainingPlan.id,
+                    trainingPlanName = trainingPlan.name,
+                    numberOfExercises = trainingPlan.exercisesSeries.size
+                )
+                showToast(R.string.scheduled_on_the_calendar)
+            }
         )
 
         binding.trainingPlansList.setHasFixedSize(true)
@@ -112,5 +135,13 @@ class CommunitiesTrainingPlansFragment : Fragment() {
 
     private fun showToast(stringId: Int) {
         Toast.makeText(context, stringId, Toast.LENGTH_LONG).show()
+    }
+
+    interface DataPassListener {
+        fun onAddedTrainingToCalendarDay(
+            trainingPlanId: String,
+            trainingPlanName: String,
+            numberOfExercises: Int,
+        )
     }
 }

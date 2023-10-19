@@ -86,7 +86,6 @@ class ExercisesListActivity : AppCompatActivity(), OwnExerciseListFragment.DataP
         })
     }
 
-
     private fun getOpenModeFromIntent(): ActivityOpenMode? =
         intent.parcelable(Constants.OPEN_MODE)
 

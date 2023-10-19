@@ -16,6 +16,9 @@ object Constants {
     const val CAN_ADD_EXERCISE_TO_TRAINING_PLAN = "CAN_ADD_EXERCISE_TO_TRAINING_PLAN"
     const val EXERCISES_TO_ADD = "EXERCISES_TO_ADD"
     const val TRAINING_PLAN_IS_DETAILS_VIEW = "TRAINING_PLAN_IS_DETAILS_VIEW"
+    const val CAN_ADD_TRAINING_TO_CALENDAR_DAY = "CAN_ADD_TRAINING_TO_CALENDAR_DAY"
+    const val TRAININGS_TO_ADD = "TRAININGS_TO_ADD"
+
 }
 
 object LanguageTag {
@@ -27,4 +30,10 @@ object UnitsTag {
     const val MEASURE = "MEASURE"
     const val WEIGHT = "WEIGHT"
     const val NONE = "NONE"
+}
+
+object TimeLocationTag {
+    const val BEFORE = "BEFORE"
+    const val AFTER = "AFTER"
+    const val ACTUAL = "ACTUAL"
 }

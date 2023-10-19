@@ -8,41 +8,51 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kwasowski.sportslife.data.Result
+import com.kwasowski.sportslife.data.calendar.Calendar
+import com.kwasowski.sportslife.data.calendar.findByCalendarDate
 import com.kwasowski.sportslife.data.category.CategorySharedPreferences
 import com.kwasowski.sportslife.data.settings.Settings
 import com.kwasowski.sportslife.data.settings.SettingsManager
+import com.kwasowski.sportslife.domain.calendar.GetCalendarByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.category.GetCategoriesUseCase
 import com.kwasowski.sportslife.domain.settings.GetSettingsUseCase
 import com.kwasowski.sportslife.extensions.addDays
 import com.kwasowski.sportslife.extensions.getNarrowName
 import com.kwasowski.sportslife.ui.main.appBarDays.Day
 import com.kwasowski.sportslife.ui.main.appBarDays.DayType
+import com.kwasowski.sportslife.ui.main.appBarDays.compareToActualTime
 import com.kwasowski.sportslife.ui.main.appBarDays.findByCalendarDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.Calendar
 import java.util.Date
+import java.util.Calendar as JavaCalendar
 
 class MainViewModel(
     private val getSettingsUseCase: GetSettingsUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val settingsManager: SettingsManager,
     private val categorySharedPreferences: CategorySharedPreferences,
+    private val getCalendarByOwnerIdUseCase: GetCalendarByOwnerIdUseCase,
 ) : ViewModel() {
     private val auth = Firebase.auth
     private val mutableState = MutableStateFlow<MainViewState>(MainViewState.Default)
 
     val uiState: StateFlow<MainViewState> = mutableState.asStateFlow()
 
-    private val daysList = mutableListOf<Day>()
+    val daysList = mutableListOf<Day>()
     private val numberOfDays = 3652
-
     private var currentSettings = Settings()
+    private lateinit var calendarFirestore: Calendar
+
+    private var _calendarIsReady: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val calendarIsReady: StateFlow<Boolean> = _calendarIsReady.asStateFlow()
 
     init {
+        Timber.d("Init main view model")
+        getCalendar(true)
         getSetting()
         getCategories()
     }
@@ -67,22 +77,56 @@ class MainViewModel(
                     is Result.Failure -> Unit
                     is Result.Success -> {
                         currentSettings = it.data
-                        onGetSettings()
+                        settingsManager.saveSettings(currentSettings)
+                        mutableState.value = MainViewState.OnGetSettings(currentSettings.language)
                     }
                 }
             }
         }
     }
 
-    private fun onGetSettings() {
-        settingsManager.saveSettings(currentSettings)
-        mutableState.value = MainViewState.OnGetSettings(currentSettings.language)
+    private fun getCalendar(isInit: Boolean = false, afterRefresh: Boolean = false) {
+        viewModelScope.launch {
+            when (val result = getCalendarByOwnerIdUseCase.execute()) {
+                is Result.Failure -> {
+                    Timber.d("Result is failure")
+                    Timber.d("${result.exception}")
+                    _calendarIsReady.value = true
+                    mutableState.value = MainViewState.OnCalendarError
+                }
+
+                is Result.Success -> {
+                    Timber.d("CALENDAR: ${result.data.days}")
+                    if (afterRefresh) {
+                        val newDays = result.data.days - calendarFirestore.days
+                        if (newDays.isNotEmpty()) {
+                            val singleNewDay = newDays.first()
+                            mutableState.value = MainViewState.ClickSelectedDay(singleNewDay.id)
+                        }
+                    }
+                    if (isInit) {
+                        _calendarIsReady.value = true
+                    }
+
+                    calendarFirestore = result.data
+                }
+            }
+        }
     }
 
-    fun initializeDays() {
+    fun refreshCalendar() {
+        getCalendar(afterRefresh = true)
+    }
+
+    fun initializeDays(isInit: Boolean = false) {
         val currentDate = Date()
-        val calendar = Calendar.getInstance()
+        val calendar = JavaCalendar.getInstance()
         var todayIndex = 0
+
+        if (daysList.isNotEmpty()) {
+            daysList.clear()
+            getCalendar(isInit)
+        }
 
         for (i in -numberOfDays..numberOfDays) {
             val day = currentDate.addDays(i)
@@ -90,13 +134,12 @@ class MainViewModel(
 
             val dayModel = Day(
                 name = calendar.getNarrowName().uppercase(),
-                number = calendar.get(Calendar.DAY_OF_MONTH).toString(),
-                month = calendar.get(Calendar.MONTH),
-                year = calendar.get(Calendar.YEAR),
+                number = calendar.get(JavaCalendar.DAY_OF_MONTH),
+                month = calendar.get(JavaCalendar.MONTH),
+                year = calendar.get(JavaCalendar.YEAR),
                 type = DayType.DEFAULT,
-                date = day
+                date = day,
             )
-
             if (DateUtils.isToday(day.time)) {
                 dayModel.type = DayType.ACTIVE
                 dayModel.isToday = true
@@ -111,32 +154,51 @@ class MainViewModel(
     }
 
     fun onDayItemClick(day: Day) {
+        _calendarIsReady.value = false
         Timber.d("onClick | Day: $day")
-        //change today to current
+        val daysFirestore = calendarFirestore.days.toMutableList()
+        val dayFromCalendar = daysFirestore.findByCalendarDate(day.number, day.month, day.year)
+
+        changeTodayToCurrent()
+        changeActiveToDefault()
+        changeClickedItemToActive(day)
+        mutableState.value = MainViewState.OnDaysListUpdate(daysList)
+        mutableState.value = MainViewState.OnDayItemClick(
+            daysList.indexOf(day),
+            dayFromCalendar?.id ?: "",
+            day.compareToActualTime(),
+            day.number,
+            day.month,
+            day.year
+        )
+    }
+
+    private fun changeTodayToCurrent() {
         daysList.find { it.isToday }.apply {
             this?.type = DayType.CURRENT
         }
+    }
 
-        //change active to default
+    private fun changeActiveToDefault() {
         daysList.find { it.type == DayType.ACTIVE }.apply {
             this?.type = DayType.DEFAULT
         }
+    }
 
-        //change clicked item to active
+    private fun changeClickedItemToActive(day: Day) {
         try {
             daysList.findByCalendarDate(day.number, day.month, day.year).apply {
                 this.type = DayType.ACTIVE
-                //todo Zapytanie o aktualny dzien do firestore
             }
         } catch (e: IndexOutOfBoundsException) {
             mutableState.value = MainViewState.OnIndexOutOfBoundsException
         }
-
-        mutableState.value = MainViewState.OnDaysListUpdate(daysList)
-        mutableState.value = MainViewState.OnDayItemClick(day, daysList.indexOf(day))
     }
 
     fun onDataPickerOpen() {
+        Timber.d("onDataPickerOpen")
+
+
         val startFrom = Date().addDays(-numberOfDays).time
         val endTo = Date().addDays(numberOfDays).time
         val constraints = CalendarConstraints.Builder()
@@ -151,11 +213,11 @@ class MainViewModel(
     }
 
     fun onSelectedDateInDatePicker(timestamp: Long?) {
-        val calendar = Calendar.getInstance()
+        val calendar = JavaCalendar.getInstance()
         calendar.time = Date(timestamp!!)
-        val number = calendar.get(Calendar.DAY_OF_MONTH).toString()
-        val month = calendar.get(Calendar.MONTH)
-        val year = calendar.get(Calendar.YEAR)
+        val number = calendar.get(JavaCalendar.DAY_OF_MONTH)
+        val month = calendar.get(JavaCalendar.MONTH)
+        val year = calendar.get(JavaCalendar.YEAR)
 
         try {
             onDayItemClick(
@@ -175,5 +237,9 @@ class MainViewModel(
     fun onLogoutClick() {
         auth.signOut()
         mutableState.value = MainViewState.OnLogout
+    }
+
+    fun setDefaultState() {
+        mutableState.value = MainViewState.Default
     }
 }
