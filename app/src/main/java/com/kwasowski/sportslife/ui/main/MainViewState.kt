@@ -23,6 +23,5 @@ sealed class MainViewState {
     class ClickSelectedDay(val id: String) : MainViewState()
 
     object OnLogout : MainViewState()
-    object Loading : MainViewState()
     object OnCalendarError : MainViewState()
 }

@@ -86,7 +86,6 @@ class MainViewModel(
     }
 
     private fun getCalendar(isInit: Boolean = false, afterRefresh: Boolean = false) {
-        mutableState.value = MainViewState.Loading
         viewModelScope.launch {
             when (val result = getCalendarByOwnerIdUseCase.execute()) {
                 is Result.Failure -> {
@@ -119,14 +118,14 @@ class MainViewModel(
         getCalendar(afterRefresh = true)
     }
 
-    fun initializeDays() {
+    fun initializeDays(isInit: Boolean = false) {
         val currentDate = Date()
         val calendar = JavaCalendar.getInstance()
         var todayIndex = 0
 
         if (daysList.isNotEmpty()) {
             daysList.clear()
-            getCalendar()
+            getCalendar(isInit)
         }
 
         for (i in -numberOfDays..numberOfDays) {
@@ -156,7 +155,6 @@ class MainViewModel(
 
     fun onDayItemClick(day: Day) {
         _calendarIsReady.value = false
-        mutableState.value = MainViewState.Loading
         Timber.d("onClick | Day: $day")
         val daysFirestore = calendarFirestore.days.toMutableList()
         val dayFromCalendar = daysFirestore.findByCalendarDate(day.number, day.month, day.year)

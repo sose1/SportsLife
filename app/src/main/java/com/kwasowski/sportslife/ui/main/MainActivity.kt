@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -96,7 +95,7 @@ class MainActivity : AppCompatActivity(){
             viewModel.refreshCalendar()
         } else {
             clearFragments()
-            viewModel.initializeDays()
+            viewModel.initializeDays(true)
         }
     }
 
@@ -129,7 +128,6 @@ class MainActivity : AppCompatActivity(){
                     is MainViewState.OnTitleChange -> onTitleChange(it.month, it.year)
                     MainViewState.OnLogout -> openActivity(LoginActivity::class.java)
                     is MainViewState.OnGetSettings -> onGetSettings(it.language)
-                    MainViewState.Loading -> onLoading()
                     MainViewState.OnCalendarError -> showToast(R.string.cannot_download_calendar_data)
                     is MainViewState.ClickSelectedDay -> {
                         onDaysListUpdate(viewModel.daysList)
@@ -201,7 +199,6 @@ class MainActivity : AppCompatActivity(){
         transaction.addToBackStack(null)
         transaction.commit()
 
-        binding.progress.visibility = View.GONE
         viewModel.setDefaultState()
     }
 
@@ -211,10 +208,6 @@ class MainActivity : AppCompatActivity(){
             transaction.remove(it)
         }
         transaction.commit()
-    }
-
-    private fun onLoading() {
-        binding.progress.visibility = View.VISIBLE
     }
 
     private fun onNavigationItemSelected(it: MenuItem): Boolean {
