@@ -17,6 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityActiveTrainingBinding
+import com.kwasowski.sportslife.ui.trainingSummary.TrainingSummaryActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pub.devrel.easypermissions.EasyPermissions
@@ -64,6 +65,8 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
                 showConfirmExitDialog()
             }
         })
+
+        binding.completeTrainingButton.setOnClickListener { showConfirmExitDialog() }
     }
 
     override fun onDestroy() {
@@ -143,6 +146,8 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
             .setPositiveButton(R.string.yes) { dialog, _ ->
                 dialog.dismiss()
                 viewModel.onConfirmExit()
+                val intent = Intent(this, TrainingSummaryActivity::class.java)
+                startActivity(intent)
                 finish()
             }.setNegativeButton(R.string.no) { dialog, _ ->
                 dialog.dismiss()
