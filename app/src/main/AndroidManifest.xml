@@ -16,6 +16,9 @@
         android:theme="@style/Theme.SportsLife"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".ui.activeTraining.ActiveTrainingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait"

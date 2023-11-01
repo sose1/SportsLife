@@ -156,5 +156,10 @@
     <string name="number_of_exercises">"Number of exercises: "</string>
     <string name="scheduled_on_the_calendar">Scheduled on the calendar</string>
     <string name="start">Start</string>
-
+    <string name="do_you_want_to_complete_the_training">Do you want to complete the training?</string>
+    <string name="if_you_end_a_workout_before_completing_all_the_exercises_the_unapproved_series_will_not_be_saved">If you end a workout before completing all the exercises, the unapproved series will not be saved.</string>
+    <string name="timer">Timer</string>
+    <string name="add_exercise">Add a exercise</string>
+    <string name="completed_the_training">Complete the training</string>
+    <string name="duration_of_training">"Duration of training: "</string>
 </resources>
