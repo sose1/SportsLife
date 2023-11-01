@@ -1,5 +1,12 @@
 package com.kwasowski.sportslife.ui.activeTraining
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -12,11 +19,27 @@ import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityActiveTrainingBinding
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import pub.devrel.easypermissions.EasyPermissions
 
-class ActiveTrainingActivity : AppCompatActivity() {
+class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
+    companion object {
+        const val DURATION_OF_TRAINING_KEY = "DURATION_OF_TRAINING_KEY"
+    }
+
     private val viewModel: ActiveTrainingViewModel by viewModel()
 
     private lateinit var binding: ActivityActiveTrainingBinding
+
+    private val REQUEST_POST_NOTIFICATION_PERMISSION = 1
+
+
+    private val durationOfTrainingReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val formattedTime = intent.getStringExtra(DURATION_OF_TRAINING_KEY)
+            binding.durationOfTrainingText.text = "$formattedTime"
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +47,17 @@ class ActiveTrainingActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        if (hasPostNotificationPermission()) {
+            startTrainingService()
+            registerDurationOfTrainingReceiver()
+        } else {
+            requestPostNotificationPermission()
+        }
+
         onViewStateChanged()
+
+        val trainingTimeServiceIntent = Intent(this, TrainingTimeService::class.java)
+        startService(trainingTimeServiceIntent)
 
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -32,6 +65,14 @@ class ActiveTrainingActivity : AppCompatActivity() {
             }
         })
     }
+
+    override fun onDestroy() {
+        val trainingTimeServiceIntent = Intent(this, TrainingTimeService::class.java)
+        stopService(trainingTimeServiceIntent)
+        unregisterReceiver(durationOfTrainingReceiver)
+        super.onDestroy()
+    }
+
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -41,6 +82,58 @@ class ActiveTrainingActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun hasPostNotificationPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            EasyPermissions.hasPermissions(this, Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            false
+        }
+    }
+
+    private fun requestPostNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            EasyPermissions.requestPermissions(
+                this,
+                getString(R.string.in_order_to_display_a_notification_with_the_duration_of_a_workout_the_app_needs_permission_to_send_notifications),
+                REQUEST_POST_NOTIFICATION_PERMISSION,
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        if (requestCode == REQUEST_POST_NOTIFICATION_PERMISSION) {
+            startTrainingService()
+        }
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        if (requestCode == REQUEST_POST_NOTIFICATION_PERMISSION) {
+            requestPostNotificationPermission()
+        }
+    }
+
+    private fun startTrainingService() {
+
+        val trainingTimeServiceIntent = Intent(this, TrainingTimeService::class.java)
+        startService(trainingTimeServiceIntent)
+    }
+
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
+    private fun registerDurationOfTrainingReceiver() {
+        val intentFilter = IntentFilter("com.kwasowski.sportslife.durationOfTraining")
+        registerReceiver(durationOfTrainingReceiver, intentFilter)
     }
 
     private fun showConfirmExitDialog() {

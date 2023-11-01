@@ -152,5 +152,6 @@
     <string name="timer">Stoper</string>
     <string name="add_exercise">Dodaj ćwiczenie</string>
     <string name="completed_the_training">Zakończ trening</string>
-    <string name="duration_of_training">"Czas trwania treningu: "</string>
+    <string name="duration_of_training">"Czas trwania treningu "</string>
+    <string name="in_order_to_display_a_notification_with_the_duration_of_a_workout_the_app_needs_permission_to_send_notifications">Żeby wyświetlać powiadomienie z czasem trwania treningu aplikacja potrzebuje uprawnień do wysyłania notyfikacji.</string>
 </resources>

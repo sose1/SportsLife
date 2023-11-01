@@ -161,5 +161,6 @@
     <string name="timer">Timer</string>
     <string name="add_exercise">Add a exercise</string>
     <string name="completed_the_training">Complete the training</string>
-    <string name="duration_of_training">"Duration of training: "</string>
+    <string name="duration_of_training">"Duration of training "</string>
+    <string name="in_order_to_display_a_notification_with_the_duration_of_a_workout_the_app_needs_permission_to_send_notifications">In order to display a notification with the duration of a workout, the app needs permission to send notifications.</string>
 </resources>
