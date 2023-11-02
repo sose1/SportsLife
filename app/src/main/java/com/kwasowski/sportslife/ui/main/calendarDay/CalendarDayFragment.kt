@@ -20,7 +20,7 @@ import com.kwasowski.sportslife.data.calendar.Training
 import com.kwasowski.sportslife.data.calendar.TrainingState
 import com.kwasowski.sportslife.databinding.FragmentCalendarDayBinding
 import com.kwasowski.sportslife.extensions.parcelable
-import com.kwasowski.sportslife.ui.activeTraining.ActiveTrainingActivity
+import com.kwasowski.sportslife.ui.activeTraining.activity.ActiveTrainingActivity
 import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormActivity
 import com.kwasowski.sportslife.ui.trainingPlans.list.TrainingPlansActivity
 import com.kwasowski.sportslife.utils.ActivityOpenMode

@@ -36,7 +36,8 @@ import com.kwasowski.sportslife.domain.trainingPlan.GetSharedTrainingPlansUseCas
 import com.kwasowski.sportslife.domain.trainingPlan.GetTrainingPlanUseCase
 import com.kwasowski.sportslife.domain.trainingPlan.GetTrainingPlansByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.trainingPlan.SaveTrainingPlanUseCase
-import com.kwasowski.sportslife.ui.activeTraining.ActiveTrainingViewModel
+import com.kwasowski.sportslife.ui.activeTraining.activity.ActiveTrainingViewModel
+import com.kwasowski.sportslife.ui.activeTraining.fragment.ExerciseSeriesViewModel
 import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsViewModel
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities.CommunitiesExerciseListViewModel
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.fav.FavExerciseListViewModel
@@ -70,6 +71,7 @@ val appModule = module {
     viewModelOf(::OwnTrainingPlansViewModel)
     viewModelOf(::CalendarDayViewModel)
     viewModelOf(::ActiveTrainingViewModel)
+    viewModelOf(::ExerciseSeriesViewModel)
 
     single<ProfileRepository> { FirestoreProfileRepository() }
     single<SettingsRepository> { FirestoreSettingsRepository() }

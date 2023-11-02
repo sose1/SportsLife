@@ -27,7 +27,7 @@
             android:exported="true"></service>
 
         <activity
-            android:name=".ui.activeTraining.ActiveTrainingActivity"
+            android:name=".ui.activeTraining.activity.ActiveTrainingActivity"
             android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"

@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.ui.activeTraining
+package com.kwasowski.sportslife.ui.activeTraining.activity
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

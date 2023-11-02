@@ -1,4 +1,4 @@
-package com.kwasowski.sportslife.ui.activeTraining
+package com.kwasowski.sportslife.ui.activeTraining.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -11,12 +11,18 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.databinding.ActivityActiveTrainingBinding
+import com.kwasowski.sportslife.ui.activeTraining.TrainingTimeService
+import com.kwasowski.sportslife.ui.activeTraining.fragment.ExerciseSeriesFragment
 import com.kwasowski.sportslife.ui.trainingSummary.TrainingSummaryActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,12 +34,9 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
     }
 
     private val viewModel: ActiveTrainingViewModel by viewModel()
-
     private lateinit var binding: ActivityActiveTrainingBinding
 
     private val REQUEST_POST_NOTIFICATION_PERMISSION = 1
-
-
     private val durationOfTrainingReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val formattedTime = intent.getStringExtra(DURATION_OF_TRAINING_KEY)
@@ -41,6 +44,28 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         }
     }
 
+    val exerciseFragments = listOf (
+        { ExerciseSeriesFragment() } to "1",
+        { ExerciseSeriesFragment() } to "2",
+        { ExerciseSeriesFragment() } to "2",
+        { ExerciseSeriesFragment() } to "2",
+        { ExerciseSeriesFragment() } to "2",
+        { ExerciseSeriesFragment() } to "2",
+        { ExerciseSeriesFragment() } to "2"
+        )
+
+    private lateinit var pagerAdapter: FragmentStateAdapter
+
+    private inner class FragmentPagerAdapter(fm: FragmentManager, lifecycle: Lifecycle) :
+        FragmentStateAdapter(fm, lifecycle) {
+        override fun getItemCount(): Int = exerciseFragments.size
+
+        override fun createFragment(position: Int): Fragment {
+            return exerciseFragments[position].first.invoke()
+        }
+
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,24 +73,15 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        if (hasPostNotificationPermission()) {
-            startTrainingService()
-            registerDurationOfTrainingReceiver()
-        } else {
-            requestPostNotificationPermission()
-        }
-
+        initExerciseViewPager()
+        initTimerService()
         onViewStateChanged()
-
-        val trainingTimeServiceIntent = Intent(this, TrainingTimeService::class.java)
-        startService(trainingTimeServiceIntent)
 
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 showConfirmExitDialog()
             }
         })
-
         binding.completeTrainingButton.setOnClickListener { showConfirmExitDialog() }
     }
 
@@ -85,6 +101,48 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
                 }
             }
         }
+    }
+
+    private fun initExerciseViewPager() {
+        pagerAdapter = FragmentPagerAdapter(supportFragmentManager, lifecycle)
+        binding.exercisesViewpager.apply {
+            adapter = pagerAdapter
+            offscreenPageLimit = 1
+        }
+
+        binding.previous.setOnClickListener {
+            val currentPosition = binding.exercisesViewpager.currentItem
+            if (currentPosition > 0) {
+                binding.exercisesViewpager.setCurrentItem(currentPosition - 1, true)
+            }
+        }
+
+        binding.next.setOnClickListener {
+            val currentPosition = binding.exercisesViewpager.currentItem
+            if (currentPosition < pagerAdapter.itemCount - 1) {
+                binding.exercisesViewpager.setCurrentItem(currentPosition + 1, true)
+            }
+        }
+
+        binding.exercisesViewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            @SuppressLint("SetTextI18n")
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                binding.pageIndicator.text = "${position + 1}/${pagerAdapter.itemCount}"
+            }
+        })
+    }
+
+    private fun initTimerService() {
+        if (hasPostNotificationPermission()) {
+            startTrainingService()
+            registerDurationOfTrainingReceiver()
+        } else {
+            requestPostNotificationPermission()
+        }
+
+        val trainingTimeServiceIntent = Intent(this, TrainingTimeService::class.java)
+        startService(trainingTimeServiceIntent)
     }
 
     private fun hasPostNotificationPermission(): Boolean {
@@ -128,7 +186,6 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
     }
 
     private fun startTrainingService() {
-
         val trainingTimeServiceIntent = Intent(this, TrainingTimeService::class.java)
         startService(trainingTimeServiceIntent)
     }

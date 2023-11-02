@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.kwasowski.sportslife.R
-import com.kwasowski.sportslife.ui.activeTraining.ActiveTrainingActivity.Companion.DURATION_OF_TRAINING_KEY
+import com.kwasowski.sportslife.ui.activeTraining.activity.ActiveTrainingActivity.Companion.DURATION_OF_TRAINING_KEY
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -81,8 +81,10 @@ class TrainingTimeService : Service(), CoroutineScope {
 
     @SuppressLint("SimpleDateFormat")
     private fun formatTime(milliseconds: Long): String {
-        val dateFormat = SimpleDateFormat("H'h' m'min' s's'");
-        return dateFormat.format(Date(milliseconds))
+        val dateFormat = SimpleDateFormat("H'h' m'min' s's'")
+        val formattedTime = dateFormat.format(Date(milliseconds))
+
+        return formattedTime.replace("0h ", "").replace("0min ", "")
     }
 
     private fun createNotificationChannel() {
