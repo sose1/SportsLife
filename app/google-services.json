@@ -14,7 +14,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "887042597793-797frl4tmrosd3lrg2frm1c5iettk7jv.apps.googleusercontent.com",
+          "client_id": "887042597793-dpljomf1g8su71l7dm9s9b1407k0p0lr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kwasowski.sportslife",
+            "certificate_hash": "73108ad27df6ddc7113636397875c6785deace7b"
+          }
+        },
+        {
+          "client_id": "887042597793-ps4t4ngakrce3huhjs69sirp21t831mi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kwasowski.sportslife",
+            "certificate_hash": "69a0ea351beb2e94ba56ef7c29f2be827473f350"
+          }
+        },
+        {
+          "client_id": "887042597793-41hf59thv6er2pkm6jp3ttpa02vpuhsf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +43,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "887042597793-797frl4tmrosd3lrg2frm1c5iettk7jv.apps.googleusercontent.com",
+              "client_id": "887042597793-41hf59thv6er2pkm6jp3ttpa02vpuhsf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
