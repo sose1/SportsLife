@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,13 +21,16 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kwasowski.sportslife.R
+import com.kwasowski.sportslife.data.calendar.Training
 import com.kwasowski.sportslife.databinding.ActivityActiveTrainingBinding
 import com.kwasowski.sportslife.ui.activeTraining.TrainingTimeService
 import com.kwasowski.sportslife.ui.activeTraining.fragment.ExerciseSeriesFragment
 import com.kwasowski.sportslife.ui.trainingSummary.TrainingSummaryActivity
+import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pub.devrel.easypermissions.EasyPermissions
+import timber.log.Timber
 
 class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     companion object {
@@ -44,15 +48,8 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         }
     }
 
-    val exerciseFragments = listOf (
-        { ExerciseSeriesFragment() } to "1",
-        { ExerciseSeriesFragment() } to "2",
-        { ExerciseSeriesFragment() } to "2",
-        { ExerciseSeriesFragment() } to "2",
-        { ExerciseSeriesFragment() } to "2",
-        { ExerciseSeriesFragment() } to "2",
-        { ExerciseSeriesFragment() } to "2"
-        )
+    private var exerciseFragments: MutableList<Pair<() -> ExerciseSeriesFragment, String>> =
+        mutableListOf()
 
     private lateinit var pagerAdapter: FragmentStateAdapter
 
@@ -72,8 +69,7 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         binding = DataBindingUtil.setContentView(this, R.layout.activity_active_training)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
-        initExerciseViewPager()
+        viewModel.getTraining(getDayIdFromIntent(), getTrainingIdFromIntent())
         initTimerService()
         onViewStateChanged()
 
@@ -98,12 +94,32 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
             viewModel.uiState.collect {
                 when (it) {
                     ActiveTrainingState.Default -> Unit
+                    is ActiveTrainingState.OnSuccessGetTraining -> onSuccessGetTraining(it.training)
                 }
             }
         }
     }
 
+    private fun onSuccessGetTraining(training: Training) {
+        training.trainingPlan?.let { trainingPlan -> //todo wysiwetlic dane treningu!!!!!!!!
+            val fragments =
+                trainingPlan.exercisesSeries.map { { ExerciseSeriesFragment() } to it.exerciseName }
+                    .toMutableList()
+            exerciseFragments = fragments
+            if (trainingPlan.exercisesSeries.isNotEmpty())
+                binding.pageIndicatorSection.visibility = View.VISIBLE
+        }
+        initExerciseViewPager()
+    }
+
+    private fun getTrainingIdFromIntent() =
+        intent?.getStringExtra(Constants.TRAINING_ID_INTENT) ?: ""
+
+    private fun getDayIdFromIntent() =
+        intent?.getStringExtra(Constants.DAY_ID_INTENT) ?: ""
+
     private fun initExerciseViewPager() {
+        Timber.d(exerciseFragments.size.toString())
         pagerAdapter = FragmentPagerAdapter(supportFragmentManager, lifecycle)
         binding.exercisesViewpager.apply {
             adapter = pagerAdapter
@@ -124,7 +140,8 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
             }
         }
 
-        binding.exercisesViewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.exercisesViewpager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             @SuppressLint("SetTextI18n")
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -135,8 +152,8 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
 
     private fun initTimerService() {
         if (hasPostNotificationPermission()) {
-            startTrainingService()
             registerDurationOfTrainingReceiver()
+            startTrainingService()
         } else {
             requestPostNotificationPermission()
         }

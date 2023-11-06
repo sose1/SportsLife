@@ -63,7 +63,7 @@
                     android:fontFamily="@font/roboto_regular"
                     android:maxLines="1"
                     android:textColor="@color/black"
-                    android:text="@{@string/number_of_exercises + training.numberOfExercises}"
+                    android:text="@{@string/number_of_exercises + training.trainingPlan.exercisesSeries.size()}"
                     android:textSize="14sp"
                     tools:text="Liczba ćwiczeń: 12" />
             </LinearLayout>

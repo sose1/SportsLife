@@ -16,6 +16,7 @@ import com.kwasowski.sportslife.data.trainingPlan.FirestoreTrainingPlanRepositor
 import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanRepository
 import com.kwasowski.sportslife.domain.calendar.GetCalendarByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.calendar.GetSingleDayUseCase
+import com.kwasowski.sportslife.domain.calendar.GetTrainingUseCase
 import com.kwasowski.sportslife.domain.calendar.SaveSingleDayUseCase
 import com.kwasowski.sportslife.domain.category.GetCategoriesUseCase
 import com.kwasowski.sportslife.domain.exercise.AddToFavExerciseUseCase
@@ -104,4 +105,5 @@ val appModule = module {
     factoryOf(::GetCalendarByOwnerIdUseCase)
     factoryOf(::GetSingleDayUseCase)
     factoryOf(::SaveSingleDayUseCase)
+    factoryOf(::GetTrainingUseCase)
 }

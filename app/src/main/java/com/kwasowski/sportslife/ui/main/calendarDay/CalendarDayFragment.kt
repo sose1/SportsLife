@@ -17,10 +17,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.calendar.Training
-import com.kwasowski.sportslife.data.calendar.TrainingState
 import com.kwasowski.sportslife.databinding.FragmentCalendarDayBinding
 import com.kwasowski.sportslife.extensions.parcelable
 import com.kwasowski.sportslife.ui.activeTraining.activity.ActiveTrainingActivity
+import com.kwasowski.sportslife.ui.main.MainActivity
 import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormActivity
 import com.kwasowski.sportslife.ui.trainingPlans.list.TrainingPlansActivity
 import com.kwasowski.sportslife.utils.ActivityOpenMode
@@ -80,7 +80,12 @@ class CalendarDayFragment : Fragment() {
                         initView(true)
                     }
 
-                    CalendarDayState.OnSuccessSave -> Unit
+                    CalendarDayState.OnSuccessSave -> {
+                        val parentActivity = activity
+                        if (parentActivity is MainActivity) {
+                            parentActivity.refreshCalendar()
+                        }
+                    }
                 }
             }
         }
@@ -186,15 +191,7 @@ class CalendarDayFragment : Fragment() {
             if (result.resultCode == RESULT_OK) {
                 val receivedData =
                     result?.data?.parcelable<Parcelable>(Constants.TRAININGS_TO_ADD) as ParcelableMutableList<*>
-                val trainingList = receivedData.map {
-                    Training(
-                        trainingPlanId = it["trainingPlanId"].toString(),
-                        name = it["trainingPlanName"].toString(),
-                        numberOfExercises = it["numberOfExercises"]?.toIntOrNull() ?: 0,
-                        state = TrainingState.SCHEDULED,
-                    )
-                }
-                viewModel.saveDay(dayID(), trainingList, number(), month(), year())
+                viewModel.saveDay(dayID(), number(), month(), year(), receivedData)
             }
         }
 
@@ -212,7 +209,7 @@ class CalendarDayFragment : Fragment() {
     private fun onScheduledTrainingClick(training: Training) {
         Timber.d("Click: $training")
         val intent = Intent(requireContext(), TrainingPlanFormActivity::class.java)
-        intent.putExtra(Constants.TRAINING_PLAN_ID_INTENT, training.trainingPlanId)
+        intent.putExtra(Constants.TRAINING_PLAN_ID_INTENT, training.trainingPlan?.id)
         intent.putExtra(Constants.TRAINING_PLAN_IS_DETAILS_VIEW, true)
         startActivity(intent)
     }
@@ -220,8 +217,10 @@ class CalendarDayFragment : Fragment() {
     private fun onScheduledTrainingMenuItemSelected(trainingPlan: Training, menuItemId: Int) {
         when (menuItemId) {
             R.id.start -> {
-                Timber.d("START TRAINING")
-                startActivity(Intent(requireContext(), ActiveTrainingActivity::class.java))
+                val intent = Intent(requireContext(), ActiveTrainingActivity::class.java)
+                intent.putExtra(Constants.DAY_ID_INTENT, dayID())
+                intent.putExtra(Constants.TRAINING_ID_INTENT, trainingPlan.id)
+                startActivity(intent)
             }
 
             R.id.delete -> {

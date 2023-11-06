@@ -101,13 +101,11 @@ class TrainingPlansActivity : AppCompatActivity(), OwnTrainingPlansFragment.Data
     override fun onAddedTrainingToCalendarDay(
         trainingPlanId: String,
         trainingPlanName: String,
-        numberOfExercises: Int,
     ) {
-        Timber.d("Add: $trainingPlanId | $trainingPlanName | $numberOfExercises")
+        Timber.d("Add: $trainingPlanId | $trainingPlanName")
         val exercise = ParcelableLinkedHashMap<String, String>().apply {
             this["trainingPlanId"] = trainingPlanId
             this["trainingPlanName"] = trainingPlanName
-            this["numberOfExercises"] = numberOfExercises.toString()
         }
         trainingsToAdd.add(exercise)
     }

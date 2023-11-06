@@ -70,7 +70,7 @@ class FirestoreCalendarRepository : CalendarRepository {
         }
 
         documentReference.set(day, SetOptions.merge())
-            .addOnSuccessListener {
+            .addOnSuccessListener { _ ->
                 deferred.complete(Result.Success(documentReference.id))
             }
             .addOnFailureListener { exception ->
@@ -81,4 +81,28 @@ class FirestoreCalendarRepository : CalendarRepository {
             deferred.await()
         }
     }
+
+    override suspend fun getTraining(
+        dayId: String,
+        trainingId: String,
+        uid: String,
+    ): Result<Training> =
+        suspendCoroutine { continuation ->
+            Firebase.firestore.collection("$path/$uid/days").document(dayId).get()
+                .addOnSuccessListener { documentSnapshot ->
+                    documentSnapshot.toObject<Day>()?.let {
+                        val dayDto = DayDto(
+                            id = documentSnapshot.id,
+                            number = it.number,
+                            month = it.month,
+                            year = it.year,
+                            trainingList = it.trainingList
+                        )
+                        dayDto.trainingList.find { training -> training.id == trainingId }?.let {
+                            continuation.resume(Result.Success(it))
+                        }
+                            ?: continuation.resume(Result.Failure(NullPointerException("Training not found")))
+                    } ?: continuation.resume(Result.Failure(NullPointerException("Day not found")))
+                }.addOnFailureListener { continuation.resume(Result.Failure(it)) }
+        }
 }
