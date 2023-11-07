@@ -99,6 +99,10 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
+    fun refreshCalendar() {
+        viewModel.refreshCalendar()
+    }
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         clearFragments()

@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".App"
@@ -15,6 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SportsLife"
         tools:targetApi="tiramisu">
+        <activity
+            android:name=".ui.trainingSummary.TrainingSummaryActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".ui.activeTraining.TrainingTimeService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity
+            android:name=".ui.activeTraining.activity.ActiveTrainingActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true"

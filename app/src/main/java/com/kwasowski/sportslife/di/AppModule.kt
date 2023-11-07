@@ -16,7 +16,9 @@ import com.kwasowski.sportslife.data.trainingPlan.FirestoreTrainingPlanRepositor
 import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanRepository
 import com.kwasowski.sportslife.domain.calendar.GetCalendarByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.calendar.GetSingleDayUseCase
+import com.kwasowski.sportslife.domain.calendar.GetTrainingUseCase
 import com.kwasowski.sportslife.domain.calendar.SaveSingleDayUseCase
+import com.kwasowski.sportslife.domain.calendar.SaveTrainingUseCase
 import com.kwasowski.sportslife.domain.category.GetCategoriesUseCase
 import com.kwasowski.sportslife.domain.exercise.AddToFavExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
@@ -36,6 +38,8 @@ import com.kwasowski.sportslife.domain.trainingPlan.GetSharedTrainingPlansUseCas
 import com.kwasowski.sportslife.domain.trainingPlan.GetTrainingPlanUseCase
 import com.kwasowski.sportslife.domain.trainingPlan.GetTrainingPlansByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.trainingPlan.SaveTrainingPlanUseCase
+import com.kwasowski.sportslife.ui.activeTraining.activity.ActiveTrainingViewModel
+import com.kwasowski.sportslife.ui.activeTraining.fragment.ExerciseSeriesViewModel
 import com.kwasowski.sportslife.ui.exercise.details.ExerciseDetailsViewModel
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.communities.CommunitiesExerciseListViewModel
 import com.kwasowski.sportslife.ui.exercise.exerciseList.fragment.fav.FavExerciseListViewModel
@@ -68,6 +72,8 @@ val appModule = module {
     viewModelOf(::CommunitiesTrainingPlansViewModel)
     viewModelOf(::OwnTrainingPlansViewModel)
     viewModelOf(::CalendarDayViewModel)
+    viewModelOf(::ActiveTrainingViewModel)
+    viewModelOf(::ExerciseSeriesViewModel)
 
     single<ProfileRepository> { FirestoreProfileRepository() }
     single<SettingsRepository> { FirestoreSettingsRepository() }
@@ -100,4 +106,6 @@ val appModule = module {
     factoryOf(::GetCalendarByOwnerIdUseCase)
     factoryOf(::GetSingleDayUseCase)
     factoryOf(::SaveSingleDayUseCase)
+    factoryOf(::GetTrainingUseCase)
+    factoryOf(::SaveTrainingUseCase)
 }

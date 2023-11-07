@@ -1,10 +1,14 @@
 package com.kwasowski.sportslife.data.calendar
 
+import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanInTraining
+import java.util.UUID
+
 data class Training @JvmOverloads constructor(
+    val id: String = UUID.randomUUID().toString(),
     val name: String = "",
-    val trainingPlanId: String = "",
-    val state: TrainingState = TrainingState.SCHEDULED,
-    val numberOfExercises: Int = 0
+    var duration: String? = "",
+    var state: TrainingState = TrainingState.SCHEDULED,
+    val trainingPlan: TrainingPlanInTraining? = null
 )
 
 enum class TrainingState {

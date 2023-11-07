@@ -147,4 +147,17 @@
     <string name="number_of_exercises">"Liczba ćwiczeń: "</string>
     <string name="scheduled_on_the_calendar">Zaplanowano na kalendarzu</string>
     <string name="start">Rozpocznij</string>
+    <string name="do_you_want_to_complete_the_training">Czy chcesz zakończyć trening?</string>
+    <string name="if_you_end_a_workout_before_completing_all_the_exercises_the_unapproved_series_will_not_be_saved">Jeśli zakończysz trening przed ukończeniem wszystkich ćwiczeń niezatwierdzone serie nie zostaną zapisane.</string>
+    <string name="timer">Stoper</string>
+    <string name="add_exercise">Dodaj ćwiczenie</string>
+    <string name="completed_the_training">Zakończ trening</string>
+    <string name="duration_of_training">"Czas trwania treningu "</string>
+    <string name="in_order_to_display_a_notification_with_the_duration_of_a_workout_the_app_needs_permission_to_send_notifications">Żeby wyświetlać powiadomienie z czasem trwania treningu aplikacja potrzebuje uprawnień do wysyłania notyfikacji.</string>
+    <string name="add_series">Dodaj serię</string>
+    <string name="count">Ilość</string>
+    <string name="completed">Ukończono</string>
+    <string name="series">Seria</string>
+    <string name="value">Wartość</string>
+    <string name="repeats">Powtórzenia</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.main.calendarDay
 
+import ParcelableMutableList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kwasowski.sportslife.data.Result
@@ -7,8 +8,17 @@ import com.kwasowski.sportslife.data.calendar.Day
 import com.kwasowski.sportslife.data.calendar.DayDto
 import com.kwasowski.sportslife.data.calendar.Training
 import com.kwasowski.sportslife.data.calendar.TrainingState
+import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
+import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeriesInTraining
+import com.kwasowski.sportslife.data.trainingPlan.Series
+import com.kwasowski.sportslife.data.trainingPlan.SeriesInTraining
+import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanDto
+import com.kwasowski.sportslife.data.trainingPlan.TrainingPlanInTraining
 import com.kwasowski.sportslife.domain.calendar.GetSingleDayUseCase
 import com.kwasowski.sportslife.domain.calendar.SaveSingleDayUseCase
+import com.kwasowski.sportslife.domain.trainingPlan.GetTrainingPlanUseCase
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,6 +28,7 @@ import timber.log.Timber
 class CalendarDayViewModel(
     private val getSingleDayUseCase: GetSingleDayUseCase,
     private val saveSingleDayUseCase: SaveSingleDayUseCase,
+    private val getTrainingPlanUseCase: GetTrainingPlanUseCase,
 ) :
     ViewModel() {
 
@@ -62,18 +73,49 @@ class CalendarDayViewModel(
         mutableState.value = CalendarDayState.Default
     }
 
-    fun saveDay(dayID: String?, trainingList: List<Training>, number: Int, month: Int, year: Int) {
-        if (dayID.isNullOrEmpty()) {
-            day = Day(number, month, year, trainingList)
-        } else {
-            day.trainingList = (day.trainingList) + trainingList
-        }
-
+    fun saveDay(
+        dayID: String?,
+        number: Int,
+        month: Int,
+        year: Int,
+        newTrainingPlanData: ParcelableMutableList<*>,
+    ) {
         viewModelScope.launch {
+            val trainingListDeferreds = newTrainingPlanData.map { data ->
+                async {
+                    data["trainingPlanId"]?.let { id ->
+                        when (val result = getTrainingPlanUseCase.execute(id)) {
+                            is Result.Success -> Training(
+                                name = result.data.name,
+                                state = TrainingState.SCHEDULED,
+                                trainingPlan = trainingPlanConvertToTrainingPlanInTraining(result.data),
+                            )
+
+                            is Result.Failure -> {
+                                Timber.d("${result.exception}")
+                                null
+                            }
+                        }
+                    }
+                }
+            }
+
+            val trainingList = trainingListDeferreds.awaitAll().filterNotNull()
+
+            if (dayID.isNullOrEmpty()) {
+                day = Day(number, month, year, trainingList)
+            } else {
+                day.trainingList = (day.trainingList) + trainingList
+            }
+
             when (val result = saveSingleDayUseCase.execute(dayID, day)) {
-                is Result.Failure -> Timber.d("${result.exception}")
                 is Result.Success -> {
+                    Timber.d(result.data)
                     mutableState.value = CalendarDayState.OnSuccessSave
+                }
+
+                is Result.Failure -> {
+                    Timber.d("${result.exception}")
                 }
             }
         }
@@ -88,10 +130,48 @@ class CalendarDayViewModel(
             when (val result = saveSingleDayUseCase.execute(dayID, day)) {
                 is Result.Failure -> Timber.d("${result.exception}")
                 is Result.Success -> {
-                    getDay(dayID)
                     mutableState.value = CalendarDayState.OnSuccessSave
                 }
             }
+        }
+    }
+
+    private fun trainingPlanConvertToTrainingPlanInTraining(
+        trainingPlan: TrainingPlanDto,
+    ): TrainingPlanInTraining {
+        return TrainingPlanInTraining(
+            id = trainingPlan.id,
+            name = trainingPlan.name,
+            description = trainingPlan.description,
+            ownerId = trainingPlan.ownerId,
+            shared = trainingPlan.shared,
+            updateDate = trainingPlan.updateDate,
+            exercisesSeries = exerciseSeriesConvertToExerciseSeriesInTraining(trainingPlan.exercisesSeries)
+        )
+    }
+
+    private fun exerciseSeriesConvertToExerciseSeriesInTraining(
+        exerciseSeries: List<ExerciseSeries>,
+    ): List<ExerciseSeriesInTraining> {
+        return exerciseSeries.map {
+            ExerciseSeriesInTraining(
+                originalId = it.originalId,
+                exerciseName = it.exerciseName,
+                units = it.units,
+                series = seriesConvertToSeriesInTraining(it.series)
+            )
+        }
+    }
+
+    private fun seriesConvertToSeriesInTraining(
+        series: List<Series>,
+    ): List<SeriesInTraining> {
+        return series.map {
+            SeriesInTraining(
+                value = it.value,
+                repeats = it.repeats,
+                completed = false
+            )
         }
     }
 }

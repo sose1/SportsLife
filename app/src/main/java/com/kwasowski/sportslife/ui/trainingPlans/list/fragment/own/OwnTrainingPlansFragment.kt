@@ -88,7 +88,6 @@ class OwnTrainingPlansFragment : Fragment() {
                 dataPassListener?.onAddedTrainingToCalendarDay(
                     trainingPlanId = trainingPlan.id,
                     trainingPlanName = trainingPlan.name,
-                    numberOfExercises = trainingPlan.exercisesSeries.size
                 )
                 showToast(R.string.scheduled_on_the_calendar)
             }
@@ -191,7 +190,6 @@ class OwnTrainingPlansFragment : Fragment() {
         fun onAddedTrainingToCalendarDay(
             trainingPlanId: String,
             trainingPlanName: String,
-            numberOfExercises: Int,
         )
     }
 }
