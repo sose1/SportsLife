@@ -98,7 +98,13 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
     }
 
     private fun onSuccessGetTraining(training: Training) {
-        training.trainingPlan?.let { trainingPlan -> //todo wysiwetlic dane treningu!!!!!!!!
+        training.trainingPlan?.let { trainingPlan ->
+            //TODO: Zmienić model TrainingPlanDTO na inny, który ma w sobie nowy model Series z property  completed oraz DURATION_OF_TRAINING typu String - 30min
+            //TODO: dodac nowy prop do Series: completed: Boolean, który defaultowo przy dodaniu planu treningowego do kalendarza jest na false - 30min
+            //TODO: podpiąć nowy prop w seriesAdapter, zeby dobrze zczytywalo dane - 1.5h
+            //TODO: podpięcie zakonczenia planu treningowego:
+            //TODO: 1. Zaktualziowanie danych ExerciseSeries -> Series w Treningu - 2h
+            //TODO: 2. zmiana stanu zakonczonego treningu na COMPLETED - 1h
             val fragments =
                 trainingPlan.exercisesSeries.map {
                     {
