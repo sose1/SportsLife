@@ -24,3 +24,16 @@ data class Series @JvmOverloads constructor(
     var value: Int = 0,
     var repeats: Int = 0
 ): Serializable
+
+data class ExerciseSeriesInTraining @JvmOverloads constructor(
+    val originalId: String = "",
+    val exerciseName: String = "",
+    val units: String = "",
+    var series: List<SeriesInTraining> = emptyList()
+): Serializable
+
+data class SeriesInTraining @JvmOverloads constructor(
+    var value: Int = 0,
+    var repeats: Int = 0,
+    var completed: Boolean = false
+): Serializable

@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.settings.SettingsManager
 import com.kwasowski.sportslife.data.settings.Units
-import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeries
-import com.kwasowski.sportslife.data.trainingPlan.Series
+import com.kwasowski.sportslife.data.trainingPlan.ExerciseSeriesInTraining
+import com.kwasowski.sportslife.data.trainingPlan.SeriesInTraining
 import com.kwasowski.sportslife.databinding.FragmentExerciseSeriesBinding
 import com.kwasowski.sportslife.extensions.dp
 import com.kwasowski.sportslife.extensions.serializable
@@ -22,14 +22,13 @@ import com.kwasowski.sportslife.utils.Constants
 import com.kwasowski.sportslife.utils.UnitsTag
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class ExerciseSeriesFragment : Fragment(), SeriesAdapter.OnSeriesCallback {
     private val settingsManager: SettingsManager by inject()
     private val viewModel: ExerciseSeriesViewModel by viewModel()
     private lateinit var binding: FragmentExerciseSeriesBinding
     private lateinit var seriesAdapter: SeriesAdapter
-    private lateinit var exerciseSeries: ExerciseSeries
+    private lateinit var exerciseSeries: ExerciseSeriesInTraining
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +37,8 @@ class ExerciseSeriesFragment : Fragment(), SeriesAdapter.OnSeriesCallback {
             exerciseSeries = arguments.serializable(Constants.EXERCISE_SERIES_BUNDLE_KEY)!!
         }
     }
+
+    fun getExerciseSeries(): ExerciseSeriesInTraining = exerciseSeries
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,6 +85,7 @@ class ExerciseSeriesFragment : Fragment(), SeriesAdapter.OnSeriesCallback {
             UnitsTag.NONE -> Unit
         }
     }
+
     private fun initExerciseCard() {
         binding.exerciseName.text = exerciseSeries.exerciseName
         binding.exerciseCard.setOnClickListener {
@@ -96,8 +98,7 @@ class ExerciseSeriesFragment : Fragment(), SeriesAdapter.OnSeriesCallback {
 
     private fun initAddSeriesButton() {
         binding.addSeries.setOnClickListener {
-            Timber.d("ADD SERIES")
-            seriesAdapter.add(Series(0, 0))
+            seriesAdapter.add(SeriesInTraining(0, 0, false))
             this.exerciseSeries.series = seriesAdapter.getAll()
             resizeSeriesListView()
         }
@@ -118,6 +119,18 @@ class ExerciseSeriesFragment : Fragment(), SeriesAdapter.OnSeriesCallback {
     private fun openExerciseDetails(exerciseId: String) {
         val intent = Intent(requireContext(), ExerciseDetailsActivity::class.java)
         intent.putExtra(Constants.EXERCISE_ID_INTENT, exerciseId)
+        intent.putExtra(Constants.TRAINING_PLAN_IS_DETAILS_VIEW, true)
         startActivity(intent)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(exerciseSeries: ExerciseSeriesInTraining): ExerciseSeriesFragment {
+            val fragment = ExerciseSeriesFragment()
+            val args = Bundle()
+            args.putSerializable(Constants.EXERCISE_SERIES_BUNDLE_KEY, exerciseSeries)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

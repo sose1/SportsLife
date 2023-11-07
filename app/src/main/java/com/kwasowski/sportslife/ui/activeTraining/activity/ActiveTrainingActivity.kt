@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -39,16 +38,18 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
     private val viewModel: ActiveTrainingViewModel by viewModel()
     private lateinit var binding: ActivityActiveTrainingBinding
 
+    private var duration: String = ""
+
     private val REQUEST_POST_NOTIFICATION_PERMISSION = 1
     private val durationOfTrainingReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val formattedTime = intent.getStringExtra(DURATION_OF_TRAINING_KEY)
+            duration = "$formattedTime"
             binding.durationOfTrainingText.text = "$formattedTime"
         }
     }
 
-    private var exerciseFragments: MutableList<Pair<() -> ExerciseSeriesFragment, String>> =
-        mutableListOf()
+    private var exerciseFragments: MutableList<ExerciseSeriesFragment> = mutableListOf()
 
     private lateinit var pagerAdapter: FragmentStateAdapter
 
@@ -57,7 +58,7 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         override fun getItemCount(): Int = exerciseFragments.size
 
         override fun createFragment(position: Int): Fragment {
-            return exerciseFragments[position].first.invoke()
+            return exerciseFragments[position]
         }
     }
 
@@ -99,28 +100,23 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
 
     private fun onSuccessGetTraining(training: Training) {
         training.trainingPlan?.let { trainingPlan ->
-            //TODO: Zmienić model TrainingPlanDTO na inny, który ma w sobie nowy model Series z property  completed oraz DURATION_OF_TRAINING typu String - 30min
-            //TODO: dodac nowy prop do Series: completed: Boolean, który defaultowo przy dodaniu planu treningowego do kalendarza jest na false - 30min
-            //TODO: podpiąć nowy prop w seriesAdapter, zeby dobrze zczytywalo dane - 1.5h
-            //TODO: podpięcie zakonczenia planu treningowego:
-            //TODO: 1. Zaktualziowanie danych ExerciseSeries -> Series w Treningu - 2h
-            //TODO: 2. zmiana stanu zakonczonego treningu na COMPLETED - 1h
             val fragments =
                 trainingPlan.exercisesSeries.map {
-                    {
-                        val fragment = ExerciseSeriesFragment()
-                        val bundle = Bundle()
-                        bundle.putSerializable(Constants.EXERCISE_SERIES_BUNDLE_KEY, it)
-                        fragment.arguments = bundle
-                        fragment
-                    } to it.exerciseName
+                    ExerciseSeriesFragment.newInstance(it)
                 }.toMutableList()
-
             exerciseFragments = fragments
-            if (trainingPlan.exercisesSeries.isNotEmpty())
-                binding.pageIndicatorSection.visibility = View.VISIBLE
         }
+
         initExerciseViewPager()
+    }
+
+    private fun completeTraining() {
+        val updatedExerciseSeries = exerciseFragments.map { it.getExerciseSeries() }
+        viewModel.completeTraining(getDayIdFromIntent(), updatedExerciseSeries, duration)
+
+        val intent = Intent(this, TrainingSummaryActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun getTrainingIdFromIntent() =
@@ -134,20 +130,6 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         binding.exercisesViewpager.apply {
             adapter = pagerAdapter
             offscreenPageLimit = 1
-        }
-
-        binding.previous.setOnClickListener {
-            val currentPosition = binding.exercisesViewpager.currentItem
-            if (currentPosition > 0) {
-                binding.exercisesViewpager.setCurrentItem(currentPosition - 1, true)
-            }
-        }
-
-        binding.next.setOnClickListener {
-            val currentPosition = binding.exercisesViewpager.currentItem
-            if (currentPosition < pagerAdapter.itemCount - 1) {
-                binding.exercisesViewpager.setCurrentItem(currentPosition + 1, true)
-            }
         }
 
         binding.exercisesViewpager.registerOnPageChangeCallback(object :
@@ -229,10 +211,7 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
             .setMessage(R.string.if_you_end_a_workout_before_completing_all_the_exercises_the_unapproved_series_will_not_be_saved)
             .setPositiveButton(R.string.yes) { dialog, _ ->
                 dialog.dismiss()
-                viewModel.onConfirmExit()
-                val intent = Intent(this, TrainingSummaryActivity::class.java)
-                startActivity(intent)
-                finish()
+                completeTraining()
             }.setNegativeButton(R.string.no) { dialog, _ ->
                 dialog.dismiss()
             }.show()

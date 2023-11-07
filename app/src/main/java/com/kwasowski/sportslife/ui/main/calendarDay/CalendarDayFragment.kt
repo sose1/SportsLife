@@ -49,7 +49,6 @@ class CalendarDayFragment : Fragment() {
         binding.viewModel = viewModel
         onViewStateChanged()
         initView()
-        // TODO: Sekcja Podsumowania
         return binding.root
     }
 
@@ -116,7 +115,11 @@ class CalendarDayFragment : Fragment() {
         binding.noDataAfter.visibility = View.GONE
 
         if (scheduledTrainings.isEmpty()) {
-            disableScheduledTrainings()
+            when (timeLocation()) {
+                TimeLocationTag.BEFORE -> disableScheduledTrainings()
+                TimeLocationTag.AFTER -> showScheduledTrainings(scheduledTrainings)
+                TimeLocationTag.ACTUAL -> showScheduledTrainings(scheduledTrainings)
+            }
         } else {
             showScheduledTrainings(scheduledTrainings)
         }
@@ -134,6 +137,7 @@ class CalendarDayFragment : Fragment() {
                 TimeLocationTag.ACTUAL -> showNoDataAfter()
             }
         }
+        scheduledTrainingsAdapter?.notifyDataSetChanged()
     }
 
     private fun showScheduledTrainings(scheduledTrainings: List<Training>) {

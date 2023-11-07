@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -52,56 +52,29 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:weightSum="10">
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:visibility="gone"
-                    android:id="@+id/page_indicator_section"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginTop="12dp"
-                    tools:visibility="visible">
-
-                    <ImageButton
-                        android:id="@+id/previous"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/baseline_navigate_before_24"
-                        app:tint="?attr/colorSurfaceInverse" />
 
                     <TextView
                         android:id="@+id/page_indicator"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="45dp"
                         android:layout_marginEnd="45dp"
+                        android:gravity="center"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="1/3"
+                        android:text=""
                         android:textSize="16sp" />
 
-                    <ImageButton
-                        android:id="@+id/next"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/baseline_navigate_next_24"
-                        app:tint="?attr/colorSurfaceInverse" />
-                </LinearLayout>
-
-
                 <androidx.viewpager2.widget.ViewPager2
-                    android:layout_weight="9"
                     android:id="@+id/exercises_viewpager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="9" />
             </LinearLayout>
 
         </LinearLayout>
@@ -133,39 +106,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <LinearLayout
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/complete_training_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/stoper_button"
-                        style="@style/Widget.Material3.Button.TonalButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="1"
-                        android:text="@string/timer" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/complete_training_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/completed_the_training" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/add_exercise_button"
-                        style="@style/Widget.Material3.Button.TonalButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1"
-                        android:text="@string/add_exercise" />
-                </LinearLayout>
-
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:text="@string/completed_the_training" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

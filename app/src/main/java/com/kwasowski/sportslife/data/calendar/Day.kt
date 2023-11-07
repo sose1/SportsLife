@@ -14,7 +14,7 @@ data class DayDto @JvmOverloads constructor(
     val number: Int = 0,
     val month: Int = 0,
     val year: Int = 0,
-    val trainingList: List<Training> = emptyList(),
+    var trainingList: List<Training> = emptyList(),
 ) : Serializable
 
 fun MutableList<DayDto>.findByCalendarDate(number: Int, month: Int, year: Int): DayDto? {

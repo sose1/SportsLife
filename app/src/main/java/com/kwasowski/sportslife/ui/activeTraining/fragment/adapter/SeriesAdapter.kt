@@ -7,36 +7,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.kwasowski.sportslife.R
-import com.kwasowski.sportslife.data.trainingPlan.Series
+import com.kwasowski.sportslife.data.trainingPlan.SeriesInTraining
 import com.kwasowski.sportslife.databinding.ItemSeriesInActiveTrainingBinding
 import timber.log.Timber
 
 class SeriesAdapter(
     context: Context,
     private val onSeriesCallback: OnSeriesCallback,
-    private val series: List<Series>,
+    private val series: List<SeriesInTraining>,
 ) :
-    ArrayAdapter<Series>(context, 0, series) {
+    ArrayAdapter<SeriesInTraining>(context, 0, series) {
 
-    override fun add(`object`: Series?) {
+    override fun add(`object`: SeriesInTraining?) {
         super.add(`object`)
     }
 
-    override fun remove(`object`: Series?) {
+    override fun remove(`object`: SeriesInTraining?) {
         `object`?.let {
             it.value = 0
             it.repeats = 0
+            it.completed = false
         }
         super.remove(`object`)
         onSeriesCallback.onDeleteSeries()
     }
 
-    fun getAll(): List<Series> {
-        val allItems = mutableListOf<Series>()
+    fun getAll(): List<SeriesInTraining> {
+        val allItems = mutableListOf<SeriesInTraining>()
         for (i in 0 until count) {
             getItem(i)?.let { allItems.add(it) }
         }
@@ -66,7 +68,7 @@ class SeriesAdapter(
         binding.indexOfSeries = (position + 1).toString()
         initializeEditText(binding.value, ForSeriesProperty.VALUE, seriesItem)
         initializeEditText(binding.repeats, ForSeriesProperty.REPEATS, seriesItem)
-
+        initializeCheckBox(binding.completedSeries, seriesItem)
 
         if (position != count - 1) {
             binding.deleteSeries.visibility = View.INVISIBLE
@@ -82,6 +84,7 @@ class SeriesAdapter(
         return view
     }
 
+
     enum class ForSeriesProperty {
         VALUE,
         REPEATS
@@ -90,7 +93,7 @@ class SeriesAdapter(
     private fun initializeEditText(
         editText: EditText,
         forSeriesProperty: ForSeriesProperty,
-        seriesItem: Series?,
+        seriesItem: SeriesInTraining?,
     ) {
         when (forSeriesProperty) {
             ForSeriesProperty.VALUE -> {
@@ -114,7 +117,7 @@ class SeriesAdapter(
     private fun setTextChangeListener(
         editText: EditText,
         forSeriesProperty: ForSeriesProperty,
-        seriesItem: Series?,
+        seriesItem: SeriesInTraining?,
     ) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -133,6 +136,13 @@ class SeriesAdapter(
                 }
             }
         })
+    }
+
+    private fun initializeCheckBox(completedSeries: CheckBox, seriesItem: SeriesInTraining?) {
+        completedSeries.isChecked = seriesItem?.completed ?: false
+        completedSeries.setOnCheckedChangeListener { _, isChecked ->
+            seriesItem?.completed = isChecked
+        }
     }
 
     interface OnSeriesCallback {

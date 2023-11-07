@@ -18,6 +18,7 @@ import com.kwasowski.sportslife.domain.calendar.GetCalendarByOwnerIdUseCase
 import com.kwasowski.sportslife.domain.calendar.GetSingleDayUseCase
 import com.kwasowski.sportslife.domain.calendar.GetTrainingUseCase
 import com.kwasowski.sportslife.domain.calendar.SaveSingleDayUseCase
+import com.kwasowski.sportslife.domain.calendar.SaveTrainingUseCase
 import com.kwasowski.sportslife.domain.category.GetCategoriesUseCase
 import com.kwasowski.sportslife.domain.exercise.AddToFavExerciseUseCase
 import com.kwasowski.sportslife.domain.exercise.DeleteOwnExerciseUseCase
@@ -106,4 +107,5 @@ val appModule = module {
     factoryOf(::GetSingleDayUseCase)
     factoryOf(::SaveSingleDayUseCase)
     factoryOf(::GetTrainingUseCase)
+    factoryOf(::SaveTrainingUseCase)
 }

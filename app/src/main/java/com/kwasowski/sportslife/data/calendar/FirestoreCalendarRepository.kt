@@ -105,4 +105,52 @@ class FirestoreCalendarRepository : CalendarRepository {
                     } ?: continuation.resume(Result.Failure(NullPointerException("Day not found")))
                 }.addOnFailureListener { continuation.resume(Result.Failure(it)) }
         }
+
+    override suspend fun saveTraining(
+        dayId: String,
+        trainingId: String,
+        ownerId: String,
+        training: Training,
+    ): Result<String> {
+        val deferred = CompletableDeferred<Result<String>>()
+        val collection = Firebase.firestore.collection("$path/$ownerId/days")
+        val documentReference = if (dayId.isNullOrBlank()) {
+            collection.document()
+        } else {
+            collection.document(dayId)
+        }
+        var dayDto = DayDto()
+        when (val day = getSingleDay(dayId, ownerId)) {
+            is Result.Failure -> TODO()
+            is Result.Success -> dayDto = day.data
+        }
+
+        val updatedTrainingList = dayDto.trainingList.toMutableList()
+
+        updatedTrainingList.find { trainingId == training.id }?.let {
+            updatedTrainingList.remove(it)
+        }
+        updatedTrainingList.add(training)
+
+        dayDto.trainingList = updatedTrainingList
+
+        documentReference.set(
+            Day(
+                number = dayDto.number,
+                month = dayDto.month,
+                year = dayDto.year,
+                trainingList = dayDto.trainingList
+            ), SetOptions.merge()
+        )
+            .addOnSuccessListener { _ ->
+                deferred.complete(Result.Success(documentReference.id))
+            }
+            .addOnFailureListener { exception ->
+                deferred.complete(Result.Failure(exception))
+            }
+
+        return withContext(Dispatchers.Main) {
+            deferred.await()
+        }
+    }
 }
