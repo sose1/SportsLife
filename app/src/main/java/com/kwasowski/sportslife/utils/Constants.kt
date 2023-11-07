@@ -1,6 +1,7 @@
 package com.kwasowski.sportslife.utils
 
 object Constants {
+    const val EXERCISE_SERIES_BUNDLE_KEY = "EXERCISE_SERIES_BUNDLE_KEY"
     const val DAY_ID_INTENT = "DAY_ID_INTENT"
     const val TRAINING_ID_INTENT = "TRAINING_ID_INTENT"
     const val DATE_PICKER_TAG = "DATE_PICKER"

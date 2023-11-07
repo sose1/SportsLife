@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.trainingPlan.Series
 import com.kwasowski.sportslife.databinding.ItemSeriesBinding
+import timber.log.Timber
 
 class SeriesAdapter(
     context: Context,
@@ -45,6 +46,8 @@ class SeriesAdapter(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        Timber.d("getView: $position | $convertView")
+
         val binding: ItemSeriesBinding
         val view: View
 

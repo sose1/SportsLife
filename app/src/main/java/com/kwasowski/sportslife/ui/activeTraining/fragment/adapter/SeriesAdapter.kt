@@ -13,14 +13,14 @@ import androidx.databinding.DataBindingUtil
 import com.kwasowski.sportslife.R
 import com.kwasowski.sportslife.data.trainingPlan.Series
 import com.kwasowski.sportslife.databinding.ItemSeriesInActiveTrainingBinding
+import timber.log.Timber
 
 class SeriesAdapter(
     context: Context,
     private val onSeriesCallback: OnSeriesCallback,
+    private val series: List<Series>,
 ) :
-    ArrayAdapter<Series>(context, 0) {
-
-    var units = ""
+    ArrayAdapter<Series>(context, 0, series) {
 
     override fun add(`object`: Series?) {
         super.add(`object`)
@@ -44,6 +44,7 @@ class SeriesAdapter(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        Timber.d("getView: $position | $convertView")
         val binding: ItemSeriesInActiveTrainingBinding
         val view: View
 
@@ -78,8 +79,6 @@ class SeriesAdapter(
                 binding.unbind()
             }
         }
-
-
         return view
     }
 

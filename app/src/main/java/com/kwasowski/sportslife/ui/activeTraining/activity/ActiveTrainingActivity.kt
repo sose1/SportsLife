@@ -30,7 +30,6 @@ import com.kwasowski.sportslife.utils.Constants
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pub.devrel.easypermissions.EasyPermissions
-import timber.log.Timber
 
 class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     companion object {
@@ -60,8 +59,6 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         override fun createFragment(position: Int): Fragment {
             return exerciseFragments[position].first.invoke()
         }
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,8 +100,16 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
     private fun onSuccessGetTraining(training: Training) {
         training.trainingPlan?.let { trainingPlan -> //todo wysiwetlic dane treningu!!!!!!!!
             val fragments =
-                trainingPlan.exercisesSeries.map { { ExerciseSeriesFragment() } to it.exerciseName }
-                    .toMutableList()
+                trainingPlan.exercisesSeries.map {
+                    {
+                        val fragment = ExerciseSeriesFragment()
+                        val bundle = Bundle()
+                        bundle.putSerializable(Constants.EXERCISE_SERIES_BUNDLE_KEY, it)
+                        fragment.arguments = bundle
+                        fragment
+                    } to it.exerciseName
+                }.toMutableList()
+
             exerciseFragments = fragments
             if (trainingPlan.exercisesSeries.isNotEmpty())
                 binding.pageIndicatorSection.visibility = View.VISIBLE
@@ -119,7 +124,6 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         intent?.getStringExtra(Constants.DAY_ID_INTENT) ?: ""
 
     private fun initExerciseViewPager() {
-        Timber.d(exerciseFragments.size.toString())
         pagerAdapter = FragmentPagerAdapter(supportFragmentManager, lifecycle)
         binding.exercisesViewpager.apply {
             adapter = pagerAdapter

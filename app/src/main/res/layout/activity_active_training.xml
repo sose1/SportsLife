@@ -52,20 +52,13 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/exercises_viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toTopOf="@id/page_indicator_section"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="10">
                 <LinearLayout
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:id="@+id/page_indicator_section"
                     android:layout_width="match_parent"
@@ -73,10 +66,8 @@
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
                     android:layout_marginBottom="12dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/exercises_viewpager">
+                    android:layout_marginTop="12dp"
+                    tools:visibility="visible">
 
                     <ImageButton
                         android:id="@+id/previous"
@@ -105,7 +96,13 @@
                         app:tint="?attr/colorSurfaceInverse" />
                 </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:layout_weight="9"
+                    android:id="@+id/exercises_viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.data.trainingPlan
 
+import java.io.Serializable
 import java.util.Date
 
 
@@ -17,9 +18,9 @@ data class ExerciseSeries @JvmOverloads constructor(
     val exerciseName: String = "",
     val units: String = "",
     var series: List<Series> = emptyList()
-)
+): Serializable
 
 data class Series @JvmOverloads constructor(
     var value: Int = 0,
     var repeats: Int = 0
-)
+): Serializable
