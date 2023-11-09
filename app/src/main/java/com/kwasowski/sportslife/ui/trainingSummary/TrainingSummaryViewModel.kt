@@ -1,5 +1,6 @@
 package com.kwasowski.sportslife.ui.trainingSummary
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kwasowski.sportslife.data.Result
@@ -15,9 +16,16 @@ class TrainingSummaryViewModel(private val saveTrainingUseCase: SaveTrainingUseC
     private val mutableState = MutableStateFlow<TrainingSummaryState>(TrainingSummaryState.Default)
     val uiState: StateFlow<TrainingSummaryState> = mutableState.asStateFlow()
 
+    lateinit var training: Training
+
+    val note = MutableLiveData<String>()
+    val training2 = MutableLiveData<Training>()
+
     init {
         Timber.d("Xd")
     }
+
+    fun getTrainingExerciseCount() = training.trainingPlan?.exercisesSeries?.size.toString()
 
     fun saveTraining(
         dayId: String,
@@ -39,6 +47,5 @@ class TrainingSummaryViewModel(private val saveTrainingUseCase: SaveTrainingUseC
                 }
             }
         }
-
     }
 }

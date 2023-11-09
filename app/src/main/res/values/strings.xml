@@ -169,4 +169,6 @@
     <string name="series">Series</string>
     <string name="value">Value</string>
     <string name="repeats">Repeats</string>
+    <string name="training_details">Training details</string>
+    <string name="note">Note</string>
 </resources>

@@ -27,6 +27,8 @@ class TrainingSummaryActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         onViewStateChanged()
+        viewModel.training2.value = getTrainingFromIntent()
+        viewModel.training = getTrainingFromIntent() ?: Training()
 
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -50,5 +52,5 @@ class TrainingSummaryActivity : AppCompatActivity() {
     private fun getDayIdFromIntent() =
         intent?.getStringExtra(Constants.DAY_ID_INTENT) ?: ""
 
-    private fun getTrainingFromIntent() = intent.serializable<Training>(Constants.TRAINING_INTENT)
+    private fun getTrainingFromIntent(): Training? = intent.serializable(Constants.TRAINING_INTENT)
 }

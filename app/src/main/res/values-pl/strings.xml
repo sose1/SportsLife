@@ -160,4 +160,6 @@
     <string name="series">Seria</string>
     <string name="value">Wartość</string>
     <string name="repeats">Powtórzenia</string>
+    <string name="training_details">Szczegóły treningu</string>
+    <string name="note">Notatka</string>
 </resources>
