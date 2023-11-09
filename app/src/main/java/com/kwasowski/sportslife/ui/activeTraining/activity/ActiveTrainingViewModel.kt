@@ -54,11 +54,11 @@ class ActiveTrainingViewModel(
         viewModelScope.launch {
             when (val result = saveTrainingUseCase.execute(dayId, training.id, training)) {
                 is Result.Success -> {
-                    Timber.d("SUCCES SAVE: ${result.data}")
+                    mutableState.value = ActiveTrainingState.OnSuccessSaveTraining(training)
                 }
 
                 is Result.Failure -> {
-                    Timber.d("${result.exception}")
+                    Timber.e("${result.exception}")
                 }
             }
         }

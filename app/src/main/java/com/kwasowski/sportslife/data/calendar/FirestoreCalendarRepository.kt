@@ -127,7 +127,7 @@ class FirestoreCalendarRepository : CalendarRepository {
 
         val updatedTrainingList = dayDto.trainingList.toMutableList()
 
-        updatedTrainingList.find { trainingId == training.id }?.let {
+        updatedTrainingList.find { trainingId == it.id }?.let {
             updatedTrainingList.remove(it)
         }
         updatedTrainingList.add(training)

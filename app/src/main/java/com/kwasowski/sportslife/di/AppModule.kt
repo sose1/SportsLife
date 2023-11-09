@@ -53,6 +53,7 @@ import com.kwasowski.sportslife.ui.settings.SettingsViewModel
 import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormViewModel
 import com.kwasowski.sportslife.ui.trainingPlans.list.fragment.communities.CommunitiesTrainingPlansViewModel
 import com.kwasowski.sportslife.ui.trainingPlans.list.fragment.own.OwnTrainingPlansViewModel
+import com.kwasowski.sportslife.ui.trainingSummary.TrainingSummaryViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -74,6 +75,7 @@ val appModule = module {
     viewModelOf(::CalendarDayViewModel)
     viewModelOf(::ActiveTrainingViewModel)
     viewModelOf(::ExerciseSeriesViewModel)
+    viewModelOf(::TrainingSummaryViewModel)
 
     single<ProfileRepository> { FirestoreProfileRepository() }
     single<SettingsRepository> { FirestoreSettingsRepository() }
