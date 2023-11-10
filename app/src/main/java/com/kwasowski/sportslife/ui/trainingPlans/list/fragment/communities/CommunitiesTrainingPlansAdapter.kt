@@ -49,7 +49,6 @@ class CommunitiesTrainingPlansAdapter(
                 onItemClick(trainingPlan)
             }
             if (canAddTrainingToCalendarDay) {
-                binding.startButton.visibility = View.GONE
                 binding.scheduleButton.setOnClickListener {
                     onScheduleButtonClicked(trainingPlan)
                 }

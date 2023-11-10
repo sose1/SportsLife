@@ -162,4 +162,8 @@
     <string name="repeats">Powtórzenia</string>
     <string name="training_details">Szczegóły treningu</string>
     <string name="note">Notatka</string>
+    <string name="describe_how_your_training_went">Opisz jak udał Ci się trening!</string>
+    <string name="in_your_training_there_was_a_place_for">W twoich treningach znalazło się miejsce dla</string>
+    <string name="duration">"Czas trwania - "</string>
+    <string name="exercises_with_space">" ćwiczeń"</string>
 </resources>

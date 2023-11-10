@@ -171,4 +171,8 @@
     <string name="repeats">Repeats</string>
     <string name="training_details">Training details</string>
     <string name="note">Note</string>
+    <string name="describe_how_your_training_went">Describe how your training went!</string>
+    <string name="in_your_training_there_was_a_place_for">In your training, there was a place for</string>
+    <string name="duration">"Duration - "</string>
+    <string name="exercises_with_space">" exercises"</string>
 </resources>

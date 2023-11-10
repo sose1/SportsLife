@@ -16,26 +16,19 @@ class TrainingSummaryViewModel(private val saveTrainingUseCase: SaveTrainingUseC
     private val mutableState = MutableStateFlow<TrainingSummaryState>(TrainingSummaryState.Default)
     val uiState: StateFlow<TrainingSummaryState> = mutableState.asStateFlow()
 
-    lateinit var training: Training
-
     val note = MutableLiveData<String>()
-    val training2 = MutableLiveData<Training>()
+    val trainingLiveData = MutableLiveData<Training>()
 
     init {
         Timber.d("Xd")
     }
 
-    fun getTrainingExerciseCount() = training.trainingPlan?.exercisesSeries?.size.toString()
-
     fun saveTraining(
         dayId: String,
         training: Training,
     ) {
-
-        // TODO: Stworzyc calego xml
-        // TODO: podpiac xml do viewmodela
-
-        training.note = "notatka"
+        training.note = note.value
+        Timber.d(training.note)
         viewModelScope.launch {
             when (val result = saveTrainingUseCase.execute(dayId, training.id, training)) {
                 is Result.Success -> {

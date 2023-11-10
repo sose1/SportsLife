@@ -27,8 +27,7 @@ class TrainingSummaryActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         onViewStateChanged()
-        viewModel.training2.value = getTrainingFromIntent()
-        viewModel.training = getTrainingFromIntent() ?: Training()
+        viewModel.trainingLiveData.value = getTrainingFromIntent() ?: Training()
 
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
