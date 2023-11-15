@@ -8,4 +8,4 @@ fun Calendar.getNarrowName(): String =
         Calendar.DAY_OF_WEEK,
         Calendar.NARROW_FORMAT,
         Locale.getDefault()
-    ) as String
+    )?.uppercase() as String
