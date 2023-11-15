@@ -23,6 +23,7 @@ import com.kwasowski.sportslife.ui.activeTraining.activity.ActiveTrainingActivit
 import com.kwasowski.sportslife.ui.main.MainActivity
 import com.kwasowski.sportslife.ui.trainingPlans.form.TrainingPlanFormActivity
 import com.kwasowski.sportslife.ui.trainingPlans.list.TrainingPlansActivity
+import com.kwasowski.sportslife.ui.trainingSummary.TrainingSummaryActivity
 import com.kwasowski.sportslife.utils.ActivityOpenMode
 import com.kwasowski.sportslife.utils.Constants
 import com.kwasowski.sportslife.utils.TimeLocationTag
@@ -162,11 +163,18 @@ class CalendarDayFragment : Fragment() {
     }
 
     private fun showCompletedTrainings(completedTrainings: List<Training>) {
-        val completedTrainingsAdapter = CompletedTrainingsAdapter()
+        val completedTrainingsAdapter = CompletedTrainingsAdapter(onItemClick = { trainingPlan -> onCompletedTrainingClick(trainingPlan) })
         binding.completedTrainingsList.setHasFixedSize(true)
         binding.completedTrainingsList.adapter = completedTrainingsAdapter
         completedTrainingsAdapter.updateList(completedTrainings)
         binding.completedTrainings.visibility = View.VISIBLE
+    }
+
+    private fun onCompletedTrainingClick(trainingPlan: Training) {
+        val intent = Intent(requireContext(), TrainingSummaryActivity::class.java)
+        intent.putExtra(Constants.DAY_ID_INTENT, dayID())
+        intent.putExtra(Constants.TRAINING_INTENT, trainingPlan)
+        startActivity(intent)
     }
 
     private fun disableScheduledTrainings() {

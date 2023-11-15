@@ -86,13 +86,13 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         super.onDestroy()
     }
 
-
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.uiState.collect {
                 when (it) {
                     ActiveTrainingState.Default -> Unit
                     is ActiveTrainingState.OnSuccessGetTraining -> onSuccessGetTraining(it.training)
+                    is ActiveTrainingState.OnSuccessSaveTraining -> openSummaryActivity(it.training)
                 }
             }
         }
@@ -113,8 +113,13 @@ class ActiveTrainingActivity : AppCompatActivity(), EasyPermissions.PermissionCa
     private fun completeTraining() {
         val updatedExerciseSeries = exerciseFragments.map { it.getExerciseSeries() }
         viewModel.completeTraining(getDayIdFromIntent(), updatedExerciseSeries, duration)
+    }
 
+    private fun openSummaryActivity(training: Training) {
         val intent = Intent(this, TrainingSummaryActivity::class.java)
+        intent.putExtra(Constants.DAY_ID_INTENT, getDayIdFromIntent())
+        intent.putExtra(Constants.TRAINING_INTENT, training)
+
         startActivity(intent)
         finish()
     }
