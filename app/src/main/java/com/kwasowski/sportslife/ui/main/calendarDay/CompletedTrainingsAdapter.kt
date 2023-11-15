@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kwasowski.sportslife.data.calendar.Training
 import com.kwasowski.sportslife.databinding.ItemTrainingMainActivityBinding
 
-class CompletedTrainingsAdapter : RecyclerView.Adapter<ViewHolder>() {
+class CompletedTrainingsAdapter(private val onItemClick: (Training) -> Unit) :
+    RecyclerView.Adapter<ViewHolder>() {
     private var trainings = listOf<Training>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,13 +37,17 @@ class CompletedTrainingsAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     inner class CompletedTrainingViewHolder(private val binding: ItemTrainingMainActivityBinding) :
         ViewHolder(binding.root) {
+        private lateinit var training: Training
 
-            fun bind(training: Training) {
-                binding.training = training
-                binding.moreButton.visibility = View.GONE
-
-                binding.executePendingBindings()
+        fun bind(training: Training) {
+            binding.training = training
+            this.training = training
+            binding.moreButton.visibility = View.GONE
+            binding.root.setOnClickListener {
+                onItemClick(training)
             }
+            binding.executePendingBindings()
+        }
     }
 }
 

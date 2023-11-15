@@ -175,4 +175,7 @@
     <string name="in_your_training_there_was_a_place_for">In your training, there was a place for</string>
     <string name="duration">"Duration - "</string>
     <string name="exercises_with_space">" exercises"</string>
+    <string name="training_summary">Training summary</string>
+    <string name="completed_series">"Completed series: "</string>
+    <string name="incomplete_series">"Incomplete series: "</string>
 </resources>

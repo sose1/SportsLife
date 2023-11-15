@@ -19,10 +19,6 @@ class TrainingSummaryViewModel(private val saveTrainingUseCase: SaveTrainingUseC
     val note = MutableLiveData<String>()
     val trainingLiveData = MutableLiveData<Training>()
 
-    init {
-        Timber.d("Xd")
-    }
-
     fun saveTraining(
         dayId: String,
         training: Training,

@@ -21,6 +21,8 @@ class TrainingSummaryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTrainingSummaryBinding
 
+    private lateinit var exerciseSeriesSummaryAdapter: ExerciseSeriesSummaryAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_training_summary)
@@ -29,18 +31,32 @@ class TrainingSummaryActivity : AppCompatActivity() {
         onViewStateChanged()
         viewModel.trainingLiveData.value = getTrainingFromIntent() ?: Training()
 
+        if (viewModel.trainingLiveData.value?.note?.isNotEmpty() == true) {
+            viewModel.note.value = viewModel.trainingLiveData.value?.note
+        }
+
+        exerciseSeriesSummaryAdapter = ExerciseSeriesSummaryAdapter()
+        exerciseSeriesSummaryAdapter.updateList(
+            viewModel.trainingLiveData.value?.trainingPlan?.exercisesSeries ?: emptyList()
+        )
+        binding.exerciseSeriesSummaryList.setHasFixedSize(true)
+        binding.exerciseSeriesSummaryList.adapter = exerciseSeriesSummaryAdapter
+
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 getTrainingFromIntent()?.let { viewModel.saveTraining(getDayIdFromIntent(), it) }
             }
         })
+        binding.topAppBar.setNavigationOnClickListener {
+            getTrainingFromIntent()?.let { viewModel.saveTraining(getDayIdFromIntent(), it) }
+        }
     }
 
     private fun onViewStateChanged() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.uiState.collect{
+            viewModel.uiState.collect {
                 Timber.d("TrainingSummaryActivity STATE: $it")
-                when(it){
+                when (it) {
                     TrainingSummaryState.Default -> Unit
                     TrainingSummaryState.OnSuccessSaveTraining -> finish()
                 }

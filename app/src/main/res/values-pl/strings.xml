@@ -166,4 +166,7 @@
     <string name="in_your_training_there_was_a_place_for">W twoich treningach znalazło się miejsce dla</string>
     <string name="duration">"Czas trwania - "</string>
     <string name="exercises_with_space">" ćwiczeń"</string>
+    <string name="training_summary">Podsumowanie treningu</string>
+    <string name="completed_series">"Kompletne serie: "</string>
+    <string name="incomplete_series">"Niekompletne serie: "</string>
 </resources>

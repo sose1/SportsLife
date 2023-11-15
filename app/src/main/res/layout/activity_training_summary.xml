@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -25,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
                 app:navigationIcon="@drawable/baseline_arrow_back_24"
-                app:title="@string/add_a_new_exercise"
+                app:title="@string/training_summary"
                 app:titleTextColor="@color/white" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -39,7 +40,7 @@
             <ScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_margin="20dp"
                 android:layout_weight="1">
 
@@ -197,6 +198,15 @@
                             android:text="@={viewModel.note}"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/exercise_series_summary_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbarStyle="outsideOverlay"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="7"
+                        tools:listitem="@layout/item_exerciseseries_summary" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
