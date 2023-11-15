@@ -9,11 +9,6 @@
             android:icon="@drawable/calendar_menu"
             android:title="@string/calendar" />
         <item
-            android:id="@+id/training_log_item"
-            android:checkable="true"
-            android:icon="@drawable/history"
-            android:title="@string/training_log" />
-        <item
             android:id="@+id/training_plans_item"
             android:checkable="true"
             android:icon="@drawable/plans"
@@ -22,7 +17,7 @@
             android:id="@+id/exercises_list"
             android:checkable="true"
             android:icon="@drawable/baseline_list_24"
-            android:title="@string/exercise_list"/>
+            android:title="@string/exercise_list" />
     </group>
     <group
         android:id="@+id/personalization"

@@ -27,7 +27,6 @@ import com.kwasowski.sportslife.ui.main.appBarDays.DaysAdapter
 import com.kwasowski.sportslife.ui.main.calendarDay.CalendarDayFragment
 import com.kwasowski.sportslife.ui.profile.ProfileActivity
 import com.kwasowski.sportslife.ui.settings.SettingsActivity
-import com.kwasowski.sportslife.ui.trainingLog.TrainingLogActivity
 import com.kwasowski.sportslife.ui.trainingPlans.list.TrainingPlansActivity
 import com.kwasowski.sportslife.utils.Constants
 import com.kwasowski.sportslife.utils.LanguageTag
@@ -217,11 +216,6 @@ class MainActivity : AppCompatActivity(){
     private fun onNavigationItemSelected(it: MenuItem): Boolean {
         return when (it.itemId) {
             R.id.calendar_item -> {
-                true
-            }
-
-            R.id.training_log_item -> {
-                openActivity(TrainingLogActivity::class.java)
                 true
             }
 
