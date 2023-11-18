@@ -11,12 +11,12 @@ plugins {
 
 android {
     namespace = "com.kwasowski.sportslife"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.kwasowski.sportslife"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 34
 
         versionCode = 1
         versionName = "0.0.1"
@@ -24,13 +24,17 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+    }
+
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 

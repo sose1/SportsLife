@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "887042597793-ns7oqo22f8p5lbdgs41uq60s0ttcm6jk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kwasowski.sportslife",
+            "certificate_hash": "26e167502ce8f9fc3bd224e673cb09a369f6829f"
+          }
+        },
+        {
           "client_id": "887042597793-ps4t4ngakrce3huhjs69sirp21t831mi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
