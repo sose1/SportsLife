@@ -57,19 +57,6 @@ class SettingsViewModel(
         updateSettings()
     }
 
-
-    fun onNotificationAboutTodayTrainingChanged(isChecked: Boolean) {
-        Timber.d("SettingsViewModel | onNotificationAboutTodayTrainingChanged: $isChecked")
-        currentSettings.notifyTodayTraining = isChecked
-        updateSettings()
-    }
-
-    fun onNotificationAboutTodaySummaryChanged(isChecked: Boolean) {
-        Timber.d("SettingsViewModel | onNotificationAboutDaySummaryChanged: $isChecked")
-        currentSettings.notifyDaySummary = isChecked
-        updateSettings()
-    }
-
     private fun updateSettings() {
         if (isAfterInitSettings) {
             viewModelScope.launch {
