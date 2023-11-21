@@ -71,9 +71,6 @@ class SettingsActivity : AppCompatActivity() {
             Units.LBS_MI -> binding.unitsGroup.check(R.id.lbs_mi)
         }
 
-        binding.notificationsTodayTrainings.isChecked = settings.notifyTodayTraining
-        binding.notificationsTodaySummary.isChecked = settings.notifyDaySummary
-
         when (settings.language) {
             LanguageTag.EN -> onLanguageChanged( LanguageTag.EN, R.string.english)
             LanguageTag.PL -> onLanguageChanged( LanguageTag.PL, R.string.polish)

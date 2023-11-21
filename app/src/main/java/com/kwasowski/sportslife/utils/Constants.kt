@@ -13,8 +13,6 @@ object Constants {
     const val SETTINGS_SHARED_PREFERENCES = "sports-life-settings"
     const val SETTINGS_UNITS_KEY = "units"
     const val SETTINGS_LANGUAGE_KEY = "language"
-    const val SETTINGS_NOTIFY_TODAY_TRAINING_KEY = "notifyTodayTraining"
-    const val SETTINGS_NOTIFY_DAY_SUMMARY_KEY = "notifyDaySummary"
     const val TRAINING_PLAN_ID_INTENT = "TRAINING_PLAN_ID_INTENT"
     const val OPEN_MODE = "OPEN_MODE"
     const val CAN_ADD_EXERCISE_TO_TRAINING_PLAN = "CAN_ADD_EXERCISE_TO_TRAINING_PLAN"
