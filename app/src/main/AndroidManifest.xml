@@ -24,7 +24,7 @@
         <service
             android:name=".ui.activeTraining.TrainingTimeService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".ui.activeTraining.activity.ActiveTrainingActivity"

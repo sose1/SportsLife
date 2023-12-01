@@ -8,6 +8,11 @@ import java.util.Date
 class DateExtensionsTest {
     private val calendar = Calendar.getInstance()
 
+    private fun createDate(year: Int, month: Int, day: Int): Date {
+        calendar.set(year, month, day)
+        return calendar.time
+    }
+
     @Test
     fun `should correctly add positive days`() {
         //given
@@ -72,8 +77,4 @@ class DateExtensionsTest {
         assertEquals(expectedDate, resultDate)
     }
 
-    private fun createDate(year: Int, month: Int, day: Int): Date {
-        calendar.set(year, month, day)
-        return calendar.time
-    }
 }

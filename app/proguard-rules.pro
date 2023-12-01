@@ -1,7 +1,6 @@
 -keepattributes SourceFile,LineNumberTable
 -keep class com.google.android.gms.internal.** { *; }
 
-# Twoje istniejące reguły
 -keepclassmembers class * {
     <init>();
     <fields>;

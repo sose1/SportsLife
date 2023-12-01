@@ -14,6 +14,12 @@ data class Day(
     val date: Date,
 )
 
+enum class DayType(val value: Int) {
+    DEFAULT(0),
+    ACTIVE(1),
+    CURRENT(2);
+}
+
 fun MutableList<Day>.findByCalendarDate(number: Int, month: Int, year: Int): Day {
     return this.filter { it.year == year }.filter { it.month == month }
         .filter { it.number == number }[0]
@@ -27,10 +33,4 @@ fun Day.compareToActualTime(): String {
         localeDate.isBefore(currentDate) -> TimeLocationTag.BEFORE
         else -> TimeLocationTag.ACTUAL
     }
-}
-
-enum class DayType(val value: Int) {
-    DEFAULT(0),
-    ACTIVE(1),
-    CURRENT(2);
 }

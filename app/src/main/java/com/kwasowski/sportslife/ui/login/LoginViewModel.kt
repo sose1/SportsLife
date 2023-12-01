@@ -23,7 +23,6 @@ class LoginViewModel : ViewModel() {
     private lateinit var user: FirebaseUser
 
     fun onActivityStart() {
-        Timber.d("onActivityStart()")
         auth.currentUser?.let {
             user = it
             mutableState.value = LoginViewState.OnSignInSuccess
@@ -35,13 +34,11 @@ class LoginViewModel : ViewModel() {
     }
 
     fun onSuccessSignInRequest(credential: SignInCredential) {
-        Timber.d("onSuccessSignInRequest()")
         try {
             val idToken = credential.googleIdToken
             val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
             auth.signInWithCredential(firebaseCredential)
                 .addOnSuccessListener {
-                    Timber.d("signInWithCredential:success")
                     mutableState.value = LoginViewState.OnSignInSuccess
                 }
                 .addOnFailureListener {

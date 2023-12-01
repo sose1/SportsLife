@@ -11,7 +11,7 @@ class CalendarExtKtTest {
     fun `should return correct narrow name`() {
         //given
         val calendar = Calendar.getInstance()
-        calendar.set(2023, Calendar.NOVEMBER, 15) // Ustaw datę na 15 listopada 2023
+        calendar.set(2023, Calendar.NOVEMBER, 15)
 
         //when
         val narrowName = calendar.getNarrowName()
@@ -20,7 +20,7 @@ class CalendarExtKtTest {
         assertEquals(
             "Ś",
             narrowName
-        ) // Zakładając, że 15 listopada 2023 to środa (ang. Wednesday), skrócona nazwa to "Ś" w języku polskim
+        ) // Zakładając, że 15 listopada 2023 to środa skrócona nazwa to "Ś" w języku polskim
     }
 
     @Test

@@ -21,28 +21,22 @@ import com.kwasowski.sportslife.databinding.ActivityLoginBinding
 import com.kwasowski.sportslife.ui.main.MainActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class LoginActivity : AppCompatActivity() {
     private val viewModel: LoginViewModel by viewModel()
-
-    private lateinit var binding: ActivityLoginBinding
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
 
+    private lateinit var binding: ActivityLoginBinding
+
     private val activityResultLauncher: ActivityResultLauncher<IntentSenderRequest> =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
-            Timber.d(
-                "onActivityResultLauncher(): resultCode: ${result.resultCode}"
-            )
-
             when (result.resultCode) {
                 RESULT_OK -> viewModel.onSuccessSignInRequest(
                     oneTapClient.getSignInCredentialFromIntent(
                         result.data
                     )
                 )
-
                 RESULT_CANCELED -> viewModel.onCancelSignInRequest()
             }
         }
@@ -108,8 +102,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun openGoogleSignInActivity() {
-        Timber.d("openGoogleSignInActivity()")
-
         oneTapClient.beginSignIn(signInRequest)
             .addOnSuccessListener { result ->
                 try {
@@ -126,8 +118,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun openMainActivity() {
-        Timber.d("openMainActivity()")
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     private fun showSnackBarInfo(stringId: Int) {

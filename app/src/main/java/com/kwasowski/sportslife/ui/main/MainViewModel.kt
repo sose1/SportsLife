@@ -51,7 +51,6 @@ class MainViewModel(
     val calendarIsReady: StateFlow<Boolean> = _calendarIsReady.asStateFlow()
 
     init {
-        Timber.d("Init main view model")
         getCalendar(true)
         getSetting()
         getCategories()
@@ -89,14 +88,12 @@ class MainViewModel(
         viewModelScope.launch {
             when (val result = getCalendarByOwnerIdUseCase.execute()) {
                 is Result.Failure -> {
-                    Timber.d("Result is failure")
                     Timber.d("${result.exception}")
                     _calendarIsReady.value = true
                     mutableState.value = MainViewState.OnCalendarError
                 }
 
                 is Result.Success -> {
-                    Timber.d("CALENDAR: ${result.data.days}")
                     if (afterRefresh) {
                         val newDays = result.data.days - calendarFirestore.days
                         if (newDays.isNotEmpty()) {
@@ -107,7 +104,6 @@ class MainViewModel(
                     if (isInit) {
                         _calendarIsReady.value = true
                     }
-
                     calendarFirestore = result.data
                 }
             }
@@ -149,13 +145,11 @@ class MainViewModel(
                 daysList.add(dayModel)
             }
         }
-        Timber.d("todayIndex: $todayIndex")
         mutableState.value = MainViewState.OnInitDays(daysList, todayIndex - 1)
     }
 
     fun onDayItemClick(day: Day) {
         _calendarIsReady.value = false
-        Timber.d("onClick | Day: $day")
         val daysFirestore = calendarFirestore.days.toMutableList()
         val dayFromCalendar = daysFirestore.findByCalendarDate(day.number, day.month, day.year)
 

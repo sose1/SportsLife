@@ -74,6 +74,8 @@ class MainActivity : AppCompatActivity(){
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         window.statusBarColor = Color.TRANSPARENT
+        onViewStateChanged()
+        initDaysAdapter()
 
         binding.navigationView.setCheckedItem(R.id.calendar_item)
         binding.navigationView.setNavigationItemSelectedListener {
@@ -82,9 +84,6 @@ class MainActivity : AppCompatActivity(){
 
         binding.topAppBar.setNavigationOnClickListener { binding.drawerLayout.open() }
         binding.topAppBar.setOnMenuItemClickListener { onMenuItemClickListener(it) }
-
-        onViewStateChanged()
-        initDaysAdapter()
     }
 
     override fun onResume() {
